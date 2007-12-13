@@ -1,5 +1,5 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.1 2007/12/13 19:20:37 bmy Exp $
+;; $Id: .emacs,v 1.2 2007/12/13 19:28:08 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
 ;; (phs, bmy, 12/13/07)
@@ -475,12 +475,12 @@
 
 (cond
  ((and (string-match "XEmacs" emacs-version)
-	(boundp 'emacs-major-version)
-	(or (and
-	     (= emacs-major-version 19)
-	     (>= emacs-minor-version 14))
-	    (= emacs-major-version 20))
-	(fboundp 'load-options-file))
+	 (boundp 'emacs-major-version)
+	 (or (and
+	      (= emacs-major-version 19)
+	      (>= emacs-minor-version 14))
+	     (= emacs-major-version 20))
+	 (fboundp 'load-options-file))
   (load-options-file "~/.xemacs-options")))
 
 
