@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.2 2007/12/18 15:13:05 bmy Exp $
+# $Id: .cshrc,v 1.3 2007/12/18 15:35:07 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 12/18/07)
 #
@@ -226,7 +226,6 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    alias  I           "cd $home/IDL"
    alias  IG          "cd $home/IDL/gamap2"
    alias  IM          "cd $home/IDL/makefile"
-   alias  IR          "cd $home/IDL/regrid"
    alias  IS          "cd $home/IDL/tests"
     
    # ssh logins to other machines
@@ -241,10 +240,10 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    alias  bgf         "$home/bin/xt -h boggle.deas.harvard.edu -u yantosca &"
 
    # For monitoring /as2/dao directories
-   alias  AL          "cd /as2/data/dao/logs"
-   alias  GL          "ls -lt /as2/data/dao/logs | more"
-   alias  GI          "ls -l /as2/data/dao/input | more"
-   alias  GT          "ls -lt /as2/data/dao/input | more"
+   alias  AL          "cd /san/as00/data/dao/logs"
+   alias  GL          "ls -lt /san/as00/data/dao/logs | more"
+   alias  GI          "ls -l /san/as00/data/dao/input | more"
+   alias  GT          "ls -lt /san/as00/data/dao/input | more"
 
    # CVS commands
    setenv CVS_RSH     "ssh"
@@ -283,7 +282,6 @@ else if ( $hostname == "sol"    ||  \
    alias  I           "cd $home/IDL"
    alias  IG          "cd $home/IDL/gamap2"
    alias  IM          "cd $home/IDL/makefile"
-   alias  IR          "cd $home/IDL/regrid"
    alias  IS          "cd $home/IDL/tests"
     
    # ssh logins to other machines
@@ -298,10 +296,10 @@ else if ( $hostname == "sol"    ||  \
    alias  bgf         "$home/bin/xt -h boggle.deas.harvard.edu -u yantosca &"
 
    # For monitoring /as2/dao directories
-   alias  AL          "cd /as2/data/dao/logs"
-   alias  GL          "ls -lt /as2/data/dao/logs | more"
-   alias  GI          "ls -l /as2/data/dao/input | more"
-   alias  GT          "ls -lt /as2/data/dao/input | more"
+   alias  AL          "cd /san/as00/data/dao/logs"
+   alias  GL          "ls -lt /san/as00/data/dao/logs | more"
+   alias  GI          "ls -l /san/as00/data/dao/input | more"
+   alias  GT          "ls -lt /san/as00/data/dao/input | more"
 
    # CVS commands
    setenv CVS_RSH     "ssh"
@@ -332,23 +330,6 @@ else if ( $hostname == "callisto" ) then
 
    # Modify default path
    set    path =      ( $path /usr/pbs/bin ) 
-
-   # IDL settings for Callisto -- for /as2 home dir
-   setenv IDL_STARTUP "/as2/home/ctm/bmy/IDL/idl_startup.pro"
-   alias  I           "cd /as2/home/ctm/bmy/IDL"
-   alias  IG          "cd /as2/home/ctm/bmy/IDL/gamap"
-   alias  IM          "cd /as2/home/ctm/bmy/IDL/makefile"
-   alias  IR          "cd /as2/home/ctm/bmy/IDL/regrid"
-   alias  IS          "cd /as2/home/ctm/bmy/IDL/tests"
-   alias  IT          "cd /as2/home/ctm/bmy/IDL/tools"
-
-   # For monitoring /as2/dao directories
-   alias  GL          "ls -lt /as2/data/dao/logs | more"
-   alias  GI          "ls -l /as2/data/dao/input | more"
-   alias  GT          "ls -lt /as2/data/dao/input | more"
-
-   # Logins to other machines
-   alias  dirac       "$home/bin/xt -h dirac &"
 
    # For batch queues
    alias  qf          "qstat -f @europa"
