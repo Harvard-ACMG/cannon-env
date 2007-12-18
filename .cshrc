@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.4 2007/12/18 18:06:02 bmy Exp $
+# $Id: .cshrc,v 1.5 2007/12/18 19:39:32 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 12/18/07)
 #
@@ -24,7 +24,7 @@ if ( ! $?prompt ) exit(0)
 #setenv TERM        xterm
 
 # Default editor
-#setenv EDITOR      emacs
+setenv EDITOR      /usr/bin/emacs
 
 # For F90 compilation
 #setenv LANG        C
