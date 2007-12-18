@@ -1,14 +1,14 @@
 #==============================================================================
-# $Id: .cshrc,v 1.1 2007/12/13 19:20:37 bmy Exp $
+# $Id: .cshrc,v 1.2 2007/12/18 15:13:05 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/10/07)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/18/07)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
 #==============================================================================
 
 # Invoke T-shell
-setenv SHELL       /usr/bin/tcsh
+setenv SHELL      /bin/tcsh
 
 # Get default path setting for the given machine
 if ( -e /usr/local/env/path ) set path = ( `/bin/cat /usr/local/env/path` )
