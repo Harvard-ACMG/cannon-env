@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.3 2007/12/18 15:35:07 bmy Exp $
+# $Id: .cshrc,v 1.4 2007/12/18 18:06:02 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 12/18/07)
 #
@@ -218,9 +218,6 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    limit memorylocked unlimited
    limit maxproc      unlimited
     
-   # Modify default path
-   set    path =      ( $path /usr/pbs/bin /usr/local/lib ) 
-
    # IDL settings
    setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
    alias  I           "cd $home/IDL"
@@ -274,9 +271,6 @@ else if ( $hostname == "sol"    ||  \
    limit threads      unlimited
    limit vmemoryuse   unlimited
 
-   # Modify default path
-   set    path =      ( $path /usr/pbs/bin /usr/local/lib ) 
-
    # IDL settings
    setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
    alias  I           "cd $home/IDL"
@@ -327,9 +321,6 @@ else if ( $hostname == "callisto" ) then
    limit descriptors  unlimited
    limit threads      unlimited
    limit vmemoryuse   unlimited
-
-   # Modify default path
-   set    path =      ( $path /usr/pbs/bin ) 
 
    # For batch queues
    alias  qf          "qstat -f @europa"
