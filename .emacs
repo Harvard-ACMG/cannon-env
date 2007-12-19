@@ -1,8 +1,8 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.2 2007/12/13 19:28:08 bmy Exp $
+;; $Id: .emacs,v 1.3 2007/12/19 18:29:52 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/13/07)
+;; (phs, bmy, 12/19/07)
 ;;
 ;; Please peruse this file carefully!  For many settings there are several 
 ;; options that you can pick from.  You can uncomment the settings that you 
@@ -371,9 +371,6 @@
 (setq idlwave-do-actions t
       idlwave-surround-by-blank t)
 
-;; Syntax Highlighting - done globally below
-;(add-hook 'idlwave-mode-hook 'turn-on-font-lock)
-
 ;; Automatically start the shell when needed - RHEA only
 (setq idlwave-shell-automatic-start t)
 
@@ -383,6 +380,9 @@
 
 ;; Where are the online help files? -NEED CHECKING
 (setq idlwave-help-directory "~/.idlwave")
+
+;; Pop open the IDL command line shell in a separate EMACS window 
+(setq idlwave-shell-use-dedicated-frame t)
 
 ;; To Make C-TAB be "other window" in IDLWAVE
 (require 'idlwave)
