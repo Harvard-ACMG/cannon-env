@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.5 2007/12/18 19:39:32 bmy Exp $
+# $Id: .cshrc,v 1.6 2007/12/19 16:05:32 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/18/07)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/19/07)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -24,7 +24,7 @@ if ( ! $?prompt ) exit(0)
 #setenv TERM        xterm
 
 # Default editor
-setenv EDITOR      /usr/bin/emacs
+#setenv EDITOR      /usr/bin/emacs
 
 # For F90 compilation
 #setenv LANG        C
@@ -218,6 +218,9 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    limit memorylocked unlimited
    limit maxproc      unlimited
     
+   # Reset EDITOR to /usr/bin/emacs just in case it's not set above
+   setenv EDITOR      /usr/bin/emacs
+
    # IDL settings
    setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
    alias  I           "cd $home/IDL"
