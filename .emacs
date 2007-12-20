@@ -1,13 +1,15 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.3 2007/12/19 18:29:52 bmy Exp $
+;; $Id: .emacs,v 1.4 2007/12/20 18:23:34 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/19/07)
+;; (phs, bmy, 12/20/07)
 ;;
 ;; Please peruse this file carefully!  For many settings there are several 
 ;; options that you can pick from.  You can uncomment the settings that you 
-;; would like to use and comment out the ones that you don't.  The comment
-;; character for this file is ";".
+;; would like to use and comment out the ones that you don't.  
+;;
+;; The comment character for this file is ";". 
+;; Logical switches are turned on with "t" and turned off with "nil".
 ;;
 ;; Also be sure to set your default email address under "MISCELLANEOUS STUFF".
 ;==============================================================================
@@ -54,11 +56,12 @@
 ;;=============================================================================
 
 ;; Set the background colors (pick the one that you like best)
-(set-face-background 'default "gray75")            ; bmy's preference
-;(set-face-background 'default "FloralWhite")      ; phs's preference
-;(set-face-background 'default "dark slate gray")  ; ... a few
-;(set-face-foreground 'default "blanched almond")  ;     other 
-;(set-face-foreground 'default "black")            ;     options ...
+(set-face-background 'default "gray75")            ; Bob's preference
+;(set-face-background 'default "FloralWhite")      ; Philippe's preference
+;(set-face-background 'default "dark slate gray")  ; ... a 
+;(set-face-foreground 'default "blanched almond")  ;     few
+;(set-face-foreground 'default "black")            ;     other
+;(set-face-foreground 'default "white")            ;     options ...
 
 ;; Set "colorization" colors for code
 ;; Use the same scheme as from the old .xemacs-options file
@@ -194,6 +197,7 @@
 ;; these settings, or you may use Philippe's preferences below.
 ;;=============================================================================
 
+; Original settings
 (global-set-key [f1]           "\M-v")
 (global-set-key [f2]           "\C-v")
 (global-set-key [f3]           'search-backward)
@@ -363,13 +367,14 @@
 ;;-----------------------------------------------------------------------------
 
 ;; Change the indentation preferences
-(setq idlwave-main-block-indent 3         ; default  0
-      idlwave-block-indent 3              ; default  4
-      idlwave-end-offset -3)              ; default -4
+(setq idlwave-main-block-indent  3         ; default  0
+      idlwave-block-indent       3         ; default  4
+      idlwave-end-offset        -3   )     ; default -4
 
-;; Pad some operators with spaces
-(setq idlwave-do-actions t
-      idlwave-surround-by-blank t)
+;; Pad some operators with spaces (or not)
+(setq idlwave-do-actions         t
+      idlwave-surround-by-blank  t
+      idlwave-pad-keyword        nil )  
 
 ;; Automatically start the shell when needed - RHEA only
 (setq idlwave-shell-automatic-start t)
@@ -387,6 +392,8 @@
 ;; To Make C-TAB be "other window" in IDLWAVE
 (require 'idlwave)
   (define-key idlwave-mode-map [(control tab)] 'other-window)
+  (define-key idlwave-mode-map [?\M-p]         'idlwave-complete)
+
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for FORTRAN MODE
