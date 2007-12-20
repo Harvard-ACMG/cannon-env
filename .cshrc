@@ -1,14 +1,11 @@
 #==============================================================================
-# $Id: .cshrc,v 1.6 2007/12/19 16:05:32 bmy Exp $
+# $Id: .cshrc,v 1.7 2007/12/20 21:14:06 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/19/07)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/20/07)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
 #==============================================================================
-
-# Invoke T-shell
-setenv SHELL      /bin/tcsh
 
 # Get default path setting for the given machine
 if ( -e /usr/local/env/path ) set path = ( `/bin/cat /usr/local/env/path` )
@@ -20,24 +17,11 @@ if ( ! $?prompt ) exit(0)
 # System settings for all machines
 #==============================================================================
 
-# Terminal type
-#setenv TERM        xterm
-
-# Default editor
-#setenv EDITOR      /usr/bin/emacs
-
-# For F90 compilation
-#setenv LANG        C
-#setenv FILENV      ~/bin/filenv
-
 # System name (e.g. "IRIX64", "Linux")
 set    sysname  =  `uname -s`
 
 # Host name (e.g. "sol", "io")
 set    hostname =  `uname -n`
-
-# Not sure what this does, so comment out for now
-#set   cdpath   =  ( $HOME/sys /usr/sys /usr/spool )
 
 # Turn on file correction
 set    correct  =  all
@@ -218,9 +202,6 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    limit memorylocked unlimited
    limit maxproc      unlimited
     
-   # Reset EDITOR to /usr/bin/emacs just in case it's not set above
-   setenv EDITOR      /usr/bin/emacs
-
    # IDL settings
    setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
    alias  I           "cd $home/IDL"
@@ -240,10 +221,10 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    alias  bgf         "$home/bin/xt -h boggle.deas.harvard.edu -u yantosca &"
 
    # For monitoring /as2/dao directories
-   alias  AL          "cd /san/as00/data/dao/logs"
-   alias  GL          "ls -lt /san/as00/data/dao/logs | more"
-   alias  GI          "ls -l /san/as00/data/dao/input | more"
-   alias  GT          "ls -lt /san/as00/data/dao/input | more"
+   alias  AL          "cd /as2/data/dao/logs"
+   alias  GL          "ls -lt /as2/data/dao/logs | more"
+   alias  GI          "ls -l /as2/data/dao/input | more"
+   alias  GT          "ls -lt /as2/data/dao/input | more"
 
    # CVS commands
    setenv CVS_RSH     "ssh"
@@ -293,10 +274,10 @@ else if ( $hostname == "sol"    ||  \
    alias  bgf         "$home/bin/xt -h boggle.deas.harvard.edu -u yantosca &"
 
    # For monitoring /as2/dao directories
-   alias  AL          "cd /san/as00/data/dao/logs"
-   alias  GL          "ls -lt /san/as00/data/dao/logs | more"
-   alias  GI          "ls -l /san/as00/data/dao/input | more"
-   alias  GT          "ls -lt /san/as00/data/dao/input | more"
+   alias  AL          "cd /as2/data/dao/logs"
+   alias  GL          "ls -lt /as2/data/dao/logs | more"
+   alias  GI          "ls -l /as2/data/dao/input | more"
+   alias  GT          "ls -lt /as2/data/dao/input | more"
 
    # CVS commands
    setenv CVS_RSH     "ssh"
