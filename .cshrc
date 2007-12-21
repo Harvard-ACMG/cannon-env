@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.7 2007/12/20 21:14:06 bmy Exp $
+# $Id: .cshrc,v 1.8 2007/12/21 14:54:44 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/20/07)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/21/07)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -229,7 +229,6 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    # CVS commands
    setenv CVS_RSH     "ssh"
    alias  cvsl        "cvs -d /as/home/ctm/bmy/CVS"
-   alias  cvsr        "cvs -d sol.harvard.edu:/as/home/ctm/bmy/CVS"
 
    # PBS commands
    alias  qf          "qstat -f"
@@ -237,6 +236,9 @@ if ( $hostname == "tethys.as.harvard.edu" || \
    alias  qs          "qstat -a @europa @amalthea"
    alias  qt          "qstat -a @terra @terra-02"
    alias  qa          "qstat -a @altix @titan"
+
+   # GhostScript (Tethys/Rhea version only)
+   setenv GS_DEVICE   "X11"
 
 #==============================================================================
 #  Specific settings for interactive SGI Origin machines (SOL, EUROPA, HERA)
@@ -282,7 +284,6 @@ else if ( $hostname == "sol"    ||  \
    # CVS commands
    setenv CVS_RSH     "ssh"
    alias  cvsl        "cvs -d /as/home/ctm/bmy/CVS"
-   alias  cvsr        "cvs -d sol.harvard.edu:/as/home/ctm/bmy/CVS"
 
    # PBS commands
    alias  qf          "qstat -f"

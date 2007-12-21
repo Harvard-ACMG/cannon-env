@@ -1,0 +1,26 @@
+README -- describes contents of ~bmy/env
+21 Dec 2007
+Bob Yantosca
+yantosca@seas.harvard.edu
+
+NOTE: These files are updated regularly so be sure to check back here often!
+
+Files:
+------
+
+.cshrc -- T-shell environment file.  This file is executed every time you 
+          start a new shell on a machine. 
+
+.login -- Login file.  This file is only executed the first time you
+          log into a machine
+
+.emacs -- Customization file for Emacs.  This file contains customization
+          commands for emacs on Tethys, Rhea, and Gateway, and the older
+          xemacs on Hera, Europa, Sol.  NOTE: Some of the older Xemacs
+          functions may not work, we recommend using Emacs from now on.
+
+.xemacs-options -- File for xemacs on Hera, Europa, Sol that contains
+                   font colors and other settings.  This file is not
+                   read by the newer emacs on Tethys, Rhea, Gateway.
+
+ 
