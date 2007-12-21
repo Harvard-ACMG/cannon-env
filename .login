@@ -1,5 +1,5 @@
 #============================================================================
-# $Id: .login,v 1.2 2007/12/21 14:54:45 bmy Exp $
+# $Id: .login,v 1.3 2007/12/21 15:00:25 bmy Exp $
 #
 # Bob Y's .login file (bmy, 12/21/07)
 #
@@ -8,10 +8,13 @@
 #============================================================================
 
 # Terminal type
-setenv TERM xterm
+setenv TERM   xterm
+
+# Default editor
+setenv EDITOR emacs
 
 # Mail
-setenv MAIL /usr/spool/mail/$USER
+setenv MAIL   /usr/spool/mail/$USER
 
 # Environment variables
 setenv LINK_TIMEOUT 3
