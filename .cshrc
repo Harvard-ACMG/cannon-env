@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.8 2007/12/21 14:54:44 bmy Exp $
+# $Id: .cshrc,v 1.9 2008/01/03 16:30:40 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 12/21/07)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 1/3/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -187,8 +187,10 @@ alias  NA       "cd /as2/pub/ftp/pub/geos-chem/data/NRT_archive"
 #==============================================================================
 #  Specific settings for interactive Linux login machines (TETHYS, RHEA)
 #==============================================================================
-if ( $hostname == "tethys.as.harvard.edu" || \
-     $hostname == "rhea.as.harvard.edu" ) then 
+if ( $hostname == "tethys.as.harvard.edu"    || \
+     $hostname == "rhea.as.harvard.edu"      || \
+     $hostname == "pandora.as.harvard.edu"   || \
+     $hostname == "prometheus.as.harvard.edu" ) then
 
    # Max out machine limits
    limit cputime      unlimited
