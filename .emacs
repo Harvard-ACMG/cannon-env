@@ -1,5 +1,5 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.5 2008/01/04 15:01:37 bmy Exp $
+;; $Id: .emacs,v 1.6 2008/01/04 18:10:49 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
 ;; (phs, bmy, 12/20/07, 1/4/08)
@@ -82,7 +82,7 @@
 )
 
 ;;=============================================================================
-;; FUNCTIONS
+;; FUNCTIONS and GLOBAL SETTINGS
 ;;=============================================================================
 
 ;; kill process (like a tail -f) and purge output. In shell mode.
@@ -165,16 +165,25 @@
 (setq frame-title-format "%S: %f")
 
 ;; Turn on line and column number mode
-(setq-default line-number-mode t)
+(setq-default line-number-mode   t)
 (setq-default column-number-mode t)
 
-;; Set your email address
+;; Enable multiple minibuffers.  If you don't do this, then you 
+;; can't do things like search the minibuffer history with M-s.
+(setq minibuffer-max-depth nil)
+
+;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+;; Your init file should contain only one such instance.
 (custom-set-variables
  '(user-mail-address "yantosca@seas.harvard.edu" t)
- '(query-user-mail-address nil))
-
-;; Initialize the max minbuffer depth
-(setq minibuffer-max-depth nil)
+ '(query-user-mail-address nil)
+ '(auto-compression-mode t nil (jka-compr))
+ '(case-fold-search t)
+ '(current-language-environment "ASCII")
+ '(global-font-lock-mode t nil (font-lock))
+ '(query-user-mail-address nil)
+ '(transient-mark-mode t)
+)
 
 
 ;;=============================================================================
@@ -278,11 +287,22 @@
 ;; MODES 
 ;;=============================================================================
 
+;; Add path where IDLWAVE v6 is located, so that we will load that.
+;; If we don't do this, then the older IDLWAVE v4.7 will load by default.
+(setq load-path (cons "/usr/local/share/emacs/site-lisp" load-path))
+
 ;; Matlab mode (uncomment this if you need it)
 ;(autoload 'matlab-mode "matlab" "Major mode for editing .m files" t)
 
 ;; IDL mode - Useful if you do not have IDLWave
 (autoload 'idl-mode "idl" "Major mode for editing IDL/WAVE CL .pro files" t)
+
+;; Load IDLWAVE in emacs or the IDL shell in Xemacs
+(if (not(featurep 'xemacs))
+    (progn
+      (autoload 'idlwave-mode  "idlwave"    "IDLWAVE Mode"  t)
+      (autoload 'idlwave-shell "idlw-shell" "IDLWAVE Shell" t)
+      ))
 
 ;; Load different major modes depending on the file extension
 (setq auto-mode-alist (append '(("\\.C$"   . c++-mode)
@@ -298,12 +318,10 @@
 				("\\.COM$" . fortran-mode)
 				("\\.c$"   . c-mode))auto-mode-alist))
 
-;; Link *.pro to IDLwave if Emacs 21.4 (thetys), 
-;; or IDL for our old Xemacs () on sgi
+;; Link *.pro to IDLWAVE on EMACS or to the IDL mode on XEMACS
 (if (featurep 'xemacs)    
   (setq auto-mode-alist (append '(("\\.pro$" . idl-mode))auto-mode-alist))
-  (setq auto-mode-alist (append '(("\\.pro$" . idlwave-mode))auto-mode-alist))
-)
+  (setq auto-mode-alist (append '(("\\.pro$" . idlwave-mode))auto-mode-alist)))
 
 
 ;;-----------------------------------------------------------------------------
@@ -312,26 +330,27 @@
 (add-hook 'idl-mode-hook
   (function 
     (lambda ()
-      (setq                        ; Set options here
-	idl-block-indent 3          ; Indentation settings
-	idl-main-block-indent 3
-	idl-end-offset -3
-	idl-continuation-indent 3
+      (setq                           ; Set options here
+	idl-block-indent         3    ; Indentation settings
+	idl-main-block-indent    3
+	idl-end-offset          -3
+	idl-continuation-indent  3
 	
 	;; Leave ";" but not ";;" anchored at start of line.
-	idl-begin-line-comment "^\;[^\;]" 
-	idl-surround-by-blank t     ; Turn on padding symbols =,<,>, etc.
-	abbrev-mode 1               ; Turn on abbrevs (-1 for off)
-	idl-pad-keyword nil         ; Remove spaces for keyword assign '='
+	idl-begin-line-comment   "^\;[^\;]" 
+
+	idl-surround-by-blank    t    ; Turn on padding symbols =,<,>, etc.
+	abbrev-mode              1    ; Turn on abbrevs (-1 for off)
+	idl-pad-keyword          nil  ; Remove spaces for keyword assign '='
 
 	;; If abbrev-mode is off, then case changes (the next 2 lines)
 	;; will not occur.
-	idl-reserved-word-upcase f  ; Change reserved words to upper case
-	idl-abbrev-change-case nil  ; Don't force case of expansions
-	idl-hang-indent-regexp ": " ; Change from "- "
-	idl-show-block nil          ; Turn off blinking to matching begin
-	idl-abbrev-move t           ; Allow abbrevs to move point backwards
-	case-fold-search nil        ; Make searches case sensitive
+	idl-reserved-word-upcase f    ; Change reserved words to upper case
+	idl-abbrev-change-case   nil  ; Don't force case of expansions
+	idl-hang-indent-regexp   ": " ; Change from "- "
+	idl-show-block           nil  ; Turn off blinking to matching begin
+	idl-abbrev-move          t    ; Allow abbrevs to move point backwards
+	case-fold-search         nil  ; Make searches case sensitive
       )
        
       ;; Run other functions here
@@ -366,38 +385,80 @@
 ;; Add the following for IDLWAVE (for EMACS only)
 ;;-----------------------------------------------------------------------------
 
-;; By default, IDLWAVE v4.7 is loaded in Emacs 21.4 
-;; Add directory where IDLWAVE v6 is, so this newer version 
-;; will be loaded instead.
-(setq load-path (cons "/usr/local/share/emacs/site-lisp" load-path))
+(if (not(featurep 'xemacs))
+    (progn
 
-;; Change the indentation preferences
-(setq idlwave-main-block-indent  3         ; default  0
-      idlwave-block-indent       3         ; default  4
-      idlwave-end-offset        -3   )     ; default -4
+      ;; Change the indentation preferences
+      (setq idlwave-main-block-indent  3         ; default  0
+	    idlwave-block-indent       3         ; default  4
+	    idlwave-end-offset        -3   )     ; default -4
 
-;; Pad some operators with spaces (or not)
-(setq idlwave-do-actions         t
-      idlwave-surround-by-blank  t
-      idlwave-pad-keyword        nil )  
+      ;; Pad some operators with spaces (or not)
+      (setq idlwave-do-actions         t
+	    idlwave-surround-by-blank  t
+	    idlwave-pad-keyword        nil )  
 
-;; Automatically start the shell when needed - RHEA only
-(setq idlwave-shell-automatic-start t)
+      ;; Indent ";" comments with the code but not ";;", ";;;", ";;;;" etc.
+      (setq idlwave-code-comment       ";[^;]"  )
 
-;; Bind debugging commands with CONTROL and SHIFT modifiers
-;; It replaces C-c C-d C-c
-(setq idlwave-shell-debug-modifiers '(control shift))
+      ;; Some setting can only be done from a mode hook
+      (add-hook 'idlwave-mode-hook
+	    (lambda ()
 
-;; Where are the online help files? -NEED CHECKING
-(setq idlwave-help-directory "~/.idlwave")
+	      ;; Turn off auto filling
+	      (idlwave-auto-fill-mode 0)
+		 
+	      ;; Some personal abbreviations
+	      (idlwave-define-abbrev "dpf" "dialog_pickfile()"
+	      (idlwave-keyword-abbrev 1))
 
-;; Pop open the IDL command line shell in a separate EMACS window 
-(setq idlwave-shell-use-dedicated-frame t)
+		 ;; Pad '*' and '+'
+	      (idlwave-action-and-binding "*" '(idlwave-surround 1 1))
+	      (idlwave-action-and-binding "+" '(idlwave-surround 1 1))
+	      
+	      ))
 
-;; To Make C-TAB be "other window" in IDLWAVE
-(require 'idlwave)
-  (define-key idlwave-mode-map [(control tab)] 'other-window)
-  (define-key idlwave-mode-map [?\M-p]         'idlwave-complete)
+
+      ;; Automatically start the shell when needed - RHEA only
+      (setq idlwave-shell-automatic-start t)
+
+      ;; Bind debugging commands with CONTROL and SHIFT modifiers
+      ;; It replaces C-c C-d C-c
+      (setq idlwave-shell-debug-modifiers '(control shift))
+
+      ;; Where are the online help files? -NEED CHECKING
+      (setq idlwave-help-directory "~/.idlwave")
+
+      ;; Pop open the IDL command line shell in a separate EMACS window 
+      (setq idlwave-shell-use-dedicated-frame t)
+
+      ;; Hack since help is temporarily missing in IDL7 (not working yet..)
+      (setq idlwave-html-system-help-location "/users/ctm/phs/IDL/help/online_help/")
+
+      ;; To Make C-TAB be "other window" in IDLWAVE
+      (require 'idlwave)
+         (define-key idlwave-mode-map [(control tab)] 'other-window)
+         (define-key idlwave-mode-map [?\M-p]         'idlwave-complete)
+
+         ;; Since M-Tab is used by Windows, Linux .. and we want to keep
+         ;; that feature, we need amother binding to 'idlwave-complete
+         ;; (which we really want to use).  Could use ESC-p but I prefer
+         ;; to use M-p and F4 since they are available locally. This is NOT 
+	 ;; for idl-shell mode, where you simply use TAB to get completion
+	 (define-key idlwave-mode-map [?\M-p] 'idlwave-complete)
+	 (define-key idlwave-mode-map [f4] 'idlwave-complete)
+
+         ;; Bind most useful help functions to S-F1 (for M-?) and 
+         ;; M-F1 (for C-c ?), in both modes, first file buffer...  
+	 (define-key idlwave-mode-map  [(meta f1)]   'idlwave-routine-info)
+	 (define-key idlwave-mode-map  [(shift f1)]  'idlwave-context-help)
+
+         ;; ..then for the shell buffer
+	 (add-hook 'idlwave-shell-mode-hook
+	     (lambda ()
+	       (local-set-key [(meta f1)]   'idlwave-routine-info)
+	       (local-set-key [(shift f1)]  'idlwave-context-help)))
+))
 
 
 ;;-----------------------------------------------------------------------------
