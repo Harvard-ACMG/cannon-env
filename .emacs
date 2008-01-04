@@ -1,8 +1,8 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.4 2007/12/20 18:23:34 bmy Exp $
+;; $Id: .emacs,v 1.5 2008/01/04 15:01:37 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/20/07)
+;; (phs, bmy, 12/20/07, 1/4/08)
 ;;
 ;; Please peruse this file carefully!  For many settings there are several 
 ;; options that you can pick from.  You can uncomment the settings that you 
@@ -365,6 +365,11 @@
 ;;-----------------------------------------------------------------------------
 ;; Add the following for IDLWAVE (for EMACS only)
 ;;-----------------------------------------------------------------------------
+
+;; By default, IDLWAVE v4.7 is loaded in Emacs 21.4 
+;; Add directory where IDLWAVE v6 is, so this newer version 
+;; will be loaded instead.
+(setq load-path (cons "/usr/local/share/emacs/site-lisp" load-path))
 
 ;; Change the indentation preferences
 (setq idlwave-main-block-indent  3         ; default  0
