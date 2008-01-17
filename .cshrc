@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.9 2008/01/03 16:30:40 bmy Exp $
+# $Id: .cshrc,v 1.10 2008/01/17 16:20:01 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 1/3/08)
 #
@@ -240,7 +240,7 @@ if ( $hostname == "tethys.as.harvard.edu"    || \
    alias  qa          "qstat -a @altix @titan"
 
    # GhostScript (Tethys/Rhea version only)
-   setenv GS_DEVICE   "X11"
+   setenv GS_DEVICE   "x11"
 
 #==============================================================================
 #  Specific settings for interactive SGI Origin machines (SOL, EUROPA, HERA)
