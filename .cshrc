@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.11 2008/01/30 15:02:26 bmy Exp $
+# $Id: .cshrc,v 1.12 2008/02/14 14:22:02 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 1/29/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 2/14/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -156,25 +156,24 @@ alias  Y4F    "cd /as2/pub/ftp/pub/geos-chem/data/GEOS_4x5.d/GEOS_4_flk"
 alias  Y45    "cd /as2/pub/ftp/pub/geos-chem/data/GEOS_4x5.d/GEOS_5"
 
 #=============================================================================
-# NRT directories 
+# NRT-ARCTAS directories 
 #==============================================================================
 
-alias  N      "cd /as2/priv/ftp/priv/NRT/"
-alias  NBB    "cd /as2/priv/ftp/priv/NRT/biomass"
-alias  NBB1   "cd /as2/priv/ftp/priv/NRT/INTEXB/BB_emissions_daily"
-alias  NB     "cd /as2/priv/ftp/priv/NRT/bpch"
-alias  NC     "cd /as2/priv/ftp/priv/NRT/columns"
-alias  NF     "cd /as2/priv/ftp/priv/NRT/firecounts"
-alias  NFT    "cd /as2/priv/ftp/priv/NRT/flighttrack"
-alias  NO     "cd /as2/priv/ftp/priv/NRT/co_ox_pl"
-alias  NP     "cd /as2/priv/ftp/priv/NRT/plane"
-alias  NR     "cd /as2/priv/ftp/priv/NRT/restarts"
-alias  NT     "cd /as2/priv/ftp/priv/NRT/timeseries"
+# Public directories for NRT-ARCTAS output on /as2/pub/ftp/pub
+alias  N      "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS"
+alias  NB     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/bpch"
+alias  NC     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/columns"
+alias  NF     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/flighttrack"
+alias  NL     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/logs"
+alias  NP     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/plane"
+alias  NR     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/restarts"
+alias  NT     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/ timeseries"
+
+# Local directories
 alias  Nc     "cd /as/home/ctm/bmy/NRT-ARCTAS/Code.ARCTAS"
 alias  Nl     "cd /as/home/ctm/bmy/NRT-ARCTAS/logs"
 alias  Np     "cd /as/home/ctm/bmy/NRT-ARCTAS/perl"
 alias  Nr     "cd /as/home/ctm/bmy/NRT-ARCTAS/run"
-alias  NA     "cd /as2/pub/ftp/pub/geos-chem/data/NRT_archive"
 
 #==============================================================================
 #  Specific settings for interactive Linux login machines and clusters
