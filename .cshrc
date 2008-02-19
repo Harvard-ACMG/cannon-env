@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.12 2008/02/14 14:22:02 bmy Exp $
+# $Id: .cshrc,v 1.13 2008/02/19 18:05:02 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 2/14/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 2/20/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -112,9 +112,50 @@ alias  cvsl        "cvs -d /as/home/ctm/bmy/CVS"
 alias  qf          "qstat -f"
 alias  qq          "qstat -Q"
 alias  qs          "qstat -a @europa @amalthea"
-alias  qt          "qstat -a @terra @terra-02"
+alias  qt          "qstat -a @terra"
 alias  qa          "qstat -a @altix @titan"
 alias  qc          "qstat -a @ceres"
+
+#==============================================================================
+# Data directory aliases on /as/data-rw/geos/ (aka /as/data writeable disk)
+#==============================================================================
+
+# GEOS_05x05 
+alias  XCC        "cd /as/data-rw/geos/GEOS_0.5x0.666_CH"
+alias  XCC5       "cd /as/data-rw/geos/GEOS_0.5x0.666_CH.d/GEOS_5"
+    
+# GEOS_1x1 
+alias  X1         "cd /as/data-rw/geos/GEOS_1x1"
+alias  XC         "cd /as/data-rw/geos/GEOS_1x1_CH"
+alias  XC3        "cd /as/data-rw/geos/GEOS_1x1_CH/GEOS_3"
+alias  XN         "cd /as/data-rw/geos/GEOS_1x1_NA"
+alias  XN3        "cd /as/data-rw/geos/GEOS_1x1_NA/GEOS_3"
+	
+# GEOS_1x1.25.d
+alias  X14        "cd /as/data-rw/geos/GEOS_4_v4"
+alias  X1F        "cd /as/data-rw/geos/GEOS_4_flk"
+		    
+# GEOS_2x2.5	   
+alias  X2         "cd /as/data-rw/geos/GEOS_2x2.5"
+alias  X21        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_1"
+alias  X2S        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_S"
+alias  X23        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_3"
+alias  X24        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_4_v4"
+alias  X2F        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_4_flk"
+alias  X25        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_5"
+		   
+# GEOS_4x5	   
+alias  X4         "cd /as/data-rw/geos/GEOS_4x5"
+alias  X41        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_1"
+alias  X4S        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_S"
+alias  X43        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_3"
+alias  X44        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_v4"
+alias  X4F        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_flk"
+alias  X45        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_5"
+
+# GCAP
+alias  XG         "cd /as/data-rw/geos/GCAP_4x5/"
+alias  XG4        "cd /as/data-rw/geos/GCAP_4x5/AGRID"
 
 #==============================================================================
 # Data directory aliases on /as2/data/ (all machines)
@@ -199,47 +240,6 @@ if ( $hostname == "tethys.as.harvard.edu"     || \
     # GhostScript (Tethys/Rhea version only)
     setenv GS_DEVICE  "x11"
 
-    #--------------------------------------------------------------------------
-    # Data directory aliases on /mnt/as04 (aka /as/data writeable disk)
-    #--------------------------------------------------------------------------
-
-    # GEOS_05x05 
-    alias  XCC        "cd /mnt/as04/data/mod/geos/GEOS_0.5x0.666_CH"
-    alias  XCC5       "cd /mnt/as04/data/mod/geos/GEOS_0.5x0.666_CH.d/GEOS_5"
-    
-    # GEOS_1x1 
-    alias  X1         "cd /mnt/as04/data/mod/geos/GEOS_1x1"
-    alias  XC         "cd /mnt/as04/data/mod/geos/GEOS_1x1_CH"
-    alias  XC3        "cd /mnt/as04/data/mod/geos/GEOS_1x1_CH/GEOS_3"
-    alias  XN         "cd /mnt/as04/data/mod/geos/GEOS_1x1_NA"
-    alias  XN3        "cd /mnt/as04/data/mod/geos/GEOS_1x1_NA/GEOS_3"
-	
-    # GEOS_1x1.25.d
-    alias  X14        "cd /mnt/as04/data/mod/geos/GEOS_4_v4"
-    alias  X1F        "cd /mnt/as04/data/mod/geos/GEOS_4_flk"
-		    
-    # GEOS_2x2.5	   
-    alias  X2         "cd /mnt/as04/data/mod/geos/GEOS_2x2.5"
-    alias  X21        "cd /mnt/as04/data/mod/geos/GEOS_2x2.5/GEOS_1"
-    alias  X2S        "cd /mnt/as04/data/mod/geos/GEOS_2x2.5/GEOS_S"
-    alias  X23        "cd /mnt/as04/data/mod/geos/GEOS_2x2.5/GEOS_3"
-    alias  X24        "cd /mnt/as04/data/mod/geos/GEOS_2x2.5/GEOS_4_v4"
-    alias  X2F        "cd /mnt/as04/data/mod/geos/GEOS_2x2.5/GEOS_4_flk"
-    alias  X25        "cd /mnt/as04/data/mod/geos/GEOS_2x2.5/GEOS_5"
-   		   
-    # GEOS_4x5	   
-    alias  X4         "cd /mnt/as04/data/mod/geos/GEOS_4x5"
-    alias  X41        "cd /mnt/as04/data/mod/geos/GEOS_4x5.d/GEOS_1"
-    alias  X4S        "cd /mnt/as04/data/mod/geos/GEOS_4x5.d/GEOS_S"
-    alias  X43        "cd /mnt/as04/data/mod/geos/GEOS_4x5.d/GEOS_3"
-    alias  X44        "cd /mnt/as04/data/mod/geos/GEOS_4x5.d/GEOS_4_v4"
-    alias  X4F        "cd /mnt/as04/data/mod/geos/GEOS_4x5.d/GEOS_4_flk"
-    alias  X45        "cd /mnt/as04/data/mod/geos/GEOS_4x5.d/GEOS_5"
-    
-    # GCAP
-    alias  XG         "cd /mnt/as04/data/mod/geos/GCAP_4x5/"
-    alias  XG4        "cd /mnt/as04/data/mod/geos/GCAP_4x5/AGRID"
-    
 #==============================================================================
 #  Specific settings for interactive SGI Origin machines (SOL, EUROPA, HERA)
 #==============================================================================
@@ -256,47 +256,6 @@ else if ( $hostname == "sol"    ||  \
     limit descriptors  unlimited
     limit threads      unlimited
     limit vmemoryuse   unlimited
-
-    #--------------------------------------------------------------------------
-    # Data directory aliases on /san/as04 (aka /as/data writeable disk)
-    #--------------------------------------------------------------------------
-
-    # GEOS_05x05 
-    alias  XCC       "cd /san/as04/data/mod/geos/GEOS_0.5x0.666_CH"
-    alias  XCC5      "cd /san/as04/data/mod/geos/GEOS_0.5x0.666_CH.d/GEOS_5"
-    
-    # GEOS_1x1 
-    alias  X1        "cd /san/as04/data/mod/geos/GEOS_1x1"
-    alias  XC        "cd /san/as04/data/mod/geos/GEOS_1x1_CH"
-    alias  XC3       "cd /san/as04/data/mod/geos/GEOS_1x1_CH/GEOS_3"
-    alias  XN        "cd /san/as04/data/mod/geos/GEOS_1x1_NA"
-    alias  XN3       "cd /san/as04/data/mod/geos/GEOS_1x1_NA/GEOS_3"
-	
-    # GEOS_1x1.25.d
-    alias  X14       "cd /san/as04/data/mod/geos/GEOS_4_v4"
-    alias  X1F       "cd /san/as04/data/mod/geos/GEOS_4_flk"
-		    
-    # GEOS_2x2.5	   
-    alias  X2        "cd /san/as04/data/mod/geos/GEOS_2x2.5/"
-    alias  X21       "cd /san/as04/data/mod/geos/GEOS_2x2.5/GEOS_1"
-    alias  X2S       "cd /san/as04/data/mod/geos/GEOS_2x2.5/GEOS_S"
-    alias  X23       "cd /san/as04/data/mod/geos/GEOS_2x2.5/GEOS_3"
-    alias  X24       "cd /san/as04/data/mod/geos/GEOS_2x2.5/GEOS_4_v4"
-    alias  X2F       "cd /san/as04/data/mod/geos/GEOS_2x2.5/GEOS_4_flk"
-    alias  X25       "cd /san/as04/data/mod/geos/GEOS_2x2.5/GEOS_5"
-   		   
-    # GEOS_4x5	   
-    alias  X4        "cd /san/as04/data/mod/geos/GEOS_4x5"
-    alias  X41       "cd /san/as04/data/mod/geos/GEOS_4x5.d/GEOS_1"
-    alias  X4S       "cd /san/as04/data/mod/geos/GEOS_4x5.d/GEOS_S"
-    alias  X43       "cd /san/as04/data/mod/geos/GEOS_4x5.d/GEOS_3"
-    alias  X44       "cd /san/as04/data/mod/geos/GEOS_4x5.d/GEOS_4_v4"
-    alias  X4F       "cd /san/as04/data/mod/geos/GEOS_4x5.d/GEOS_4_flk"
-    alias  X45       "cd /san/as04/data/mod/geos/GEOS_4x5.d/GEOS_5"
-    
-    # GCAP
-    alias  XG        "cd /san/as04/data/mod/geos/GCAP_4x5/"
-    alias  XG4       "cd /san/as04/data/mod/geos/GCAP_4x5/AGRID"
 
 #==============================================================================
 #  Specific settings for CALLISTO (SGI Origin)
