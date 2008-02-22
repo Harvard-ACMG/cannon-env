@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.13 2008/02/19 18:05:02 bmy Exp $
+# $Id: .cshrc,v 1.14 2008/02/22 20:52:44 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 2/20/08)
 #
@@ -208,7 +208,7 @@ alias  NF     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/flighttrack"
 alias  NL     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/logs"
 alias  NP     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/plane"
 alias  NR     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/restarts"
-alias  NT     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/ timeseries"
+alias  NT     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/timeseries"
 
 # Local directories
 alias  Nc     "cd /as/home/ctm/bmy/NRT-ARCTAS/Code.ARCTAS"
