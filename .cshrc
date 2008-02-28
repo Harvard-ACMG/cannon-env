@@ -1,14 +1,11 @@
 #==============================================================================
-# $Id: .cshrc,v 1.14 2008/02/22 20:52:44 bmy Exp $
+# $Id: .cshrc,v 1.15 2008/02/28 14:29:48 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 2/20/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 2/28/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
 #==============================================================================
-
-# Get default path setting for the given machine
-if ( -e /usr/local/env/path ) set path = ( `/bin/cat /usr/local/env/path` )
 
 # Exit if this isn't an interactive shell
 if ( ! $?prompt ) exit(0)
@@ -121,41 +118,41 @@ alias  qc          "qstat -a @ceres"
 #==============================================================================
 
 # GEOS_05x05 
-alias  XCC        "cd /as/data-rw/geos/GEOS_0.5x0.666_CH"
-alias  XCC5       "cd /as/data-rw/geos/GEOS_0.5x0.666_CH.d/GEOS_5"
+alias  XCC    "cd /as/data-rw/geos/GEOS_0.5x0.666_CH"
+alias  XCC5   "cd /as/data-rw/geos/GEOS_0.5x0.666_CH.d/GEOS_5"
     
 # GEOS_1x1 
-alias  X1         "cd /as/data-rw/geos/GEOS_1x1"
-alias  XC         "cd /as/data-rw/geos/GEOS_1x1_CH"
-alias  XC3        "cd /as/data-rw/geos/GEOS_1x1_CH/GEOS_3"
-alias  XN         "cd /as/data-rw/geos/GEOS_1x1_NA"
-alias  XN3        "cd /as/data-rw/geos/GEOS_1x1_NA/GEOS_3"
+alias  X1     "cd /as/data-rw/geos/GEOS_1x1"
+alias  XC     "cd /as/data-rw/geos/GEOS_1x1_CH"
+alias  XC3    "cd /as/data-rw/geos/GEOS_1x1_CH/GEOS_3"
+alias  XN     "cd /as/data-rw/geos/GEOS_1x1_NA"
+alias  XN3    "cd /as/data-rw/geos/GEOS_1x1_NA/GEOS_3"
 	
 # GEOS_1x1.25.d
-alias  X14        "cd /as/data-rw/geos/GEOS_4_v4"
-alias  X1F        "cd /as/data-rw/geos/GEOS_4_flk"
+alias  X14    "cd /as/data-rw/geos/GEOS_4_v4"
+alias  X1F    "cd /as/data-rw/geos/GEOS_4_flk"
 		    
 # GEOS_2x2.5	   
-alias  X2         "cd /as/data-rw/geos/GEOS_2x2.5"
-alias  X21        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_1"
-alias  X2S        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_S"
-alias  X23        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_3"
-alias  X24        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_4_v4"
-alias  X2F        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_4_flk"
-alias  X25        "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_5"
+alias  X2     "cd /as/data-rw/geos/GEOS_2x2.5"
+alias  X21    "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_1"
+alias  X2S    "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_S"
+alias  X23    "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_3"
+alias  X24    "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_4_v4"
+alias  X2F    "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_4_flk"
+alias  X25    "cd /as/data-rw/geos/GEOS_2x2.5/GEOS_5"
 		   
 # GEOS_4x5	   
-alias  X4         "cd /as/data-rw/geos/GEOS_4x5"
-alias  X41        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_1"
-alias  X4S        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_S"
-alias  X43        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_3"
-alias  X44        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_v4"
-alias  X4F        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_flk"
-alias  X45        "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_5"
+alias  X4     "cd /as/data-rw/geos/GEOS_4x5"
+alias  X41    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_1"
+alias  X4S    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_S"
+alias  X43    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_3"
+alias  X44    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_v4"
+alias  X4F    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_flk"
+alias  X45    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_5"
 
 # GCAP
-alias  XG         "cd /as/data-rw/geos/GCAP_4x5/"
-alias  XG4        "cd /as/data-rw/geos/GCAP_4x5/AGRID"
+alias  XG     "cd /as/data-rw/geos/GCAP_4x5/"
+alias  XG4    "cd /as/data-rw/geos/GCAP_4x5/AGRID"
 
 #==============================================================================
 # Data directory aliases on /as2/data/ (all machines)
@@ -223,7 +220,8 @@ if ( $hostname == "tethys.as.harvard.edu"     || \
      $hostname == "rhea.as.harvard.edu"       || \
      $hostname == "pandora.as.harvard.edu"    || \
      $hostname == "prometheus.as.harvard.edu" || \
-     $hostname == "ceres.as.harvard.edu"       ) then
+     $hostname == "ceres.as.harvard.edu"      || \
+     $hostname == "sol.as.harvard.edu"      ) then
 
     # Max out machine limits
     limit cputime      unlimited
@@ -243,9 +241,9 @@ if ( $hostname == "tethys.as.harvard.edu"     || \
 #==============================================================================
 #  Specific settings for interactive SGI Origin machines (SOL, EUROPA, HERA)
 #==============================================================================
-else if ( $hostname == "sol"    ||  \
-          $hostname == "europa" ||  \
-          $hostname == "hera" ) then
+else if ( $hostname == "mips-login"  ||  \
+          $hostname == "europa"      ||  \
+          $hostname == "hera"      ) then
 
     # Max out machine limits
     limit cputime      unlimited
@@ -315,11 +313,7 @@ else if ( $hostname == "altix" || $hostname == "titan" ) then
 #==============================================================================
 #  Specific settings for TERRA (Sun X4100)
 #==============================================================================
-#else if ( $hostname == "terra" ) then
 else if ( $sysname == "SunOS" ) then
-
-    # Extra path settings 
-    set   path =          ( $path /usr/ccs /usr/ccs/bin ) 
 
     # Max out machine limits
     limit cputime         unlimited
