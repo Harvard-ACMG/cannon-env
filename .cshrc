@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.15 2008/02/28 14:29:48 bmy Exp $
+# $Id: .cshrc,v 1.16 2008/03/03 16:32:49 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 2/28/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/3/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -216,12 +216,12 @@ alias  Nr     "cd /as/home/ctm/bmy/NRT-ARCTAS/run"
 #==============================================================================
 #  Specific settings for interactive Linux login machines and clusters
 #==============================================================================
-if ( $hostname == "tethys.as.harvard.edu"     || \
+if ( $hostname == "sol.as.harvard.edu"        || \
+     $hostname == "tethys.as.harvard.edu"     || \
      $hostname == "rhea.as.harvard.edu"       || \
      $hostname == "pandora.as.harvard.edu"    || \
      $hostname == "prometheus.as.harvard.edu" || \
-     $hostname == "ceres.as.harvard.edu"      || \
-     $hostname == "sol.as.harvard.edu"      ) then
+     $hostname == "ceres.as.harvard.edu"    ) then
 
     # Max out machine limits
     limit cputime      unlimited
