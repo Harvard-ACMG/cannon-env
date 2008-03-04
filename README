@@ -8,19 +8,34 @@ NOTE: These files are updated regularly so be sure to check back here often!
 Files:
 ------
 
-.cshrc -- T-shell environment file.  This file is executed every time you 
-          start a new shell on a machine. 
+.cshrc          -- T-shell environment file.  This file is executed every time 
+                   you start a new shell on a machine.  Copy this to your home 
+                   directory.
 
-.login -- Login file.  This file is only executed the first time you
-          log into a machine
+.login          -- Login file.  This file is only executed the first time you
+                   log into a machine.  Copy this to your home directory (~).
 
-.emacs -- Customization file for Emacs.  This file contains customization
-          commands for emacs on Tethys, Rhea, and Gateway, and the older
-          xemacs on Hera, Europa, Sol.  NOTE: Some of the older Xemacs
-          functions may not work, we recommend using Emacs from now on.
+.emacs          -- Customization file for Emacs.  This file contains 
+                   customization commands for emacs on Tethys, Rhea, and 
+                   Gateway, and the older xemacs on Hera, Europa, Sol.  
+                   NOTE: Some of the older Xemacs functions may not work, 
+                   we recommend using Emacs from now on.  Copy this to your 
+                   home directory (~).
 
 .xemacs-options -- File for xemacs on Hera, Europa, Sol that contains
                    font colors and other settings.  This file is not
                    read by the newer emacs on Tethys, Rhea, Gateway.
+                   Copy this to your home directory (~).
 
- 
+ startup        -- File that you use at login time to pop open several 
+                   X-windows on various machines.  It also starts an emacs 
+                   session.  You change the machines for which windows
+                   will be opened.  You may also comment out the section
+                   that opens the emacs editor if you do not prefer to use
+                   emacs.  Copy this to your ~/bin directory.
+
+xt              -- Perl script which opens an Xwindow and performs an ssh
+                   command.  This script is used by "startup.  You can edit
+                   the font sizes and window colors manually.  Copy this
+                   to your ~/bin directory.
+                   

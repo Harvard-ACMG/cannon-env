@@ -1,0 +1,28 @@
+#!/bin/tcsh
+
+#==============================================================================
+# Shell script STARTUP launches applications at startup.  This is meant to
+# be called from a Secure CRT login window on Tethys or Sol.  This allows 
+# you to define a Windows firewall with X11 tunneling. (bmy, 10/1/03, 3/3/08)
+#==============================================================================
+
+# Open connections to several machines (add others if you want)
+$home/bin/xt -h hera     &
+$home/bin/xt -h tethys   &
+$home/bin/xt -h sol      &
+
+# Get the name of this machine
+set h = `uname -n`
+
+# Emacs is installed on Linux logins; XEMACS on the SGI logins
+if ( $h == "hera.as.harvard.edu" || $h == "europa.as.harvard.edu" ) then
+   xemacs &
+else 
+   emacs &
+endif
+
+# Undefine the hostname variable
+unset h
+
+# Exit normally
+exit(0)

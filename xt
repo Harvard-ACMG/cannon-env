@@ -1,0 +1,221 @@
+#!/usr/bin/perl -w
+
+# $Id: xt,v 1.1 2008/03/04 14:53:07 bmy Exp $
+
+=head1 NAME
+
+xt - Opens an XTERM window on a remote machine via OpenSSH 
+
+=head1 SYNOPSIS
+
+xt -h HOSTNAME [ -u USER -c CMD ]
+
+where:
+   -h HOSTNAME specifies the remote host to log into
+   -u USER    (optional) specifies your login ID on HOSTNAME
+   -c CMD     (optional) specifies a command to execute (i.e. if
+              you want to start Pine or Xemacs instead of a login)
+
+=head1 REQUIRES
+
+Perl 5.003
+BenchMark.pm
+
+Also assumes that "openssh" is installed on your system.
+
+=head1 EXPORTS
+
+None
+
+=head1 DESCRIPTION
+
+xt 
+Methods are provided for opening an XTERM window on a remote
+machine using a secure OpenSSH connection
+
+=head1 METHODS
+&getArguments     : Reads arguments from the command line
+&getUser          : Returns login ID of the user on this machine
+&main             : Driver program
+
+=head1 MODIFICATION HISTORY
+
+bmy, 17 Sep 2003 - INITIAL VERSION
+bmy, 25 Aug 2005 - Now make window 95 cols x 25 lines
+                 - Removed printSeparator function
+bmy, 23 Jan 2006 - Now add line for dirac.gsfc.nasa.gov
+bmy, 14 Dec 2007 - Now remove references to /bin/sh, since some Linux
+                   environments use bash instead of sh.
+
+=head1 AUTHOR
+
+Bob Yantosca (yantosca@seas.harvard.edu)
+
+=head1 SEE ALSO
+
+BenchMark.pm
+
+=head1 COPYRIGHT
+
+Copyright 2003, Bob Yantosca.  All rights reserved.
+
+=cut
+
+#------------------------------------------------------------------------------
+
+require 5.003;      # need this version of Perl or newer
+use English;        # Use English language
+use Carp;           # Get detailed error messages
+use strict;         # Force explicit variable declarations (like IMPLICIT NONE)
+
+#------------------------------------------------------------------------------
+
+sub getArguments() {
+
+  #===========================================================================
+  # Subroutine getArguments gets arguments from the cmd line (bmy, 9/17/03)
+  #
+  # Arguments as Output:
+  # --------------------------------------------------------------------------
+  # (1 ) $host : Name of remote host to log into
+  # (2 ) $user : User id (if different than on the current machine)
+  # (3 ) $cmd  : Login command (optional, for starting applications, etc.)
+  #
+  # Calling Sequence:
+  # -------------------------------------------------------------------------
+  # ( $host, $user, $cmd ) = &getArguments();
+  #
+  # NOTES:
+  #===========================================================================
+
+  # Local variables
+  my $i    = "";
+  my $host = "";
+  my $user = "";
+  my $cmd  = "";
+
+  #===========================================================================
+  # getArguments begins here! 
+  #===========================================================================
+  for ( $i = 0; $i < scalar( @ARGV ); $i++ ) {
+
+    # Test for hostname
+    if ( $ARGV[$i] =~ /^-h/ ) {
+      $host = $ARGV[++$i];
+      
+    # Test for user
+    } elsif ( $ARGV[$i] =~ /^-u/ ) {
+      $user = $ARGV[++$i];
+
+    # Test for cmd
+    } elsif ( $ARGV[$i] =~ /^-c/ ) {
+      $cmd = $ARGV[++$i];
+
+    # Otherwise do nothing 
+    } else {}
+  }
+
+  # If $user not specified, then call &getUser to return user ID 
+  if ( length( $user ) == 0 ) { $user = &getUser(); }
+
+  # Return to calling program
+  return( $host, $user, $cmd );
+}
+
+#------------------------------------------------------------------------------
+
+sub getUser() {
+
+  #==========================================================================
+  # Subroutine getUser returns the user's login ID. (bmy, 9/17/03)
+  #
+  # Calling Sequence:
+  # -------------------------------------------------------------------------
+  # $user = &getUser();
+  #
+  # NOTES:
+  #==========================================================================
+
+  # Local variables
+  my $user = "";
+
+  # Return user's home directory path
+  #-----------------------------------------------------------
+  # Prior to 12/14/07:
+  # Modified for Tethys/Rhea, which use bash instead of sh.
+  # Remove reference to sh totally.  This should also work
+  # on Hera/Europa/Sol. (bmy, 12/14/07)
+  #$user = qx( /bin/sh "echo \$USER" );
+  #-----------------------------------------------------------
+  $user = qx( echo \$USER );
+
+  # Remove the newline character
+  chomp( $user );
+
+  # Return to calling program
+  return( $user );  
+}
+
+#------------------------------------------------------------------------------
+
+sub main() {
+
+  #=========================================================================
+  # Subroutine MAIN is the driver routine for this script. 
+  # (bmy, 9/17/03, 8/25/05)
+  #
+  # Calling Sequence:
+  # ------------------------------------------------------------------------
+  # xt -h HOSTNAME [ -u USER -c CMD ]
+  #
+  # where HOSTNAME is the name of the machine you want to log into.
+  #       USER     (optional) is your login ID at HOSTNAME 
+  #       CMD      (optional) is the command you want to execute 
+  #=========================================================================
+
+  # Local variables (change as you like!)
+  my $host = "";                 # Hostname
+  my $user = "";                 # User ID
+  my $cmd  = "";                 # Command to be executed
+  my $fn   = "10x20";            # Font size
+  my $bg   = "DarkSlateGray";    # Background color
+  my $fg   = "LemonChiffon";     # Foreground color
+  my $cr   = "FireBrick";        # Cursor color
+  my $geom = "95x25";           # Geometry
+  my $sl   = 500;                # Number of lines to save
+
+
+  #=========================================================================
+  # MAIN begins here!
+  #=========================================================================
+
+  # Get arguments from command line
+  ( $host, $user, $cmd ) = &getArguments();
+
+  # If cmd is not specified, then create it
+  if ( length( $cmd ) == 0 ) { 
+
+    # Add the domain names for certain remote machines  
+    # You can modify these as necessary
+    if ( $host =~ "jimpf" ) { $host = "dirac.gsfc.nasa.gov" }
+    if ( $host =~ "dirac" ) { $host = "dirac.gsfc.nasa.gov" }
+    
+    # Define command for logging in to remote machine
+    $cmd = "ssh -X $user\@$host";
+  }
+
+  # Open XTERM window and connect to the remote host
+  qx( xterm -T $host -sb -sk -sl $sl -fn $fn -bg $bg -fg $fg -cr $cr -geometry $geom -e $cmd );
+
+  # Return normally
+  return(0);
+}
+
+#------------------------------------------------------------------------------
+
+# Call main program
+&main();
+
+# Exit normally
+exit(0);
+
