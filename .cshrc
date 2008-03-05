@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.16 2008/03/03 16:32:49 bmy Exp $
+# $Id: .cshrc,v 1.17 2008/03/05 18:13:31 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/3/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/5/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -14,8 +14,8 @@ if ( ! $?prompt ) exit(0)
 # System settings for all machines
 #==============================================================================
 
-# System name (e.g. "IRIX64", "Linux")
-set    sysname  =  `uname -s`
+# System name (e.g. "irix-6", "solaris-10", etc.)
+set    sysname  =  `whatami`
 
 # Host name (e.g. "sol", "io")
 set    hostname =  `uname -n`
@@ -49,7 +49,7 @@ set    notify
 mesg   y
 
 #==============================================================================
-# Unix command aliases for all machines
+# Unix command aliases for all machines (you can edit these!)
 #==============================================================================
 
 # General aliases
@@ -216,12 +216,7 @@ alias  Nr     "cd /as/home/ctm/bmy/NRT-ARCTAS/run"
 #==============================================================================
 #  Specific settings for interactive Linux login machines and clusters
 #==============================================================================
-if ( $hostname == "sol.as.harvard.edu"        || \
-     $hostname == "tethys.as.harvard.edu"     || \
-     $hostname == "rhea.as.harvard.edu"       || \
-     $hostname == "pandora.as.harvard.edu"    || \
-     $hostname == "prometheus.as.harvard.edu" || \
-     $hostname == "ceres.as.harvard.edu"    ) then
+if ( $sysname  == "linux-rhel5-x86_64" ) then
 
     # Max out machine limits
     limit cputime      unlimited
@@ -235,15 +230,13 @@ if ( $hostname == "sol.as.harvard.edu"        || \
     limit memorylocked unlimited
     limit maxproc      unlimited
     
-    # GhostScript (Tethys/Rhea version only)
+    # GhostScript 
     setenv GS_DEVICE  "x11"
 
 #==============================================================================
 #  Specific settings for interactive SGI Origin machines (SOL, EUROPA, HERA)
 #==============================================================================
-else if ( $hostname == "mips-login"  ||  \
-          $hostname == "europa"      ||  \
-          $hostname == "hera"      ) then
+else if ( $sysname == "irix-6" ) then
 
     # Max out machine limits
     limit cputime      unlimited
@@ -256,29 +249,9 @@ else if ( $hostname == "mips-login"  ||  \
     limit vmemoryuse   unlimited
 
 #==============================================================================
-#  Specific settings for CALLISTO (SGI Origin)
+#  Specific settings SGI Altix-Itanium machines (ALTIX, TITAN)
 #==============================================================================
-else if ( $hostname == "callisto" ) then
-
-    # Max out machine limits
-    limit cputime      unlimited
-    limit filesize     unlimited
-    limit datasize     unlimited
-    limit stacksize    unlimited  
-    limit memoryuse    unlimited
-    limit descriptors  unlimited
-    limit threads      unlimited
-    limit vmemoryuse   unlimited
-
-    # For batch queues
-    alias  qf         "qstat -f @europa"
-    alias  qq         "qstat -Q @europa"
-    alias  qs         "qstat -a @europa"
-
-#==============================================================================
-#  Specific settings for ALTIX or TITAN (SGI Altix)
-#==============================================================================
-else if ( $hostname == "altix" || $hostname == "titan" ) then
+else if ( $sysname == "linux-rhel3-ia64" ) then
 
     # Max out machine limits
     limit  cputime       unlimited
@@ -311,9 +284,9 @@ else if ( $hostname == "altix" || $hostname == "titan" ) then
     setenv KMP_STACKSIZE 2097152000
 
 #==============================================================================
-#  Specific settings for TERRA (Sun X4100)
+#  Specific settings for Sun X4100 machines (TERRA)
 #==============================================================================
-else if ( $sysname == "SunOS" ) then
+else if ( $sysname == "solaris-10" ) then
 
     # Max out machine limits
     limit cputime         unlimited
@@ -323,20 +296,6 @@ else if ( $sysname == "SunOS" ) then
     limit vmemoryuse      unlimited
     limit descriptors     unlimited
     limit coredumpsize    0             # Prevent HUGE core dump
-
-#==============================================================================
-# Specific settings for GEOS (Data Server)
-#==============================================================================
-else if ( $hostname == "geos.as.harvard.edu" ) then
-
-    # Max out machine limits
-    limit cputime      unlimited
-    limit filesize     unlimited
-    limit datasize     unlimited   
-    limit stacksize    unlimited
-    limit memoryuse    unlimited
-    limit descriptors  unlimited
-    limit maxproc      unlimited
 
 #==============================================================================
 # Specific settings for other machines
