@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.17 2008/03/05 18:13:31 bmy Exp $
+# $Id: .cshrc,v 1.18 2008/03/06 17:57:37 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 3/5/08)
 #
@@ -56,7 +56,6 @@ mesg   y
 alias  AD          "cd ~/archive/data"
 alias  disk        "du -k"
 alias  g           "grep -in"
-alias  gv          "ghostview -swap"
 alias  gf          "gifview -a"
 alias  ls          "ls -CF"
 alias  l1          "ls -1"
