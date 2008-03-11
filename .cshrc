@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.18 2008/03/06 17:57:37 bmy Exp $
+# $Id: .cshrc,v 1.19 2008/03/11 14:29:50 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/5/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/11/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -247,6 +247,9 @@ else if ( $sysname == "irix-6" ) then
     limit threads      unlimited
     limit vmemoryuse   unlimited
 
+    # Need to use "ghostview -swap on the Origin machines
+    alias gv          "ghostview -swap"
+
 #==============================================================================
 #  Specific settings SGI Altix-Itanium machines (ALTIX, TITAN)
 #==============================================================================
@@ -280,7 +283,7 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     # (bmy, 8/16/07)
     #--------------------------------------------------------------------------
     limit  stacksize     2097152 kbytes
-    setenv KMP_STACKSIZE 2097152000
+    #setenv KMP_STACKSIZE 2097152000
 
 #==============================================================================
 #  Specific settings for Sun X4100 machines (TERRA)
