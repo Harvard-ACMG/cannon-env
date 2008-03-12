@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.20 2008/03/12 15:03:02 bmy Exp $
+# $Id: .cshrc,v 1.21 2008/03/12 17:53:30 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 3/12/08)
 #
@@ -237,6 +237,9 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     # (1) Explicitly set the "stacksize" limit to a large positive number
     #      instead of to "unlimited".
     #
+    # (2) Explicitly set the "KMP_STACKSIZE" environment variable to a large
+    #      positive number (but not so large that you get an error msg.)
+    #
     # For more information see the Intel IFORT release notes:
     #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
     #
@@ -250,7 +253,8 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     #--------------------------------------------------------------------------
     if ( $hostname == "ceres.as.harvard.edu" || \
          $hostname == "tethys.as.harvard.edu" ) then
-       limit stacksize 100000000000000
+       limit stacksize      100000000000000
+       setenv KMP_STACKSIZE 1000000000
     endif                   
 
     # GhostScript 
@@ -296,6 +300,9 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     #
     # (1) Explicitly set the "stacksize" limit to 2097152 kbytes (which is
     #      the max allowable value) instead of to "unlimited".
+    #
+    # (2) Explicitly set the "KMP_STACKSIZE" environment variable to a 
+    #      large positive number (e.g. 209715200).
     # 
     # For more information see the Intel IFORT release notes:
     #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
@@ -307,6 +314,7 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     # (bmy, 8/16/07, 3/11/08)
     #--------------------------------------------------------------------------
     limit  stacksize     2097152 kbytes
+    setenv KMP_STACKSIZE 209715200
 
 #==============================================================================
 #  Specific settings for Sun X4100 machines (TERRA)
