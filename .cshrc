@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.19 2008/03/11 14:29:50 bmy Exp $
+# $Id: .cshrc,v 1.20 2008/03/12 15:03:02 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/11/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/12/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -228,7 +228,31 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     limit descriptors  unlimited
     limit memorylocked unlimited
     limit maxproc      unlimited
-    
+
+    #--------------------------------------------------------------------------
+    # Due to a limitation in the glibc library that is used by the Intel IFORT 
+    # v9.x compilers, you must do the following in order to avoid potential 
+    # memory problems with OpenMP:
+    #
+    # (1) Explicitly set the "stacksize" limit to a large positive number
+    #      instead of to "unlimited".
+    #
+    # For more information see the Intel IFORT release notes:
+    #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
+    #
+    # The symptom will be that GEOS-Chem will appear to be out of memory and 
+    # will die with a segmentation fault.
+    #
+    # Only reset the stacksize on Ceres & Tethys, since these are the only
+    # 2 machines on which we will be running GEOS-Chem.
+    #
+    # (bmy, 3/12/08)
+    #--------------------------------------------------------------------------
+    if ( $hostname == "ceres.as.harvard.edu" || \
+         $hostname == "tethys.as.harvard.edu" ) then
+       limit stacksize 100000000000000
+    endif                   
+
     # GhostScript 
     setenv GS_DEVICE  "x11"
 
@@ -266,24 +290,23 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     limit  memorylocked  unlimited
 
     #--------------------------------------------------------------------------
-    # Due to a limitation in the Intel IFORT v9.x compilers, you must do the
-    # following in order to avoid potential memory problems with OpenMP:
+    # Due to a limitation in the glibc library that is used by the Intel IFORT 
+    # v9.x compilers, you must do the following in order to avoid potential 
+    # memory problems with OpenMP:
     #
-    # (1) Explicitly set the "stacksize" limit to 2097152 kbytes 
-    #      instead of to "unlimited".
+    # (1) Explicitly set the "stacksize" limit to 2097152 kbytes (which is
+    #      the max allowable value) instead of to "unlimited".
     # 
-    # (2) Explicitly set the KMP_STACKSIZE environment variable
-    #      to 209715200 bytes.
-    #
     # For more information see the Intel IFORT release notes:
     #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
     #
-    # This usually has to be done when running GEOS-5 on Altix or Titan.
+    # The symptom will be that GEOS-Chem will appear to be out of memory and 
+    # will die with a segmentation fault.  This may happen especially if you
+    # are running GEOS-Chem with GEOS-5 met on Altix or Titan.
     #
-    # (bmy, 8/16/07)
+    # (bmy, 8/16/07, 3/11/08)
     #--------------------------------------------------------------------------
     limit  stacksize     2097152 kbytes
-    #setenv KMP_STACKSIZE 2097152000
 
 #==============================================================================
 #  Specific settings for Sun X4100 machines (TERRA)
