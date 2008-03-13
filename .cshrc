@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.21 2008/03/12 17:53:30 bmy Exp $
+# $Id: .cshrc,v 1.22 2008/03/13 17:03:02 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/12/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/13/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -17,8 +17,11 @@ if ( ! $?prompt ) exit(0)
 # System name (e.g. "irix-6", "solaris-10", etc.)
 set    sysname  =  `whatami`
 
-# Host name (e.g. "sol", "io")
+# Host name (e.g. "sol.as.harvard.edu")
 set    hostname =  `uname -n`
+
+# Abbreviated host name (e.g. "sol" instead of "sol.as.harvard.edu")
+set    hostabbr =  `perl -e '$a=qx(uname -n); $a =~ s/.as.harvard.edu//g; print $a'`
 
 # Turn on file correction
 set    correct  =  all
@@ -41,8 +44,8 @@ set    ignoreeof
 set    time     =  (30 "%Uu %Ss %E %P %X+%Dk %I+%Oio %Fpf+%Ww %Mk")
 
 # Set prompt to display directory name 
-set    prompt   =  "[! $hostname $cwd:t]% "
-alias  cd  'set old=$cwd; chdir \!*; set prompt = "[! $hostname $cwd:t]% "'
+set    prompt   =  "[! $hostabbr $cwd:t]% "
+alias  cd  'set old=$cwd; chdir \!*; set prompt = "[! $hostabbr $cwd:t]% "'
 
 # Set messages on
 set    notify
@@ -114,6 +117,8 @@ alias  qc          "qstat -a @ceres"
 
 #==============================================================================
 # Data directory aliases on /as/data-rw/geos/ (aka /as/data writeable disk)
+#
+# NOTE: These are Bob Y's aliases.  You may not need these.
 #==============================================================================
 
 # GEOS_05x05 
@@ -155,6 +160,8 @@ alias  XG4    "cd /as/data-rw/geos/GCAP_4x5/AGRID"
 
 #==============================================================================
 # Data directory aliases on /as2/data/ (all machines)
+#
+# NOTE: These are Bob Y's aliases.  You may not need these.
 #==============================================================================
 
 # GEOS_05x05 
@@ -194,6 +201,8 @@ alias  Y45    "cd /as2/pub/ftp/pub/geos-chem/data/GEOS_4x5.d/GEOS_5"
 
 #=============================================================================
 # NRT-ARCTAS directories 
+#
+# NOTE: These are Bob Y's aliases.  You may not need these.
 #==============================================================================
 
 # Public directories for NRT-ARCTAS output on /as2/pub/ftp/pub
@@ -249,7 +258,7 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     # Only reset the stacksize on Ceres & Tethys, since these are the only
     # 2 machines on which we will be running GEOS-Chem.
     #
-    # (bmy, 3/12/08)
+    # (bmy, 3/13/08)
     #--------------------------------------------------------------------------
     if ( $hostname == "ceres.as.harvard.edu" || \
          $hostname == "tethys.as.harvard.edu" ) then
@@ -311,7 +320,7 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     # will die with a segmentation fault.  This may happen especially if you
     # are running GEOS-Chem with GEOS-5 met on Altix or Titan.
     #
-    # (bmy, 8/16/07, 3/11/08)
+    # (bmy, 8/16/07, 3/13/08)
     #--------------------------------------------------------------------------
     limit  stacksize     2097152 kbytes
     setenv KMP_STACKSIZE 209715200
