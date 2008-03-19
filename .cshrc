@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.22 2008/03/13 17:03:02 bmy Exp $
+# $Id: .cshrc,v 1.23 2008/03/19 18:33:47 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/13/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/19/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -96,6 +96,7 @@ alias  tet         "$home/bin/xt -h tethys &"
 alias  rhe         "$home/bin/xt -h rhea &"
 alias  seas        "$home/bin/xt -h login.deas.harvard.edu -u yantosca &"
 alias  bgf         "$home/bin/xt -h boggle.deas.harvard.edu -u yantosca &"
+alias  pro         "$home/bin/xt -h prometheus &"
 
 # For monitoring /as2/dao directories
 alias  AL          "cd /as2/data/dao/logs"
@@ -262,7 +263,7 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     #--------------------------------------------------------------------------
     if ( $hostname == "ceres.as.harvard.edu" || \
          $hostname == "tethys.as.harvard.edu" ) then
-       limit stacksize      100000000000000
+       limit  stacksize     100000000000000
        setenv KMP_STACKSIZE 1000000000
     endif                   
 
