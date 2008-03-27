@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.23 2008/03/19 18:33:47 bmy Exp $
+# $Id: .cshrc,v 1.24 2008/03/27 13:30:43 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 3/19/08)
 #
@@ -261,8 +261,7 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     #
     # (bmy, 3/13/08)
     #--------------------------------------------------------------------------
-    if ( $hostname == "ceres.as.harvard.edu" || \
-         $hostname == "tethys.as.harvard.edu" ) then
+    if ( $hostname != "sol.as.harvard.edu" ) then
        limit  stacksize     100000000000000
        setenv KMP_STACKSIZE 1000000000
     endif                   
