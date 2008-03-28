@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.24 2008/03/27 13:30:43 bmy Exp $
+# $Id: .cshrc,v 1.25 2008/03/28 16:24:45 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/19/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/28/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -262,8 +262,8 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     # (bmy, 3/13/08)
     #--------------------------------------------------------------------------
     if ( $hostname != "sol.as.harvard.edu" ) then
-       limit  stacksize     100000000000000
-       setenv KMP_STACKSIZE 1000000000
+       limit  stacksize     10000000000
+       setenv KMP_STACKSIZE 100000000
     endif                   
 
     # GhostScript 
