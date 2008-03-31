@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.25 2008/03/28 16:24:45 bmy Exp $
+# $Id: .cshrc,v 1.26 2008/03/31 16:38:42 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/28/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 3/31/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -21,7 +21,7 @@ set    sysname  =  `whatami`
 set    hostname =  `uname -n`
 
 # Abbreviated host name (e.g. "sol" instead of "sol.as.harvard.edu")
-set    hostabbr =  `perl -e '$a=qx(uname -n); $a =~ s/.as.harvard.edu//g; print $a'`
+set    hostabbr =  `perl -e '$a=qx(uname -n); $a=~s/.as.harvard.edu//g; print $a'`
 
 # Turn on file correction
 set    correct  =  all
@@ -254,17 +254,32 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
     #
     # The symptom will be that GEOS-Chem will appear to be out of memory and 
-    # will die with a segmentation fault.
+    # will die with a segmentation fault.  This will usually happen at the
+    # call to TPCORE.
     #
     # Only reset the stacksize on Ceres & Tethys, since these are the only
     # 2 machines on which we will be running GEOS-Chem.
     #
-    # (bmy, 3/13/08)
+    # (bmy, 3/31/08)
     #--------------------------------------------------------------------------
-    if ( $hostname != "sol.as.harvard.edu" ) then
+
+    # Test if this is Ceres or Tethys (regardless of .as.harvard.edu etc.)
+    set resetstack = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys") {print 1;} else {print 0;}'`
+
+    # Only reset stacksize limits on Ceres or Tethys
+    if ( $resetstack == 1 ) then
        limit  stacksize     10000000000
        setenv KMP_STACKSIZE 100000000
     endif                   
+
+    # Undefine 
+    unset resetstack
+
+    # Need to source the file to define paths for shared libraries for IFORT
+    # NOTE: only need to do this for Tethys, it's done in on Ceres
+    if ( $hostabbr == "tethys" ) then
+       source /opt/intel/fce/9.1/bin/ifortvars.csh
+    endif 
 
     # GhostScript 
     setenv GS_DEVICE  "x11"
@@ -317,10 +332,12 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
     #
     # The symptom will be that GEOS-Chem will appear to be out of memory and 
-    # will die with a segmentation fault.  This may happen especially if you
-    # are running GEOS-Chem with GEOS-5 met on Altix or Titan.
+    # will die with a segmentation fault.  This will usually happen at the
+    # call to TPCORE.  This may happen especially if you are running GEOS-Chem
+    # with GEOS-5 met on Altix or Titan.  Running on Ceres may fix the problem,
+    # as Ceres has more memory available.
     #
-    # (bmy, 8/16/07, 3/13/08)
+    # (bmy, 8/16/07, 3/31/08)
     #--------------------------------------------------------------------------
     limit  stacksize     2097152 kbytes
     setenv KMP_STACKSIZE 209715200
