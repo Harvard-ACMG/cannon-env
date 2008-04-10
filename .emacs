@@ -1,5 +1,5 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.6 2008/01/04 18:10:49 bmy Exp $
+;; $Id: .emacs,v 1.7 2008/04/10 17:55:56 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
 ;; (phs, bmy, 12/20/07, 1/4/08)
@@ -212,7 +212,7 @@
 (global-set-key [f3]           'search-backward)
 (global-set-key [f4]           'search-forward)
 (global-set-key [f5]           'fortran-mode)
-(global-set-key [f6]           'idl-mode)
+;(global-set-key [f6]           'idl-mode)
 (global-set-key [f7]           'makefile-mode)
 (global-set-key [f8]           'font-lock-mode)
 (global-set-key [f9]           'replace-string)
@@ -222,6 +222,11 @@
 (global-set-key [kp-subtract]  'shell-script-mode)
 (global-set-key [kp-add]       "\M-l")
 (global-set-key [kp-enter]     "\M-u")
+
+; Bob Y's settings
+(global-set-key [f6]           'idlwave-mode)
+(global-set-key [(control f1)] 'ediff-files)
+(global-set-key [(control f2)] 'ediff-buffers)
 
 
 ;;=============================================================================
@@ -502,6 +507,26 @@
 
 
 ;;-----------------------------------------------------------------------------
+;; For PERL mode
+;;-----------------------------------------------------------------------------
+
+;; Number of spaces for each indentation
+(setq perl-indent-level 2)
+
+;; Create a new comment with tab
+(setq perl-tab-to-comment t)
+
+;; Automatically add the matching parentheses, brace, or curly bracket
+(setq perl-electric-parens t)
+
+;; Automatic expansion of keywords
+(setq perl-electric-keywords t)
+
+;; Extra indentation given to a sub-block
+(setq perl-continued-statement-offset 2)
+
+
+;;-----------------------------------------------------------------------------
 ;; For FONT-LOCK and AUTO-FILL
 ;;-----------------------------------------------------------------------------
 
@@ -580,7 +605,7 @@
 ;;=============================================================================
 
 ;; Default --Open one window, 80 columns wide and 55 lines high
-(set-frame-height (selected-frame) 55)    ; 55 lines high
+(set-frame-height (selected-frame) 58)    ; %%% bmy changed to 58 lines high
 (set-frame-width  (selected-frame) 80)    ; 80 colums wide
 
 ;; Philippe's preference -- put 2 windows side by side
