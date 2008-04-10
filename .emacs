@@ -1,8 +1,8 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.7 2008/04/10 17:55:56 bmy Exp $
+;; $Id: .emacs,v 1.8 2008/04/10 17:56:46 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/20/07, 1/4/08)
+;; (phs, bmy, 12/20/07, 4/8/08)
 ;;
 ;; Please peruse this file carefully!  For many settings there are several 
 ;; options that you can pick from.  You can uncomment the settings that you 
