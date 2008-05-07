@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.28 2008/04/17 18:25:02 bmy Exp $
+# $Id: .cshrc,v 1.29 2008/05/07 13:13:50 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 4/17/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 5/5/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -156,8 +156,8 @@ alias  X4F    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_4_flk"
 alias  X45    "cd /as/data-rw/geos/GEOS_4x5.d/GEOS_5"
 
 # GCAP
-alias  XG     "cd /as/data-rw/geos/GCAP_4x5/"
-alias  XG4    "cd /as/data-rw/geos/GCAP_4x5/AGRID"
+alias  XG     "cd /as/data-rw/ctm/GCAP_4x5/"
+alias  XG4    "cd /as/data-rw/ctm/GCAP_4x5/AGRID"
 
 #==============================================================================
 # Data directory aliases on /as2/data/ (all machines)
@@ -274,13 +274,6 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
 
     # Undefine 
     unset resetstack
-
-    # NOTE: For IFORT.10 we don't need to do this anymore (bmy, 4/17/08)
-    ## Need to source the file to define paths for shared libraries for IFORT
-    ## NOTE: only need to do this for Tethys, it's done in on Ceres
-    #if ( $hostabbr == "tethys" ) then
-    #   source /opt/intel/fce/9.1/bin/ifortvars.csh
-    #endif 
 
     # GhostScript 
     setenv GS_DEVICE  "x11"
