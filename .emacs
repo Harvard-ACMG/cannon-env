@@ -1,5 +1,5 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.8 2008/04/10 17:56:46 bmy Exp $
+;; $Id: .emacs,v 1.9 2008/05/22 15:19:25 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
 ;; (phs, bmy, 12/20/07, 4/8/08)
@@ -479,6 +479,33 @@
 	      )
 	     )))
 	      
+
+;;-----------------------------------------------------------------------------
+;; Add the following for FORTRAN 90 MODE
+;;-----------------------------------------------------------------------------
+(add-hook 'f90-mode-hook
+	  (function
+	   (lambda ()
+
+	     ;; use abbreviations (e.g.: "`pr" for "print")	     
+	     (setq  abbrev-mode 1)
+	     
+	     )))
+
+;; When inside a F90 file, type: `? to see the already defined abbreviations.
+
+;; You can add a template/abbreviation with cursor at any position you
+;; want. Here is an example that put a IF-ELSE block, with the cursor
+;; right after the IF:
+(define-abbrev f90-mode-abbrev-table "`ife" "" 'f90-skeleton-if-else-endif)
+
+(define-skeleton f90-skeleton-if-else-endif
+  "Insert an if - else - end if region" nil
+  > "if (" _ ") then" \n
+  -3 "else" \n
+  -3 "end if")
+
+(setq skeleton-end-hook nil)
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for SHELL SCRIPT MODE
