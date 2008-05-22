@@ -1,5 +1,5 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.9 2008/05/22 15:19:25 bmy Exp $
+;; $Id: .emacs,v 1.10 2008/05/22 15:24:34 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
 ;; (phs, bmy, 12/20/07, 4/8/08)
@@ -494,6 +494,7 @@
 
 ;; When inside a F90 file, type: `? to see the already defined abbreviations.
 
+
 ;; You can add a template/abbreviation with cursor at any position you
 ;; want. Here is an example that put a IF-ELSE block, with the cursor
 ;; right after the IF:
@@ -504,6 +505,28 @@
   > "if (" _ ") then" \n
   -3 "else" \n
   -3 "end if")
+
+
+; Here is a series of templates for ESMF (3 or 4 letters that start by e)
+(define-abbrev f90-mode-abbrev-table "`efc" "" 'f90-esmf-field-create)
+(define-abbrev f90-mode-abbrev-table "`efd" "" 'f90-esmf-field-destroy)
+(define-abbrev f90-mode-abbrev-table "`ebc" "" 'f90-esmf-bundle-create)
+(define-abbrev f90-mode-abbrev-table "`ebaf" "" 'f90-esmf-bundle-add-field)
+
+(define-skeleton f90-esmf-field-create
+  "Insert an ESMF_FieldCreate(...) template" nil
+  > "ESMF_FieldCreate(grid, arrayspec, name=\"" _ "\", rc=rc)")
+
+(define-skeleton f90-esmf-field-destroy
+  "Insert an ESMF_FieldDestroy(...) template" nil
+  > "call ESMF_FieldDestroy(" _ ", rc=rc)")
+
+(define-skeleton f90-esmf-bundle-create
+  "Insert an ESMF_BundleCreate(...) template" nil
+  > "ESMF_BundleCreate(name=\"" _ "\", rc=rc)")
+
+(define-skeleton f90-esmf-bundle-add-field "" nil
+  > "call ESMF_BundleAddField(" _ ", , rc=rc)")
 
 (setq skeleton-end-hook nil)
 
