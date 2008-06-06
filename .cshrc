@@ -1,7 +1,7 @@
 #==============================================================================
-# $Id: .cshrc,v 1.29 2008/05/07 13:13:50 bmy Exp $
+# $Id: .cshrc,v 1.30 2008/06/06 17:59:27 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 5/5/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 6/6/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
@@ -88,7 +88,7 @@ alias  IS          "cd $home/IDL/tests"
     
 # Logins to other machines
 alias  cto         "$home/bin/xt -h callisto &"
-alias  dirac       "$home/bin/xt -h dirac &"
+alias  nccs        "$home/bin/xt -h login.nccs.nasa.gov &"
 alias  eur         "$home/bin/xt -h europa &"
 alias  her         "$home/bin/xt -h hera &"
 alias  sol         "$home/bin/xt -h sol &"
@@ -211,6 +211,7 @@ alias  N      "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS"
 alias  NB     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/bpch"
 alias  NC     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/columns"
 alias  NF     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/flighttrack"
+alias  NE     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/flambe"
 alias  NL     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/logs"
 alias  NP     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/plane"
 alias  NR     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/restarts"
@@ -264,16 +265,52 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     #-------------------------------------------------------------------------
 
     # Test if this is Ceres or Tethys (regardless of .as.harvard.edu etc.)
-    set resetstack = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys") {print 1;} else {print 0;}'`
+    set CeresOrTethys = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys") {print 1;} else {print 0;}'`
 
     # Only reset stacksize limits on Ceres or Tethys
-    if ( $resetstack == 1 ) then
+    if ( $CeresOrTethys == 1 ) then
        limit  stacksize     10000000000
        setenv KMP_STACKSIZE 100000000
     endif                   
 
+    #-------------------------------------------------------------------------
+    # Set environment variables for ESMF & other libraries (bmy, 6/4/08)
+    # %%%%% NOTE: All users except Bob Y. & Philippe can ignore this! %%%%%
+    #-------------------------------------------------------------------------
+    if ( $CeresOrTethys == 1 ) then
+
+       # For OpenMPI
+       setenv MPI_HOME   /opt/openmpi
+       setenv MPI_INC    $MPI_HOME/include
+       setenv MPI_LIB    $MPI_HOME/lib
+       setenv OMPI_FC    ifort
+       setenv OMPI_CC    icc
+       setenv OMPI_CXX   icpc
+
+       # For Baselibs
+       setenv ROOTDIR    /home/bmy/NASA/basedir
+       setenv BASEDIR    $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
+       setenv BASELIB    $BASEDIR/lib
+       setenv ESMF_INC   $BASEDIR/include/esmf
+       setenv ESMF_LIB   $BASEDIR/lib
+       setenv HDF_BIN    $BASEDIR/bin
+       setenv HDF_INC    $BASEDIR/include/hdf
+       setenv HDF_LIB    $BASEDIR/lib
+       setenv HDFEOS_INC $BASEDIR/include/hdfeos
+       setenv HDFEOS_LIB $BASEDIR/lib
+       setenv JPEG_LIB   $BASEDIR/lib
+       setenv NETCDF_BIN $BASEDIR/bin
+       setenv NETCDF_INC $BASEDIR/include/netcdf
+       setenv NETCDF_LIB $BASEDIR/lib
+       setenv SZLIB_LIB  $BASEDIR/lib
+       setenv ZLIB_LIB   $BASEDIR/lib
+
+       # For GNU C-Compiler
+       setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
+    endif
+
     # Undefine 
-    unset resetstack
+    unset CeresOrTethys
 
     # GhostScript 
     setenv GS_DEVICE  "x11"
