@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.31 2008/09/09 20:04:09 bmy Exp $
+# $Id: .cshrc,v 1.32 2008/09/09 20:05:32 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 9/8/08)
 #
@@ -43,7 +43,7 @@ endif
 
 # Exit if this isn't an interactive shell
 if ( ! $?prompt ) then
-   unsetenv CeresOrTethys
+   unset CeresOrTethys
    exit(0)
 endif
 
