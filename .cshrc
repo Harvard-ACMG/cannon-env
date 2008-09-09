@@ -1,14 +1,51 @@
 #==============================================================================
-# $Id: .cshrc,v 1.30 2008/06/06 17:59:27 bmy Exp $
+# $Id: .cshrc,v 1.31 2008/09/09 20:04:09 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 6/6/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 9/8/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
 #==============================================================================
 
+#------------------------------------------------------------------------------
+# NOTE: We need to place the resetting of the stacksize at the top of .cshrc
+# before we test if it's not an interactive shell.  This is required for the
+# Sun Grid Engine queuing system (bmy, 9/9/08)
+#
+#    Due to a limitation in the glibc library that is used by the Intel IFORT
+#    v9.x and v10.x compilers, you must do the following in order to avoid 
+#    potential memory problems with OpenMP:
+#
+#    (1) Explicitly set the "KMP_STACKSIZE" environment variable to a large
+#        positive number (but not so large that you get an error msg.)
+#
+#    For more information see the Intel IFORT release notes:
+#     http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
+#
+#    The symptom will be that GEOS-Chem will appear to be out of memory and 
+#    will die with a segmentation fault.  This will usually happen at the
+#    call to TPCORE.
+#
+#    Only reset the stacksize on Ceres & Tethys, since these are the only
+#    2 machines on which we will be running GEOS-Chem (and on which the
+#    IFORT compiler is installed at Harvard).
+#
+#    (bmy, 3/31/08, 9/9/08)
+#------------------------------------------------------------------------------
+
+# Test if this is Ceres or Tethys (regardless of .as.harvard.edu etc.)
+set CeresOrTethys = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys") {print 1;} else {print 0;}'`
+
+# Only reset stacksize limits on Ceres or Tethys
+if ( $CeresOrTethys == 1 ) then
+   setenv KMP_STACKSIZE 100000000
+endif                   
+
 # Exit if this isn't an interactive shell
-if ( ! $?prompt ) exit(0)
+if ( ! $?prompt ) then
+   unsetenv CeresOrTethys
+   exit(0)
+endif
 
 #==============================================================================
 # System settings for all machines
@@ -58,6 +95,7 @@ mesg   y
 # General aliases
 alias  AD          "cd ~/archive/data"
 alias  disk        "du -k"
+alias  ED          "cd ~/ESMF/dev"
 alias  g           "grep -in"
 alias  gf          "gifview -a"
 alias  ls          "ls -CF"
@@ -94,8 +132,8 @@ alias  her         "$home/bin/xt -h hera &"
 alias  sol         "$home/bin/xt -h sol &"
 alias  tet         "$home/bin/xt -h tethys &"
 alias  rhe         "$home/bin/xt -h rhea &"
-alias  seas        "$home/bin/xt -h login.deas.harvard.edu -u yantosca &"
-alias  bgf         "$home/bin/xt -h boggle.deas.harvard.edu -u yantosca &"
+alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
+alias  bgf         "$home/bin/xt -h boggle.seas.harvard.edu -u yantosca &"
 alias  pro         "$home/bin/xt -h prometheus &"
 
 # For monitoring /as2/dao directories
@@ -108,13 +146,10 @@ alias  GT          "ls -lt /as2/data/dao/input | more"
 setenv CVS_RSH     "ssh"
 alias  cvsl        "cvs -d /as/home/ctm/bmy/CVS"
 
-# PBS commands
-alias  qf          "qstat -f"
-alias  qq          "qstat -Q"
-alias  qs          "qstat -a @europa @amalthea"
-alias  qt          "qstat -a @terra"
-alias  qa          "qstat -a @altix @titan"
-alias  qc          "qstat -a @ceres"
+# Sun Grid Engine commands
+alias  qq          "qconf -spl"
+alias  qs          "qstat -f"
+alias  qj          "qstat -f -j"
 
 #==============================================================================
 # Data directory aliases on /as/data-rw/geos/ (aka /as/data writeable disk)
@@ -241,39 +276,6 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     limit maxproc      unlimited
 
     #-------------------------------------------------------------------------
-    # Due to a limitation in the glibc library that is used by the Intel IFORT
-    # v9.x and v10.x compilers, you must do the following in order to avoid 
-    # potential memory problems with OpenMP:
-    #
-    # (1) Explicitly set the "stacksize" limit to a large positive number
-    #      instead of to "unlimited".
-    #
-    # (2) Explicitly set the "KMP_STACKSIZE" environment variable to a large
-    #      positive number (but not so large that you get an error msg.)
-    #
-    # For more information see the Intel IFORT release notes:
-    #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
-    #
-    # The symptom will be that GEOS-Chem will appear to be out of memory and 
-    # will die with a segmentation fault.  This will usually happen at the
-    # call to TPCORE.
-    #
-    # Only reset the stacksize on Ceres & Tethys, since these are the only
-    # 2 machines on which we will be running GEOS-Chem.
-    #
-    # (bmy, 3/31/08)
-    #-------------------------------------------------------------------------
-
-    # Test if this is Ceres or Tethys (regardless of .as.harvard.edu etc.)
-    set CeresOrTethys = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys") {print 1;} else {print 0;}'`
-
-    # Only reset stacksize limits on Ceres or Tethys
-    if ( $CeresOrTethys == 1 ) then
-       limit  stacksize     10000000000
-       setenv KMP_STACKSIZE 100000000
-    endif                   
-
-    #-------------------------------------------------------------------------
     # Set environment variables for ESMF & other libraries (bmy, 6/4/08)
     # %%%%% NOTE: All users except Bob Y. & Philippe can ignore this! %%%%%
     #-------------------------------------------------------------------------
@@ -304,6 +306,9 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
        setenv NETCDF_LIB $BASEDIR/lib
        setenv SZLIB_LIB  $BASEDIR/lib
        setenv ZLIB_LIB   $BASEDIR/lib
+
+       # for MAPL
+       setenv ESMADIR    /home/bmy/NASA/esmadir
 
        # For GNU C-Compiler
        setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
@@ -370,7 +375,7 @@ else if ( $sysname == "linux-rhel3-ia64" ) then
     #
     # (bmy, 8/16/07, 3/31/08)
     #--------------------------------------------------------------------------
-    limit  stacksize     2097152 kbytes
+    #limit  stacksize     2097152 kbytes
     setenv KMP_STACKSIZE 209715200
 
 #==============================================================================
