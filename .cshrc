@@ -1,51 +1,98 @@
 #==============================================================================
-# $Id: .cshrc,v 1.32 2008/09/09 20:05:32 bmy Exp $
+# $Id: .cshrc,v 1.33 2008/10/23 18:51:45 bmy Exp $
 # 
-# Bob Y's .cshrc file for all machines at Harvard (bmy, 9/8/08)
+# Bob Y's .cshrc file for all machines at Harvard (bmy, 10/23/08)
 #
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
 #==============================================================================
 
-#------------------------------------------------------------------------------
-# NOTE: We need to place the resetting of the stacksize at the top of .cshrc
-# before we test if it's not an interactive shell.  This is required for the
-# Sun Grid Engine queuing system (bmy, 9/9/08)
-#
-#    Due to a limitation in the glibc library that is used by the Intel IFORT
-#    v9.x and v10.x compilers, you must do the following in order to avoid 
-#    potential memory problems with OpenMP:
-#
-#    (1) Explicitly set the "KMP_STACKSIZE" environment variable to a large
-#        positive number (but not so large that you get an error msg.)
-#
-#    For more information see the Intel IFORT release notes:
-#     http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
-#
-#    The symptom will be that GEOS-Chem will appear to be out of memory and 
-#    will die with a segmentation fault.  This will usually happen at the
-#    call to TPCORE.
-#
-#    Only reset the stacksize on Ceres & Tethys, since these are the only
-#    2 machines on which we will be running GEOS-Chem (and on which the
-#    IFORT compiler is installed at Harvard).
-#
-#    (bmy, 3/31/08, 9/9/08)
-#------------------------------------------------------------------------------
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%    THE FOLLOWING THINGS HAVE TO BE PLACED BEFORE THE STATEMENT         %%%
+#%%%   WHICH EXITS IF WE ARE NOT ON AN INTERACTIVE SHELL (bmy, 9/26/08)     %%%
+#%%%         THIS IS NECESSARY FOR THE SUN GRID ENGINE SCHEDULER            %%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 # Test if this is Ceres or Tethys (regardless of .as.harvard.edu etc.)
-set CeresOrTethys = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys") {print 1;} else {print 0;}'`
+set CeresTethysOrTerra = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys" or $a=~"terra") {print 1;} else {print 0;}'`
 
-# Only reset stacksize limits on Ceres or Tethys
-if ( $CeresOrTethys == 1 ) then
+# Only do the following on Ceres or Tethys
+if ( $CeresTethysOrTerra == 1 ) then
+
+   #---------------------------------------------------------------------------
+   # Due to a limitation in the glibc library that is used by the Intel IFORT
+   # v9.x and v10.x compilers, you must do the following in order to avoid 
+   # potential memory problems with OpenMP:
+   #
+   # (1) Explicitly set the "KMP_STACKSIZE" environment variable to a large
+   #     positive number (but not so large that you get an error msg.)
+   #
+   # For more information see the Intel IFORT release notes:
+   # http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
+   #
+   # The symptom will be that GEOS-Chem will appear to be out of memory and 
+   # will die with a segmentation fault.  This will usually happen at the
+   # call to TPCORE.
+   #
+   # Only reset the stacksize on Ceres & Tethys, since these are the only
+   # 2 machines on which we will be running GEOS-Chem (and on which the
+   # IFORT compiler is installed at Harvard).
+   #
+   # (bmy, 3/31/08, 9/9/08)
+   #---------------------------------------------------------------------------
    setenv KMP_STACKSIZE 100000000
+
+   #-------------------------------------------------------------------------
+   # Set environment variables for ESMF & other libraries (bmy, 6/4/08)
+   # %%% NOTE: Everyone except Bob, Philippe, & Claire can ignore this! %%%
+   #-------------------------------------------------------------------------
+
+   # For OpenMPI
+   setenv MPI_HOME   /opt/openmpi
+   setenv MPI_INC    $MPI_HOME/include
+   setenv MPI_LIB    $MPI_HOME/lib
+   setenv OMPI_FC    ifort
+   setenv OMPI_CC    icc
+   setenv OMPI_CXX   icpc
+
+   # For Baselibs
+   setenv ROOTDIR    /home/bmy/NASA/basedir
+   setenv BASEDIR    $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
+   setenv BASELIB    $BASEDIR/lib
+   setenv ESMF_INC   $BASEDIR/include/esmf
+   setenv ESMF_LIB   $BASEDIR/lib
+   setenv HDF_BIN    $BASEDIR/bin
+   setenv HDF_INC    $BASEDIR/include/hdf
+   setenv HDF_LIB    $BASEDIR/lib
+   setenv HDFEOS_INC $BASEDIR/include/hdfeos
+   setenv HDFEOS_LIB $BASEDIR/lib
+   setenv JPEG_LIB   $BASEDIR/lib
+   setenv NETCDF_BIN $BASEDIR/bin
+   setenv NETCDF_INC $BASEDIR/include/netcdf
+   setenv NETCDF_LIB $BASEDIR/lib
+   setenv SZLIB_LIB  $BASEDIR/lib
+   setenv ZLIB_LIB   $BASEDIR/lib
+
+   # for MAPL
+   setenv ESMADIR    /home/bmy/NASA/esmadir
+
+   # For GNU C-Compiler
+   setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
+
+   # Set the local root directory for CVS version control
+   setenv CVSROOT    /home/bmy/CVS    
 endif                   
 
 # Exit if this isn't an interactive shell
 if ( ! $?prompt ) then
-   unset CeresOrTethys
+   unset CeresTethysOrTerra
    exit(0)
 endif
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%        THE FOLLOWING THINGS CAN BE PLACED AFTER THE STATEMENT          %%%
+#%%%   WHICH EXITS IF WE ARE NOT ON AN INTERACTIVE SHELL (bmy, 9/26/08)     %%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 #==============================================================================
 # System settings for all machines
@@ -96,9 +143,10 @@ mesg   y
 alias  AD          "cd ~/archive/data"
 alias  disk        "du -k"
 alias  ED          "cd ~/ESMF/dev"
+alias  EO          "cd ~/ESMF/dev/output/doc"
 alias  g           "grep -in"
 alias  gf          "gifview -a"
-alias  ls          "ls -CF"
+alias  ls          "ls -CF --time-style=long-iso"
 alias  l1          "ls -1"
 alias  ll          "ls -l"
 alias  llt         "ls -lt"
@@ -124,14 +172,10 @@ alias  IG          "cd $home/IDL/gamap2"
 alias  IM          "cd $home/IDL/makefile"
 alias  IS          "cd $home/IDL/tests"
     
-# Logins to other machines
-alias  cto         "$home/bin/xt -h callisto &"
+# Logins to other machines (delete what you don't need)
 alias  nccs        "$home/bin/xt -h login.nccs.nasa.gov &"
-alias  eur         "$home/bin/xt -h europa &"
-alias  her         "$home/bin/xt -h hera &"
 alias  sol         "$home/bin/xt -h sol &"
 alias  tet         "$home/bin/xt -h tethys &"
-alias  rhe         "$home/bin/xt -h rhea &"
 alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
 alias  bgf         "$home/bin/xt -h boggle.seas.harvard.edu -u yantosca &"
 alias  pro         "$home/bin/xt -h prometheus &"
@@ -235,6 +279,9 @@ alias  Y44    "cd /as2/pub/ftp/pub/geos-chem/data/GEOS_4x5.d/GEOS_4_v4"
 alias  Y4F    "cd /as2/pub/ftp/pub/geos-chem/data/GEOS_4x5.d/GEOS_4_flk"
 alias  Y45    "cd /as2/pub/ftp/pub/geos-chem/data/GEOS_4x5.d/GEOS_5"
 
+# ESMF data
+alias  E      "cd /as2/pub/ftp/pub/geos-chem/data/ESMF_Data"
+
 #=============================================================================
 # NRT-ARCTAS directories 
 #
@@ -275,47 +322,8 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     limit memorylocked unlimited
     limit maxproc      unlimited
 
-    #-------------------------------------------------------------------------
-    # Set environment variables for ESMF & other libraries (bmy, 6/4/08)
-    # %%%%% NOTE: All users except Bob Y. & Philippe can ignore this! %%%%%
-    #-------------------------------------------------------------------------
-    if ( $CeresOrTethys == 1 ) then
-
-       # For OpenMPI
-       setenv MPI_HOME   /opt/openmpi
-       setenv MPI_INC    $MPI_HOME/include
-       setenv MPI_LIB    $MPI_HOME/lib
-       setenv OMPI_FC    ifort
-       setenv OMPI_CC    icc
-       setenv OMPI_CXX   icpc
-
-       # For Baselibs
-       setenv ROOTDIR    /home/bmy/NASA/basedir
-       setenv BASEDIR    $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
-       setenv BASELIB    $BASEDIR/lib
-       setenv ESMF_INC   $BASEDIR/include/esmf
-       setenv ESMF_LIB   $BASEDIR/lib
-       setenv HDF_BIN    $BASEDIR/bin
-       setenv HDF_INC    $BASEDIR/include/hdf
-       setenv HDF_LIB    $BASEDIR/lib
-       setenv HDFEOS_INC $BASEDIR/include/hdfeos
-       setenv HDFEOS_LIB $BASEDIR/lib
-       setenv JPEG_LIB   $BASEDIR/lib
-       setenv NETCDF_BIN $BASEDIR/bin
-       setenv NETCDF_INC $BASEDIR/include/netcdf
-       setenv NETCDF_LIB $BASEDIR/lib
-       setenv SZLIB_LIB  $BASEDIR/lib
-       setenv ZLIB_LIB   $BASEDIR/lib
-
-       # for MAPL
-       setenv ESMADIR    /home/bmy/NASA/esmadir
-
-       # For GNU C-Compiler
-       setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
-    endif
-
     # Undefine 
-    unset CeresOrTethys
+    unset CeresTethysOrTerra
 
     # GhostScript 
     setenv GS_DEVICE  "x11"
@@ -337,60 +345,6 @@ else if ( $sysname == "irix-6" ) then
 
     # Need to use "ghostview -swap on the Origin machines
     alias gv          "ghostview -swap"
-
-#==============================================================================
-#  Specific settings SGI Altix-Itanium machines (ALTIX, TITAN)
-#==============================================================================
-else if ( $sysname == "linux-rhel3-ia64" ) then
-
-    # Max out machine limits
-    limit  cputime       unlimited
-    limit  filesize      unlimited
-    limit  datasize      unlimited
-    limit  memoryuse     unlimited
-    limit  descriptors   unlimited
-    limit  maxproc       unlimited   
-    limit  vmemoryuse    unlimited
-    limit  memorylocked  unlimited
-
-    #--------------------------------------------------------------------------
-    # Due to a limitation in the glibc library that is used by the Intel IFORT 
-    # v9.x compilers, you must do the following in order to avoid potential 
-    # memory problems with OpenMP:
-    #
-    # (1) Explicitly set the "stacksize" limit to 2097152 kbytes (which is
-    #      the max allowable value) instead of to "unlimited".
-    #
-    # (2) Explicitly set the "KMP_STACKSIZE" environment variable to a 
-    #      large positive number (e.g. 209715200).
-    # 
-    # For more information see the Intel IFORT release notes:
-    #  http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
-    #
-    # The symptom will be that GEOS-Chem will appear to be out of memory and 
-    # will die with a segmentation fault.  This will usually happen at the
-    # call to TPCORE.  This may happen especially if you are running GEOS-Chem
-    # with GEOS-5 met on Altix or Titan.  Running on Ceres may fix the problem,
-    # as Ceres has more memory available.
-    #
-    # (bmy, 8/16/07, 3/31/08)
-    #--------------------------------------------------------------------------
-    #limit  stacksize     2097152 kbytes
-    setenv KMP_STACKSIZE 209715200
-
-#==============================================================================
-#  Specific settings for Sun X4100 machines (TERRA)
-#==============================================================================
-else if ( $sysname == "solaris-10" ) then
-
-    # Max out machine limits
-    limit cputime         unlimited
-    limit filesize        unlimited
-    limit datasize        unlimited
-    limit stacksize       unlimited
-    limit vmemoryuse      unlimited
-    limit descriptors     unlimited
-    limit coredumpsize    0             # Prevent HUGE core dump
 
 #==============================================================================
 # Specific settings for other machines
