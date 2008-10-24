@@ -1,5 +1,5 @@
 #==============================================================================
-# $Id: .cshrc,v 1.33 2008/10/23 18:51:45 bmy Exp $
+# $Id: .cshrc,v 1.34 2008/10/24 19:49:07 bmy Exp $
 # 
 # Bob Y's .cshrc file for all machines at Harvard (bmy, 10/23/08)
 #
@@ -13,81 +13,48 @@
 #%%%         THIS IS NECESSARY FOR THE SUN GRID ENGINE SCHEDULER            %%%
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-# Test if this is Ceres or Tethys (regardless of .as.harvard.edu etc.)
-set CeresTethysOrTerra = `perl -e '$a=qx(uname -n); if ($a=~"ceres" or $a=~"tethys" or $a=~"terra") {print 1;} else {print 0;}'`
+#-------------------------------------------------------------------------
+# Set environment variables for ESMF & other libraries (bmy, 6/4/08)
+# %%% NOTE: Everyone except Bob, Philippe, & Claire can ignore this! %%%
+#-------------------------------------------------------------------------
 
-# Only do the following on Ceres or Tethys
-if ( $CeresTethysOrTerra == 1 ) then
+# For OpenMPI
+setenv MPI_HOME   /opt/openmpi
+setenv MPI_INC    $MPI_HOME/include
+setenv MPI_LIB    $MPI_HOME/lib
+setenv OMPI_FC    ifort
+setenv OMPI_CC    icc
+setenv OMPI_CXX   icpc
 
-   #---------------------------------------------------------------------------
-   # Due to a limitation in the glibc library that is used by the Intel IFORT
-   # v9.x and v10.x compilers, you must do the following in order to avoid 
-   # potential memory problems with OpenMP:
-   #
-   # (1) Explicitly set the "KMP_STACKSIZE" environment variable to a large
-   #     positive number (but not so large that you get an error msg.)
-   #
-   # For more information see the Intel IFORT release notes:
-   # http://archimede.mat.ulaval.ca/intel/fc/9.1.036/doc/Release_Notes.htm
-   #
-   # The symptom will be that GEOS-Chem will appear to be out of memory and 
-   # will die with a segmentation fault.  This will usually happen at the
-   # call to TPCORE.
-   #
-   # Only reset the stacksize on Ceres & Tethys, since these are the only
-   # 2 machines on which we will be running GEOS-Chem (and on which the
-   # IFORT compiler is installed at Harvard).
-   #
-   # (bmy, 3/31/08, 9/9/08)
-   #---------------------------------------------------------------------------
-   setenv KMP_STACKSIZE 100000000
+# For Baselibs
+setenv ROOTDIR    /home/bmy/NASA/basedir
+setenv BASEDIR    $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
+setenv BASELIB    $BASEDIR/lib
+setenv ESMF_INC   $BASEDIR/include/esmf
+setenv ESMF_LIB   $BASEDIR/lib
+setenv HDF_BIN    $BASEDIR/bin
+setenv HDF_INC    $BASEDIR/include/hdf
+setenv HDF_LIB    $BASEDIR/lib
+setenv HDFEOS_INC $BASEDIR/include/hdfeos
+setenv HDFEOS_LIB $BASEDIR/lib
+setenv JPEG_LIB   $BASEDIR/lib
+setenv NETCDF_BIN $BASEDIR/bin
+setenv NETCDF_INC $BASEDIR/include/netcdf
+setenv NETCDF_LIB $BASEDIR/lib
+setenv SZLIB_LIB  $BASEDIR/lib
+setenv ZLIB_LIB   $BASEDIR/lib
 
-   #-------------------------------------------------------------------------
-   # Set environment variables for ESMF & other libraries (bmy, 6/4/08)
-   # %%% NOTE: Everyone except Bob, Philippe, & Claire can ignore this! %%%
-   #-------------------------------------------------------------------------
+# for MAPL
+setenv ESMADIR    /home/bmy/NASA/esmadir
 
-   # For OpenMPI
-   setenv MPI_HOME   /opt/openmpi
-   setenv MPI_INC    $MPI_HOME/include
-   setenv MPI_LIB    $MPI_HOME/lib
-   setenv OMPI_FC    ifort
-   setenv OMPI_CC    icc
-   setenv OMPI_CXX   icpc
+# For GNU C-Compiler
+setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
 
-   # For Baselibs
-   setenv ROOTDIR    /home/bmy/NASA/basedir
-   setenv BASEDIR    $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
-   setenv BASELIB    $BASEDIR/lib
-   setenv ESMF_INC   $BASEDIR/include/esmf
-   setenv ESMF_LIB   $BASEDIR/lib
-   setenv HDF_BIN    $BASEDIR/bin
-   setenv HDF_INC    $BASEDIR/include/hdf
-   setenv HDF_LIB    $BASEDIR/lib
-   setenv HDFEOS_INC $BASEDIR/include/hdfeos
-   setenv HDFEOS_LIB $BASEDIR/lib
-   setenv JPEG_LIB   $BASEDIR/lib
-   setenv NETCDF_BIN $BASEDIR/bin
-   setenv NETCDF_INC $BASEDIR/include/netcdf
-   setenv NETCDF_LIB $BASEDIR/lib
-   setenv SZLIB_LIB  $BASEDIR/lib
-   setenv ZLIB_LIB   $BASEDIR/lib
-
-   # for MAPL
-   setenv ESMADIR    /home/bmy/NASA/esmadir
-
-   # For GNU C-Compiler
-   setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
-
-   # Set the local root directory for CVS version control
-   setenv CVSROOT    /home/bmy/CVS    
-endif                   
+# Set the local root directory for CVS version control
+setenv CVSROOT    /home/bmy/CVS                      
 
 # Exit if this isn't an interactive shell
-if ( ! $?prompt ) then
-   unset CeresTethysOrTerra
-   exit(0)
-endif
+if ( ! $?prompt ) exit(0)
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #%%%        THE FOLLOWING THINGS CAN BE PLACED AFTER THE STATEMENT          %%%
@@ -321,9 +288,6 @@ if ( $sysname  == "linux-rhel5-x86_64" ) then
     limit descriptors  unlimited
     limit memorylocked unlimited
     limit maxproc      unlimited
-
-    # Undefine 
-    unset CeresTethysOrTerra
 
     # GhostScript 
     setenv GS_DEVICE  "x11"
