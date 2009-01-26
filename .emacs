@@ -1,8 +1,8 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.10 2008/05/22 15:24:34 bmy Exp $
+;; $Id: .emacs,v 1.11 2009/01/26 17:57:37 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/20/07, 4/8/08)
+;; (phs, bmy, 12/20/07, 1/26/09)
 ;;
 ;; Please peruse this file carefully!  For many settings there are several 
 ;; options that you can pick from.  You can uncomment the settings that you 
@@ -121,9 +121,40 @@
 	  [?% ?m ?^ ?\\ ?. ?\\ ?| ?\\ ?. ?o ?$ ?\\ ?| ?\\ ?. ?m ?o ?d ?$ ?\\ ?| ?~ ?$ return ?k])
   )
 
-;; to get rid of ^M in files imported from MS. In DIR mode,
-;; should use: ! to_unix
-;; Not available on Tethys?
+
+;;=============================================================================
+;; FUNCTIONS and GLOBAL SETTINGS
+;;=============================================================================
+
+;; kill process (like a tail -f) and purge output. In shell mode.
+(defalias 'quitnclean
+  (read-kbd-macro "C-c C-\\ C-c C-o"))
+
+;; to swicth back and forth b/w 2 buffers
+(defalias 'swapbuffer
+  (read-kbd-macro "C-x b RET"))
+
+;; Whatever your configuration is, you get TWO WINDOWS SPLIT VERTICAL. If
+;; it is already the case, the left and right buffers are switched.
+(defalias 'two-windows-vertical
+  (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
+
+;; EDIFF : close the two compared windows
+;; This one depends on the bindings below
+(defalias 'fullcleanediff
+  (read-kbd-macro "<f3> <f2> <f3>"))
+
+; -- some little tricks for F90 mode:
+
+;; macro used in F90 mode. Since line starting with a ! in 1st col are
+;; not aligned with the code, this comment will do it. 
+(fset 'smart-f90-tab
+   [home ?  tab end])
+
+;; customized insertion of timestamp (function is defined below in miscella.)
+(fset 'macrotimestamp
+   [?\M-x ?i ?n ?s ?e ?r ?t ?- ?t ?i ?m ?e ?s ?t tab return return left ? ])
+
 
 ;;=============================================================================
 ;; DELETE COMMANDS (new = set here)
@@ -139,6 +170,12 @@
 ;; so, like in Windows:
 ;;=============================================================================
 
+
+;; to get rid of ^M in files imported from MS. In DIR mode,
+;; should use: ! to_unix
+;; Not available on Tethys?
+
+
 ;;(setq delete-key-deletes-forward 0)     ; works for Xemacs ONLY 
 (global-set-key [(delete)] "\C-d")        ; Now do that instead: 
                                           ;  works for both emacs/Xemacs
@@ -150,6 +187,77 @@
 ;; or Backspace) **highlighted** text (very  useful!)
 (delete-selection-mode t)
 
+
+;;=============================================================================
+;;            MOTION STUFF
+;;=============================================================================
+
+;; ---------- SCROLL BUFFER
+;;  M-n / M-p (and M-up / M-down) scroll buffer ahead / behind
+
+(defalias 'scroll-ahead 'scroll-up)
+(defalias 'scroll-behind 'scroll-down)
+
+(defun scroll-n-lines-ahead (&optional n)
+  "Scroll ahead N lines (1 by default)."
+  (interactive "P")
+  (scroll-ahead (prefix-numeric-value n)))
+
+(defun scroll-n-lines-behind (&optional n)
+  "Scroll behind N lines (1 by default)."
+  (interactive "P")
+  (scroll-behind (prefix-numeric-value n)))
+
+;; classic keyboard
+(global-set-key [(meta n)] 'scroll-n-lines-ahead)
+(global-set-key [(meta p)] 'scroll-n-lines-behind)
+
+;; added for kinesis keyboard
+;(global-set-key [(meta down)] 'scroll-n-lines-ahead)
+;(global-set-key [(meta up)] 'scroll-n-lines-behind)
+
+
+;; To scroll only one line when cursor is at the bottom of the screen 
+;; (instead of finding the lastline suddenly in the middle)
+;; (I use it in conjonction with C-l to get the cursor at the middle of 
+;;  the screen if this is what I really want)
+(setq scroll-step 1)
+
+
+;; ---------- GO TO OTHER WINDOW
+;; The following binding is needed for Emacs, but was automatic in Xemacs.
+(if (not(featurep 'xemacs)) 
+    (progn
+      (global-set-key [(control tab)] 'other-window)
+      ))
+
+
+;; ---------- BOUNCE B/W PARENTHESES
+;; bounces from one sexp "(){}[]<>" to another (ala vi's %)
+;; written by Joe Casadonte (joc@netaxs.com)
+(defun joc-bounce-sexp ()
+  "Will bounce between matching parens just like % in vi"
+  (interactive)
+  (let ((prev-char (char-to-string (preceding-char)))
+        (next-char (char-to-string (following-char))))
+        (cond ((string-match "[[{(<]" next-char) (forward-sexp 1))
+                  ((string-match "[\]})>]" prev-char) (backward-sexp 1))
+                  (t (error "%s" "Not on a paren, brace, or bracket")))))
+
+(global-set-key [(control =)] 'joc-bounce-sexp)
+
+
+;; ---------- ACCELERATORS
+;; to get 10 lines at a time down/up. Something b/w one line and one page 
+;; at a time...
+
+;; classic keyboard
+(global-set-key [(control shift n)]  (lambda () (interactive) (next-line 10)) )
+(global-set-key [(control shift p)]  (lambda () (interactive) (previous-line 10)) )
+
+;; kinesis keyboard
+;;(global-set-key [(control down)]  (lambda () (interactive) (next-line 10)) )
+;;(global-set-key [(control up)]  (lambda () (interactive) (previous-line 10)) )
 
 ;;=============================================================================
 ;; MISCELLANEOUS STUFF
@@ -168,9 +276,53 @@
 (setq-default line-number-mode   t)
 (setq-default column-number-mode t)
 
+;; get date and time in the info bar ("mode line")
+;;(setq display-time-day-and-date t)
+;;(setq display-time-string-forms
+;;      (quote
+;;       ((if (and (not display-time-format)
+;;		 display-time-day-and-date)
+;;	    (format-time-string "%a %b %e   " now) "  ")
+;;	(format-time-string
+;;	 (or display-time-format
+;;	     (if display-time-24hr-format "%H:%M" "%-I:%M%p")) now)
+;;	))
+;;      )
+;;(display-time)
+
+;; To insert a basic time stamp in a buffer
+(defun insert-timestamp ()
+  "Insert a nicely formated date string."
+  (interactive)
+  (insert (format-time-string "!  %e %b %Y - R. Yantosca - ")))
+
+;; no splash screen at start 
+(setq inhibit-splash-screen t)   ;; not working w/ 21.4
+(setq inhibit-startup-message t) ;; working w/ 21.4
+
+;; C-k kills line and end of line 
+(setq kill-whole-line t)
+
 ;; Enable multiple minibuffers.  If you don't do this, then you 
 ;; can't do things like search the minibuffer history with M-s.
 (setq minibuffer-max-depth nil)
+
+;; to answer Y/ N instead of YES/NO RET when asked for confirmation 
+;; NOTE: not for newbies!
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; flash instead of beep
+;;COMMENT OUT FOR NOW
+;;(setq visible-bell 1)
+
+;; get rid of ALL the bars
+;;COMMENT OUT FOR NOW
+;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+;;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; keep that one for idlwave?
+
+;; change default Ediff splitting to horizontal
+;;(setq ediff-split-window-function 'split-window-horizontally)
 
 ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
 ;; Your init file should contain only one such instance.
@@ -184,6 +336,31 @@
  '(query-user-mail-address nil)
  '(transient-mark-mode t)
 )
+
+;;=============================================================================
+;; BACKUPS (made "once per session" at first save)
+;;  & AUTOSAVES (to recover from any crash)
+;;=============================================================================
+(setq
+
+ ;; for symlinks to refer to the last version
+ backup-by-copying t
+
+ ;; where to backup (default is same directory as file being backuped)
+; backup-directory-alist
+; '( ;("~/Code.current/." . "~/.emacs.d/auto-save-list/gc_current/") 
+;    ;("~/esmf/misc/gridv1/." . "~/.emacs.d/auto-save-list/esmf_proj/") )
+;    ("." . "~/.emacs.d/auto-save-list/") )
+ 
+ ;; delete excess backups silently
+ delete-old-versions t
+
+ ;; number of versions to keep
+ kept-new-versions 10
+ kept-old-versions 2
+
+ ;; always use versioned backups
+ version-control t)
 
 
 ;;=============================================================================
@@ -223,11 +400,19 @@
 (global-set-key [kp-add]       "\M-l")
 (global-set-key [kp-enter]     "\M-u")
 
-; Bob Y's settings
+; Bob Y's modifications
 (global-set-key [f6]           'idlwave-mode)
 (global-set-key [(control f1)] 'ediff-files)
 (global-set-key [(control f2)] 'ediff-buffers)
-
+(global-set-key [(control f3)] 'fullcleanediff)     ; close the two buffers 
+                                                    ; that have been compared &
+                                                    ; restore vert. splitting
+(global-set-key [(control f5)] 'smerge-keep-mine)   ; CVS -- keep my changes
+(global-set-key [(control f6)] 'smerge-keep-other)  ; CVS -- keep other changes
+(global-set-key [(shift f9)]   'query-replace)      ; Replace w/ query
+(global-set-key [(shift f10)]  'macrotimestamp)     ; Timestamp for ProTeX
+(global-set-key [(meta f1)]    "\C-x r t")          ; String rectangle
+(global-set-key [(meta f2)]    "\C-x r k")          ; String kill
 
 ;;=============================================================================
 ;; FUNCTION KEY BINDINGS -- Philippe's preferences
@@ -292,6 +477,10 @@
 ;; MODES 
 ;;=============================================================================
 
+;; activate image mode to display images in emacs buffer (jpg, gif, tiff, ...)
+;; Alternatively, you can use ! command, where command is DISPLAY, GV 
+(auto-image-file-mode)
+
 ;; Add path where IDLWAVE v6 is located, so that we will load that.
 ;; If we don't do this, then the older IDLWAVE v4.7 will load by default.
 (setq load-path (cons "/usr/local/share/emacs/site-lisp" load-path))
@@ -321,6 +510,7 @@
 				("\\.F90"  . f90-mode)
 				("\\.FM$"  . fortran-mode)
 				("\\.COM$" . fortran-mode)
+				("\\.tex$" . latex-mode)
 				("\\.c$"   . c-mode))auto-mode-alist))
 
 ;; Link *.pro to IDLWAVE on EMACS or to the IDL mode on XEMACS
@@ -479,6 +669,144 @@
 	      )
 	     )))
 	      
+;; Make sure we have F90 mode loaded
+(require 'fortran)
+
+;;
+;; %%% ABBREVIATIONS %%% 
+;; When inside a F77 file, type: ;? to see the already defined abbreviations.
+;;
+;; %%% General FORTRAN abbreviations (IF blocks and DO loops) %%%
+;;
+(define-abbrev fortran-mode-abbrev-table ";ife" ""  'fortran-skeleton-if-else-endif)
+(define-abbrev fortran-mode-abbrev-table ";do"  ""  'fortran-skeleton-do-enddo)
+(define-abbrev fortran-mode-abbrev-table ";do2" ""  'fortran-skeleton-do-enddo-2)
+(define-abbrev fortran-mode-abbrev-table ";do3" ""  'fortran-skeleton-do-enddo-3)
+(define-abbrev fortran-mode-abbrev-table ";do4" ""  'fortran-skeleton-do-enddo-4)
+
+(define-skeleton fortran-skeleton-if-else-endif
+  "Insert an if - else - end if region" nil
+  >  "IF (" _ ") THEN" \n
+  -3 "ELSE" \n
+  -3 "ENDIF")
+
+(define-skeleton fortran-skeleton-do-enddo
+  "Insert an do - enddo region (1 loop)" nil
+  >  "DO I = x, y" \n
+  -3 "ENDDO")
+
+(define-skeleton fortran-skeleton-do-enddo-2
+  "Insert an do - enddo region (2 loops)" nil
+  >  "DO J = x, y" \n
+  -3 "DO I = x, y" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO")
+
+(define-skeleton fortran-skeleton-do-enddo-3
+  "Insert an do - enddo region (3 loops)" nil
+  >  "DO L = x, y" \n
+  -3 "DO J = x, y" \n
+  -3 "DO I = x, y" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO")
+
+(define-skeleton fortran-skeleton-do-enddo-4
+  "Insert an do - enddo region (4 loops)" nil
+  >  "DO N = x, y" \n
+  -3 "DO L = x, y" \n
+  -3 "DO J = x, y" \n
+  -3 "DO I = x, y" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO")
+
+;;
+;; %%% FORTRAN data type abbreviations %%%
+;;
+(define-abbrev fortran-mode-abbrev-table ";ii"   ""  'fortran-intent-in)
+(define-abbrev fortran-mode-abbrev-table ";io"   ""  'fortran-intent-out)
+(define-abbrev fortran-mode-abbrev-table ";iio"  ""  'fortran-intent-inout)
+(define-abbrev fortran-mode-abbrev-table ";i4"   ""  'fortran-type-integer4)
+(define-abbrev fortran-mode-abbrev-table ";r4"   ""  'fortran-type-real4)
+(define-abbrev fortran-mode-abbrev-table ";r8"   ""  'fortran-type-real8)
+(define-abbrev fortran-mode-abbrev-table ";ch"   ""  'fortran-type-character)
+
+(define-skeleton fortran-intent-in
+  "Insert an INTENT(IN) template" nil
+  > "INTENT(IN) ")
+
+(define-skeleton fortran-intent-out
+  "Insert an INTENT(OUT) template" nil
+  > "INTENT(OUT) ")
+
+(define-skeleton fortran-intent-inout
+  "Insert an INTENT(INOUT) template" nil
+  > "INTENT(INOUT) ")
+
+(define-skeleton fortran-esmf-type-integer4
+  "Insert an INTEGER*4 template" nil
+  > "INTEGER :: ")
+
+(define-skeleton fortran-esmf-type-real4
+  "Insert an REAL*4 template" nil
+  > "REAL*4 :: ")
+
+(define-skeleton fortran-esmf-type-real8
+  "Insert an REAL*8 template" nil
+  > "REAL*8 :: ")
+
+(define-skeleton fortran-esmf-type-character
+  "Insert a CHARACTER template" nil
+  > "CHARACTER(LEN=255) :: ")
+
+;;
+;; %%% ProTex header abbreviations %%%
+;;
+(define-abbrev fortran-mode-abbrev-table ";pi"   ""  'fortran-protex-italic)
+(define-abbrev fortran-mode-abbrev-table ";pb"   ""  'fortran-protex-bold)
+(define-abbrev fortran-mode-abbrev-table ";pu"   ""  'fortran-protex-underline)
+(define-abbrev fortran-mode-abbrev-table ";pel"  ""  'fortran-protex-enumerated-list)
+(define-abbrev fortran-mode-abbrev-table ";pil"  ""  'fortran-protex-itemized-list)
+(define-abbrev fortran-mode-abbrev-table ";pdl"  ""  'fortran-protex-description-list)
+(define-abbrev fortran-mode-abbrev-table ";plb"  ""  'fortran-protex-line-break)
+
+(define-skeleton fortran-protex-italic
+  "Italic command for ProTeX header" nil
+  > "\\emph{}")
+
+(define-skeleton fortran-protex-bold
+  "Underline command for ProTeX header" nil
+  > "\\textbf{}")
+
+(define-skeleton fortran-protex-underline
+  "Underline command for ProTeX header" nil
+  > "\\underline{}")
+
+(define-skeleton fortran-protex-enumerated-list
+  "Enumerated list for ProTeX header" nil
+  > "! \\begin\{enumerate}"\n
+  > "! \\item"\n
+  > "! \\end\{enumerate}")
+
+(define-skeleton fortran-protex-itemized-list
+  "Itemized list for ProTeX header" nil
+  > "! \\begin\{itemize}"\n
+  > "! \\item"\n
+  > "! \\end\{itemize}")
+
+(define-skeleton fortran-protex-description-list
+  "Description list for ProTeX header" nil
+  > "! \\begin\{description}"\n
+  > "! \\item[]"\n
+  > "! \\end\{description}")
+
+(define-skeleton fortran-protex-line-break
+  "Line break for ProTeX header" nil
+  > "! \\\\"\n
+  > "! \\\\")
+
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for FORTRAN 90 MODE
@@ -492,43 +820,225 @@
 	     
 	     )))
 
+;; Make sure we have F90 mode loaded
+(require 'f90)
+
+;;
+;; %%% ABBREVIATIONS %%% 
 ;; When inside a F90 file, type: `? to see the already defined abbreviations.
-
-
-;; You can add a template/abbreviation with cursor at any position you
-;; want. Here is an example that put a IF-ELSE block, with the cursor
-;; right after the IF:
+;;
+;; %%% General F90 abbreviations (IF blocks and DO loops) %%%
+;;
 (define-abbrev f90-mode-abbrev-table "`ife" "" 'f90-skeleton-if-else-endif)
+(define-abbrev f90-mode-abbrev-table "`do"  ""  'f90-skeleton-do-enddo)
+(define-abbrev f90-mode-abbrev-table "`do2" ""  'f90-skeleton-do-enddo-2)
+(define-abbrev f90-mode-abbrev-table "`do3" ""  'f90-skeleton-do-enddo-3)
+(define-abbrev f90-mode-abbrev-table "`do4" ""  'f90-skeleton-do-enddo-4)
 
 (define-skeleton f90-skeleton-if-else-endif
   "Insert an if - else - end if region" nil
-  > "if (" _ ") then" \n
-  -3 "else" \n
-  -3 "end if")
+  >  "IF (" _ ") THEN" \n
+  -3 "ELSE" \n
+  -3 "ENDIF")
 
+(define-skeleton f90-skeleton-do-enddo
+  "Insert an do - enddo region (1 loop)" nil
+  >  "DO I = x, y" \n
+  -3 "ENDDO")
 
-; Here is a series of templates for ESMF (3 or 4 letters that start by e)
-(define-abbrev f90-mode-abbrev-table "`efc" "" 'f90-esmf-field-create)
-(define-abbrev f90-mode-abbrev-table "`efd" "" 'f90-esmf-field-destroy)
-(define-abbrev f90-mode-abbrev-table "`ebc" "" 'f90-esmf-bundle-create)
-(define-abbrev f90-mode-abbrev-table "`ebaf" "" 'f90-esmf-bundle-add-field)
+(define-skeleton f90-skeleton-do-enddo-2
+  "Insert an do - enddo region (2 loops)" nil
+  >  "DO J = x, y" \n
+  -3 "DO I = x, y" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO")
 
-(define-skeleton f90-esmf-field-create
-  "Insert an ESMF_FieldCreate(...) template" nil
-  > "ESMF_FieldCreate(grid, arrayspec, name=\"" _ "\", rc=rc)")
+(define-skeleton f90-skeleton-do-enddo-3
+  "Insert an do - enddo region (3 loops)" nil
+  >  "DO L = x, y" \n
+  -3 "DO J = x, y" \n
+  -3 "DO I = x, y" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO")
 
-(define-skeleton f90-esmf-field-destroy
-  "Insert an ESMF_FieldDestroy(...) template" nil
-  > "call ESMF_FieldDestroy(" _ ", rc=rc)")
+(define-skeleton f90-skeleton-do-enddo-4
+  "Insert an do - enddo region (4 loops)" nil
+  >  "DO N = x, y" \n
+  -3 "DO L = x, y" \n
+  -3 "DO J = x, y" \n
+  -3 "DO I = x, y" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO" \n
+  -3 "ENDDO")
 
-(define-skeleton f90-esmf-bundle-create
-  "Insert an ESMF_BundleCreate(...) template" nil
-  > "ESMF_BundleCreate(name=\"" _ "\", rc=rc)")
+;;
+;; %%% ESMF abbreviations #1 %%%
+;;
+(define-abbrev f90-mode-abbrev-table "`ii"   ""  'f90-intent-in)
+(define-abbrev f90-mode-abbrev-table "`io"   ""  'f90-intent-out)
+(define-abbrev f90-mode-abbrev-table "`iio"  ""  'f90-intent-inout)
+(define-abbrev f90-mode-abbrev-table "`i4"   ""  'f90-esmf-type-integer4)
+(define-abbrev f90-mode-abbrev-table "`r4"   ""  'f90-esmf-type-real4)
+(define-abbrev f90-mode-abbrev-table "`r8"   ""  'f90-esmf-type-real8)
+(define-abbrev f90-mode-abbrev-table "`ch"   ""  'f90-esmf-type-character)
 
-(define-skeleton f90-esmf-bundle-add-field "" nil
-  > "call ESMF_BundleAddField(" _ ", , rc=rc)")
+(define-skeleton f90-intent-in
+  "Insert an INTENT(IN) template" nil
+  > "INTENT(IN) ")
 
+(define-skeleton f90-intent-out
+  "Insert an INTENT(OUT) template" nil
+  > "INTENT(OUT) ")
+
+(define-skeleton f90-intent-inout
+  "Insert an INTENT(INOUT) template" nil
+  > "INTENT(INOUT) ")
+
+(define-skeleton f90-esmf-type-integer4
+  "Insert an ESMF INTEGER*4 template" nil
+  > "INTEGER(ESMF_KIND_I4) :: ")
+
+(define-skeleton f90-esmf-type-real4
+  "Insert an ESMF REAL*4 template" nil
+  > "REAL(ESMF_KIND_R4) :: ")
+
+(define-skeleton f90-esmf-type-real8
+  "Insert an ESMF REAL*8 template" nil
+  > "REAL(ESMF_KIND_R8) :: ")
+
+(define-skeleton f90-esmf-type-character
+  "Insert a ESMF CHARACTER template" nil
+  > "CHARACTER(LEN=ESMF_MAXSTR) :: ")
+
+;;
+;; %%% ESMF abbreviations #2 %%%
+;;
+(define-abbrev f90-mode-abbrev-table "`ea"   ""  'f90-esmf-type-array)
+(define-abbrev f90-mode-abbrev-table "`eas"  ""  'f90-esmf-type-arrayspec)
+(define-abbrev f90-mode-abbrev-table "`eb"   ""  'f90-esmf-type-bundle)
+(define-abbrev f90-mode-abbrev-table "`ecl"  ""  'f90-esmf-type-clock)
+(define-abbrev f90-mode-abbrev-table "`eco"  ""  'f90-esmf-type-config)
+(define-abbrev f90-mode-abbrev-table "`ecc"  ""  'f90-esmf-type-cplcomp)
+(define-abbrev f90-mode-abbrev-table "`del"  ""  'f90-esmf-type-delayout)
+
+(define-skeleton f90-esmf-type-array
+  "Insert a ESMF Array template" nil
+  > "TYPE(ESMF_Array) :: ")
+
+(define-skeleton f90-esmf-type-arrayspec
+  "Insert a ESMF Array template" nil
+  > "TYPE(ESMF_ArraySpec) :: ")
+
+(define-skeleton f90-esmf-type-bundle
+  "Insert a ESMF Bundle template" nil
+  > "TYPE(ESMF_Bundle) :: ")
+
+(define-skeleton f90-esmf-type-clock
+  "Insert a ESMF Clock template" nil
+  > "TYPE(ESMF_Clock) :: ")
+
+(define-skeleton f90-esmf-type-config
+  "Insert a ESMF Config template" nil
+  > "TYPE(ESMF_Config) :: ")
+
+(define-skeleton f90-esmf-cplcomp
+  "Insert a ESMF CplComp template" nil
+  > "TYPE(ESMF_CplComp) :: ")
+
+(define-skeleton f90-esmf-delayout
+  "Insert a ESMF DeLayout template" nil
+  > "TYPE(ESMF_DeLayout) :: ")
+
+;;
+;; %%% ESMF abbreviations #3 %%%
+;;
+(define-abbrev f90-mode-abbrev-table "`ef"   ""  'f90-esmf-type-field)
+(define-abbrev f90-mode-abbrev-table "`eg"   ""  'f90-esmf-type-grid)
+(define-abbrev f90-mode-abbrev-table "`egc"  ""  'f90-esmf-type-gridcomp)
+(define-abbrev f90-mode-abbrev-table "`es"   ""  'f90-esmf-type-state)
+(define-abbrev f90-mode-abbrev-table "`et"   ""  'f90-esmf-type-time)
+(define-abbrev f90-mode-abbrev-table "`eti"  ""  'f90-esmf-type-timeinterval)
+(define-abbrev f90-mode-abbrev-table "`evm"  ""  'f90-esmf-type-vm)
+
+(define-skeleton f90-esmf-type-field
+  "Insert a ESMF Field template" nil
+  > "TYPE(ESMF_Field) :: ")
+
+(define-skeleton f90-esmf-type-grid
+  "Insert a ESMF Grid template" nil
+  > "TYPE(ESMF_Grid) :: ")
+
+(define-skeleton f90-esmf-type-gridcomp
+  "Insert a ESMF GridComp template" nil
+  > "TYPE(ESMF_GridComp) :: ")
+
+(define-skeleton f90-esmf-type-state
+  "Insert a ESMF State template" nil
+  > "TYPE(ESMF_State) :: ")
+
+(define-skeleton f90-esmf-type-time
+  "Insert a ESMF Time template" nil
+  > "TYPE(ESMF_Time) :: ")
+
+(define-skeleton f90-esmf-type-timeinterval
+  "Insert a ESMF TimeInterval template" nil
+  > "TYPE(ESMF_TimeInterval) :: ")
+
+(define-skeleton f90-esmf-type-vm
+  "Insert a ESMF VM template" nil
+  > "TYPE(ESMF_VM) :: ")
+
+;;
+;; %%% ProTex header abbreviations %%%
+;;
+(define-abbrev f90-mode-abbrev-table "`pi"   ""  'f90-protex-italic)
+(define-abbrev f90-mode-abbrev-table "`pb"   ""  'f90-protex-bold)
+(define-abbrev f90-mode-abbrev-table "`pu"   ""  'f90-protex-underline)
+(define-abbrev f90-mode-abbrev-table "`pel"  ""  'f90-protex-enumerated-list)
+(define-abbrev f90-mode-abbrev-table "`pil"  ""  'f90-protex-itemized-list)
+(define-abbrev f90-mode-abbrev-table "`pdl"  ""  'f90-protex-description-list)
+(define-abbrev f90-mode-abbrev-table "`plb"  ""  'f90-protex-line-break)
+
+(define-skeleton f90-protex-italic
+  "Italic command for ProTeX header" nil
+  > "\\emph{}")
+
+(define-skeleton f90-protex-bold
+  "Underline command for ProTeX header" nil
+  > "\\textbf{}")
+
+(define-skeleton f90-protex-underline
+  "Underline command for ProTeX header" nil
+  > "\\underline{}")
+
+(define-skeleton f90-protex-enumerated-list
+  "Enumerated list for ProTeX header" nil
+  > "! \\begin{enumerate}" \n
+  > "! \\item" \n
+  > "! \\end{enumerate}")
+
+(define-skeleton f90-protex-itemized-list
+  "Enumerated list for ProTeX header" nil
+  > "! \\begin\{itemize}"\n
+  > "! \\item"\n
+  > "! \\end\{itemize}")
+
+(define-skeleton f90-protex-description-list
+  "Description list for ProTeX header" nil
+  > "! \\begin\{description}"\n
+  > "! \\item[]" \n
+  > "! \\end\{description}")
+
+(define-skeleton f90-protex-line-break
+  "Line break for ProTeX header" nil
+  > "! \\\\" \n
+  > "! \\\\")
+
+;; Don't start code on the next line after a skeleton abbrev
 (setq skeleton-end-hook nil)
+
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for SHELL SCRIPT MODE
@@ -557,6 +1067,13 @@
 
 
 ;;-----------------------------------------------------------------------------
+;; Add the following for TXT MODE
+;;-----------------------------------------------------------------------------
+
+; auto-formatting in text-mode
+(add-hook 'text-mode-hook 'turn-on-auto-fill)  
+
+;;-----------------------------------------------------------------------------
 ;; For PERL mode
 ;;-----------------------------------------------------------------------------
 
@@ -574,7 +1091,6 @@
 
 ;; Extra indentation given to a sub-block
 (setq perl-continued-statement-offset 2)
-
 
 ;;-----------------------------------------------------------------------------
 ;; For FONT-LOCK and AUTO-FILL
