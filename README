@@ -1,4 +1,4 @@
-README -- describes contents of ~bmy/env
+README -- describes contents of ~bmy/env: System Environment Files
 13 Aug 2009
 Bob Yantosca, Philippe Le Sager, Claire Carouge
 geos-chem-support@as.harvard.edu
@@ -6,8 +6,8 @@ geos-chem-support@as.harvard.edu
 
 NOTE: These files are updated regularly so be sure to check back here often!
 
-Files:
-------
+File Listing:
+===============================================================================
 
 .cshrc          -- tcsh environment file.  This file is executed every time 
                    you start a new shell on a machine.  Copy this to your home 
@@ -27,7 +27,7 @@ Files:
                    font colors and other settings.  This file is not
                    read by the newer emacs on Tethys, Rhea, Gateway.
                    Copy this to your home directory (~).
-	           NOTE: THIS IS MOSTLY OBSOLETE NOW
+	           %%% NOTE: THIS IS OBSOLETE NOW! %%%
 
 startup         -- File that you use at login time to pop open several 
                    X-windows on various machines.  It also starts an emacs 
@@ -47,3 +47,32 @@ Makefile	-- Makefile to create the reference document in *.pdf
 intro.txt       -- Header file for creating *.pdf and *.ps reference documents
 
                    
+Making the Reference Documentation:
+===============================================================================
+
+The system environment files (all except .emacs and .xemacs-options) use the 
+ProTeX automatic documentation system.  This enables you to create reference 
+documents in *.pdf and *.ps format from the comments in the subroutine headers.
+
+To build the reference documents, type:
+
+   make doc
+
+This will create the following documents in the doc/ subdirectory:
+
+   SystemEnvFiles.pdf               
+   SystemEnvFiles.ps
+   SystemEnvFiles.tex
+	-- Reference document for the system environment files
+           in *.pdf, *.ps, and LaTeX formats
+
+
+If you wish to remove the reference documentation files, type:
+
+   make clean
+
+
+That's it.  Good luck and contact me if you have any questions!
+
+Bob Yantosca
+yantosca@seas.harvard.edu
