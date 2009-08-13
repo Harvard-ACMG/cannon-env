@@ -1,11 +1,27 @@
-#============================================================================
-# $Id: .login,v 1.3 2007/12/21 15:00:25 bmy Exp $
+# $Id: .login,v 1.4 2009/08/13 18:09:14 bmy Exp $
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
 #
-# Bob Y's .login file (bmy, 12/21/07)
+# !MODULE: .login
 #
+# !DESCRIPTION: Bob Y's .login file.  Sets various one-time parameters 
+#  at login time.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  source ~/.login
+#
+# !REMARKS:
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
-#============================================================================
+#
+# !REVISION HISTORY: 
+#  13 Aug 2009 - R. Yantosca - Added ProTeX headers
+#EOP
+#------------------------------------------------------------------------------
+#BOC
 
 # Terminal type
 setenv TERM   xterm
@@ -24,3 +40,4 @@ set    mail = $MAIL
 
 # Echo date and turn on system messages
 date
+#EOC

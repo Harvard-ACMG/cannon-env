@@ -1,8 +1,8 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.11 2009/01/26 17:57:37 bmy Exp $
+;; $Id: .emacs,v 1.12 2009/08/13 18:09:15 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/20/07, 1/26/09)
+;; (phs, bmy, 12/20/07, 3/19/09)
 ;;
 ;; Please peruse this file carefully!  For many settings there are several 
 ;; options that you can pick from.  You can uncomment the settings that you 
@@ -377,42 +377,49 @@
 
 
 ;;=============================================================================
-;; FUNCTION KEY BINDINGS -- standard options 
-;;
-;; These are the same settings as we use in XEMACS on SGI.  You can use 
-;; these settings, or you may use Philippe's preferences below.
+;; FUNCTION KEY BINDINGS -- Bob Y's preferences (updated 3/19/09)
 ;;=============================================================================
 
-; Original settings
-(global-set-key [f1]           "\M-v")
-(global-set-key [f2]           "\C-v")
-(global-set-key [f3]           'search-backward)
-(global-set-key [f4]           'search-forward)
-(global-set-key [f5]           'fortran-mode)
-;(global-set-key [f6]           'idl-mode)
-(global-set-key [f7]           'makefile-mode)
-(global-set-key [f8]           'font-lock-mode)
-(global-set-key [f9]           'replace-string)
-(global-set-key [f10]          'goto-line)
-(global-set-key [f11]          'find-file)
-(global-set-key [f12]          'insert-file)
-(global-set-key [kp-subtract]  'shell-script-mode)
-(global-set-key [kp-add]       "\M-l")
-(global-set-key [kp-enter]     "\M-u")
+; Editing
+(global-set-key [f1]             'kill-line)             
+(global-set-key [f2]             'kill-word)             
+(global-set-key [f3]             'string-rectangle)      
+(global-set-key [f4]             'delete-rectangle)      
+(global-set-key [f5]             'macrotimestamp)      ; Timestamp for ProTeX
+(global-set-key [kp-add]         "\M-l")               ; Lowercase
+(global-set-key [kp-enter]       "\M-u")               ; Uppercase
+(global-set-key [kp-subtract]    'goto-line)   
 
-; Bob Y's modifications
-(global-set-key [f6]           'idlwave-mode)
-(global-set-key [(control f1)] 'ediff-files)
-(global-set-key [(control f2)] 'ediff-buffers)
-(global-set-key [(control f3)] 'fullcleanediff)     ; close the two buffers 
-                                                    ; that have been compared &
-                                                    ; restore vert. splitting
-(global-set-key [(control f5)] 'smerge-keep-mine)   ; CVS -- keep my changes
-(global-set-key [(control f6)] 'smerge-keep-other)  ; CVS -- keep other changes
-(global-set-key [(shift f9)]   'query-replace)      ; Replace w/ query
-(global-set-key [(shift f10)]  'macrotimestamp)     ; Timestamp for ProTeX
-(global-set-key [(meta f1)]    "\C-x r t")          ; String rectangle
-(global-set-key [(meta f2)]    "\C-x r k")          ; String kill
+; Search & replace
+(global-set-key [f6]             'find-file)
+(global-set-key [(shift f6)]     'insert-file)
+(global-set-key [f7]             'save-buffer)
+(global-set-key [f8]             'isearch-forward)     
+(global-set-key [f9]             'replace-string)
+(global-set-key [(shift f9)]     'query-replace)       
+
+; Buffers
+(global-set-key [f10]            'swapbuffer)
+(global-set-key [f11]            'switch-to-buffer)
+(global-set-key [f12]            'kill-this-buffer)
+
+; Modes
+(global-set-key [(control f5)]   'fortran-mode)
+(global-set-key [(control f6)]   'idlwave-mode)
+(global-set-key [(control f7)]   'makefile-mode)
+(global-set-key [(control f8)]   'shell-script-mode)
+(global-set-key [(control f9)]   'perl-mode)
+(global-set-key [(control f10)]  'font-lock-mode)
+
+; EDIFF
+(global-set-key [(shift f1)]     'ediff-files)
+(global-set-key [(shift f2)]     'fullcleanediff)
+
+; CVS
+(global-set-key [(shift f3)]     'cvs-examine)
+(global-set-key [(shift f4)]     'cvs-update)
+;(global-set-key [(shift f5)]     'smerge-keep-mine) 
+;(global-set-key [(shift f6)]     'smerge-keep-other)
 
 ;;=============================================================================
 ;; FUNCTION KEY BINDINGS -- Philippe's preferences
@@ -745,19 +752,19 @@
   "Insert an INTENT(INOUT) template" nil
   > "INTENT(INOUT) ")
 
-(define-skeleton fortran-esmf-type-integer4
+(define-skeleton fortran-type-integer4
   "Insert an INTEGER*4 template" nil
   > "INTEGER :: ")
 
-(define-skeleton fortran-esmf-type-real4
+(define-skeleton fortran-type-real4
   "Insert an REAL*4 template" nil
   > "REAL*4 :: ")
 
-(define-skeleton fortran-esmf-type-real8
+(define-skeleton fortran-type-real8
   "Insert an REAL*8 template" nil
   > "REAL*8 :: ")
 
-(define-skeleton fortran-esmf-type-character
+(define-skeleton fortran-type-character
   "Insert a CHARACTER template" nil
   > "CHARACTER(LEN=255) :: ")
 
@@ -807,6 +814,19 @@
   > "! \\\\"\n
   > "! \\\\")
 
+;;
+;; %%% Various comments %%%
+;;
+(define-abbrev fortran-mode-abbrev-table ";b"   ""  'fortran-comment-1)
+(define-abbrev fortran-mode-abbrev-table ";d"   ""  'fortran-comment-2)
+
+(define-skeleton fortran-comment-1
+  "Comment style 1" nil
+  > "!###")
+
+(define-skeleton fortran-comment-2
+  "Comment style 2" nil
+  > "!%%%")
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for FORTRAN 90 MODE
@@ -1171,7 +1191,7 @@
 ;;=============================================================================
 
 ;; Default --Open one window, 80 columns wide and 55 lines high
-(set-frame-height (selected-frame) 58)    ; %%% bmy changed to 58 lines high
+(set-frame-height (selected-frame) 57)    ; %%% bmy changed to 57 lines high
 (set-frame-width  (selected-frame) 80)    ; 80 colums wide
 
 ;; Philippe's preference -- put 2 windows side by side

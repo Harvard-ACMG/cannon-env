@@ -1,28 +1,48 @@
 #!/bin/tcsh
 
-#==============================================================================
-# Shell script STARTUP launches applications at startup.  This is meant to
-# be called from a Secure CRT login window on Tethys or Sol.  This allows 
-# you to define a Windows firewall with X11 tunneling. (bmy, 10/1/03, 3/3/08)
-#==============================================================================
+# $Id: startup,v 1.2 2009/08/13 18:09:13 bmy Exp $
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: startup
+#
+# !DESCRIPTION: Shell script STARTUP launches applications at startup.  
+#  STARTUP is meant to be called from a Secure CRT login window on one of 
+#  the Harvard Atmospheric Chemistry Modeling Group machines.  This allows 
+#  you to define a Windows firewall with X11 tunneling. 
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  startup
+#
+# !REVISION HISTORY: 
+#  01 Oct 2003 - R. Yantosca - Initial version
+#  13 Aug 2009 - R. Yantosca - Removed obsolete commands
+#  13 Aug 2009 - R. Yantosca - Added ProTeX header
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+# Force a mount with "who" commmand
+ssh bmy@argus  who
+ssh bmy@sol    who
+ssh bmy@rhea   who
 
 # Open connections to several machines (add others if you want)
-$home/bin/xt -h hera     &
-$home/bin/xt -h tethys   &
+# Delay each window by a few seconds to avoid problems w/ .Xauthority
+$home/bin/xt -h argus    &
+sleep 3
 $home/bin/xt -h sol      &
+sleep 3
+$home/bin/xt -h rhea     &
+sleep 3
+$home/bin/xt -h rhea     &
 
-# Get the name of this machine
-set h = `uname -n`
-
-# Emacs is installed on Linux logins; XEMACS on the SGI logins
-if ( $h == "hera.as.harvard.edu" || $h == "europa.as.harvard.edu" ) then
-   xemacs &
-else 
-   emacs &
-endif
-
-# Undefine the hostname variable
-unset h
+# Open an EMACS window
+emacs &
 
 # Exit normally
 exit(0)
+#EOC

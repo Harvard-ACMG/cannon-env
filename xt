@@ -1,102 +1,82 @@
 #!/usr/bin/perl -w
 
-# $Id: xt,v 1.2 2008/10/23 18:52:32 bmy Exp $
-
-=head1 NAME
-
-xt - Opens an XTERM window on a remote machine via OpenSSH 
-
-=head1 SYNOPSIS
-
-xt -h HOSTNAME [ -u USER -c CMD ]
-
-where:
-   -h HOSTNAME specifies the remote host to log into
-   -u USER    (optional) specifies your login ID on HOSTNAME
-   -c CMD     (optional) specifies a command to execute (i.e. if
-              you want to start Pine or Xemacs instead of a login)
-
-=head1 REQUIRES
-
-Perl 5.003
-BenchMark.pm
-
-Also assumes that "openssh" is installed on your system.
-
-=head1 EXPORTS
-
-None
-
-=head1 DESCRIPTION
-
-xt 
-Methods are provided for opening an XTERM window on a remote
-machine using a secure OpenSSH connection
-
-=head1 METHODS
-&getArguments     : Reads arguments from the command line
-&getUser          : Returns login ID of the user on this machine
-&main             : Driver program
-
-=head1 MODIFICATION HISTORY
-
-bmy, 17 Sep 2003 - INITIAL VERSION
-bmy, 25 Aug 2005 - Now make window 95 cols x 25 lines
-                 - Removed printSeparator function
-bmy, 23 Jan 2006 - Now add line for dirac.gsfc.nasa.gov
-bmy, 14 Dec 2007 - Now remove references to /bin/sh, since some Linux
-                   environments use bash instead of sh.
-
-=head1 AUTHOR
-
-Bob Yantosca (yantosca@seas.harvard.edu)
-
-=head1 SEE ALSO
-
-BenchMark.pm
-
-=head1 COPYRIGHT
-
-Copyright 2003, Bob Yantosca.  All rights reserved.
-
-=cut
-
+# $Id: xt,v 1.3 2009/08/13 18:09:13 bmy Exp $
 #------------------------------------------------------------------------------
-
-require 5.003;      # need this version of Perl or newer
-use English;        # Use English language
-use Carp;           # Get detailed error messages
-use strict;         # Force explicit variable declarations (like IMPLICIT NONE)
-
+#          Harvard University Atmospheric Chemistry Modeling Group            !
 #------------------------------------------------------------------------------
-
+#BOP
+#
+# !MODULE: xt
+#
+# !DESCRIPTION: Opens an Xterminal window on a remote machine via OpenSSH.
+#\\
+#\\
+# !USES:
+#
+  require 5.003;    # Need this version of Perl or newer
+  use strict;       # Force explicit variable declarations
+#
+# !PRIVATE MEMBER FUNCTIONS:
+#  &getArguments();
+#  &getUser();
+#  &main();
+#
+# !CALLING SEQUENCE:
+#  xt -h HOSTNAME [ -u USER -c CMD ]
+#
+#  where:
+#   -h HOSTNAME specifies the remote host to log into
+#   -u USER    (optional) specifies your login ID on HOSTNAME
+#   -c CMD     (optional) specifies a command to execute (i.e. if
+#              you want to start Pine or Xemacs instead of a login)
+#
+# !REMARKS:
+#  Also assumes that "openssh" is installed on your system.
+#
+# !REVISION HISTORY: 
+#  17 Sep 2003 - R. Yantosca - Initial version
+#  25 Aug 2005 - R. Yantosca - Now make window 95 cols x 25 lines 
+#  25 Aug 2005 - R. Yantosca - Removed printSeparator function 
+#  23 Jan 2006 - R. Yantosca - Added line for dirac.gsfc.nasa.gov
+#  14 Dec 2007 - R. Yantosca - Now remove references to /bin/sh
+#  13 Aug 2009 - R. Yantosca - Added ProTeX header
+#EOP
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: getArguments
+#
+# !DESCRIPTION: Subroutine getArguments gets arguments from the command
+#  line and returns them to the main routine.
+#\\
+#\\
+# !INTERFACE: 
+#
 sub getArguments() {
+#
+# !RETURN VALUE:
+#
+  my $host = "";  # Name of remote host to log into
+  my $user = "";  # User id (if different than on the current machine)
+  my $cmd  = "";  # Login command (optional, for starting applications, etc.)
+#
+# !CALLING SEQUENCE:
+#  ( $host, $user, $cmd ) = &getArguments();
+#
+# !REVISION HISTORY: 
+#  17 Sep 2003 - R. Yantosca - Initial version
+#  13 Aug 2009 - R. Yantosca - Added ProTeX header
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+#
+# !LOCAL VARIABLES:
+#
+  my $i = "";
 
-  #===========================================================================
-  # Subroutine getArguments gets arguments from the cmd line (bmy, 9/17/03)
-  #
-  # Arguments as Output:
-  # --------------------------------------------------------------------------
-  # (1 ) $host : Name of remote host to log into
-  # (2 ) $user : User id (if different than on the current machine)
-  # (3 ) $cmd  : Login command (optional, for starting applications, etc.)
-  #
-  # Calling Sequence:
-  # -------------------------------------------------------------------------
-  # ( $host, $user, $cmd ) = &getArguments();
-  #
-  # NOTES:
-  #===========================================================================
-
-  # Local variables
-  my $i    = "";
-  my $host = "";
-  my $user = "";
-  my $cmd  = "";
-
-  #===========================================================================
-  # getArguments begins here! 
-  #===========================================================================
+  # Loop over # of arguments
   for ( $i = 0; $i < scalar( @ARGV ); $i++ ) {
 
     # Test for hostname
@@ -121,23 +101,34 @@ sub getArguments() {
   # Return to calling program
   return( $host, $user, $cmd );
 }
-
+#EOC
 #------------------------------------------------------------------------------
-
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: getUser
+#
+# !DESCRIPTION: Subroutine getUser returns the user's login ID. (bmy, 9/17/03
+#\\
+#\\
+# !INTERFACE: 
+#
 sub getUser() {
-
-  #==========================================================================
-  # Subroutine getUser returns the user's login ID. (bmy, 9/17/03)
-  #
-  # Calling Sequence:
-  # -------------------------------------------------------------------------
-  # $user = &getUser();
-  #
-  # NOTES:
-  #==========================================================================
-
-  # Local variables
-  my $user = "";
+#
+# !RETURN VALUE:
+#
+  my $user = "";   # User login ID
+#
+# !CALLING SEQUENCE:
+#  $user = &getUser();
+#
+# !REVISION HISTORY: 
+#  17 Sep 2003 - R. Yantosca - Initial version
+#  13 Aug 2009 - R. Yantosca - Added ProTeX header
+#EOP
+#------------------------------------------------------------------------------
+#BOC
 
   # Return user's home directory path
   $user = qx( echo \$USER );
@@ -148,25 +139,41 @@ sub getUser() {
   # Return to calling program
   return( $user );  
 }
-
+#EOC
 #------------------------------------------------------------------------------
-
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: main
+#
+# !DESCRIPTION: Subroutine main is the driver routine for the xt script. 
+#\\
+#\\
+# !INTERFACE: 
+#
 sub main() {
+#
+# !CALLING SEQUENCE:
+#  xt -h HOSTNAME [ -u USER -c CMD ]
+#
+#  where HOSTNAME is the name of the machine you want to log into.
+#        USER     (optional) is your login ID at HOSTNAME 
+#        CMD      (optional) is the command you want to execute 
+#
+# !REVISION HISTORY: 
+#  17 Sep 2003 - R. Yantosca - Initial version
+#  27 Jul 2009 - R. Yantosca - Sleep 3 seconds to avoid timeouts
+#  13 Aug 2009 - R. Yantosca - Added ProTeX header
+#  13 Aug 2009 - R. Yantosca - Removed special machine logins
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+#
+# !LOCAL VARIABLES:
+#
 
-  #=========================================================================
-  # Subroutine MAIN is the driver routine for this script. 
-  # (bmy, 9/17/03, 8/25/05)
-  #
-  # Calling Sequence:
-  # ------------------------------------------------------------------------
-  # xt -h HOSTNAME [ -u USER -c CMD ]
-  #
-  # where HOSTNAME is the name of the machine you want to log into.
-  #       USER     (optional) is your login ID at HOSTNAME 
-  #       CMD      (optional) is the command you want to execute 
-  #=========================================================================
-
-  # Local variables (change as you like!)
+  # Various settings (change as you like!)
   my $host = "";                 # Hostname
   my $user = "";                 # User ID
   my $cmd  = "";                 # Command to be executed
@@ -174,13 +181,9 @@ sub main() {
   my $bg   = "DarkSlateGray";    # Background color
   my $fg   = "LemonChiffon";     # Foreground color
   my $cr   = "FireBrick";        # Cursor color
-  my $geom = "110x28";           # Geometry
+# my $geom = "110x30";           # Geometry
+  my $geom = "110x19";           # Geometry
   my $sl   = 500;                # Number of lines to save
-
-
-  #=========================================================================
-  # MAIN begins here!
-  #=========================================================================
 
   # Get arguments from command line
   ( $host, $user, $cmd ) = &getArguments();
@@ -188,27 +191,20 @@ sub main() {
   # If cmd is not specified, then create it
   if ( length( $cmd ) == 0 ) { 
 
-    # Add the domain names for certain remote machines  
-    # You can modify these as necessary
-    if ( $host =~ "jimpf" ) { $host = "dirac.gsfc.nasa.gov" }
-    if ( $host =~ "dirac" ) { $host = "dirac.gsfc.nasa.gov" }
-    
     # Define command for logging in to remote machine
     $cmd = "ssh -X $user\@$host";
   }
 
   # Open XTERM window and connect to the remote host
-  qx( xterm -T $host -sb -sk -sl $sl -fn $fn -bg $bg -fg $fg -cr $cr -geometry $geom -e $cmd );
+  qx( sleep 3; xterm -T $host -sb -sk -sl $sl -fn $fn -bg $bg -fg $fg -cr $cr -geometry $geom -e $cmd );
 
-  # Return normally
-  return(0);
+  # Return w/ error code
+  return( $? );
 }
-
-#------------------------------------------------------------------------------
 
 # Call main program
 &main();
 
-# Exit normally
-exit(0);
-
+# Return error code to Unix shell
+exit( $? );
+#EOC

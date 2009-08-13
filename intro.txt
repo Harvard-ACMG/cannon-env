@@ -1,0 +1,11 @@
+# $Id: intro.txt,v 1.1 2009/08/13 18:09:14 bmy Exp $
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOI
+# !TITLE: System Environment Files
+# !AUTHORS: Bob Yantosca
+# !AFFILIATION: School of Engineering and Applied Sciences, Harvard University
+# !DATE: August 13, 2009
+#EOI
+#------------------------------------------------------------------------------
