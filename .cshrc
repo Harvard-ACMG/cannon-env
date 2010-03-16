@@ -19,6 +19,12 @@
 #
 # !REVISION HISTORY: 
 #  13 Aug 2009 - R. Yantosca - Added ProTeX headers
+#  07 Oct 2009 - R. Yantosca - Now "setenv OMP_NUM_THREADS 4" on Rhea
+#  07 Oct 2009 - R. Yantosca - Now "setenv OMP_NUM_THREADS 4" on Prometheus
+#  09 Oct 2009 - R. Yantosca - Added print server to lpr, lpq commands
+#  03 Dec 2009 - R. Yantosca - Removed obsolete /as2/pub/ftp/pub directory 
+#                              aliases; now use /as/group/geos/data.
+#  15 Mar 2010 - R. Yantosca - Added aliases for Git
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -44,21 +50,26 @@ setenv OMPI_CXX   icpc
 
 # For Baselibs
 setenv ROOTDIR    /home/bmy/NASA/basedir
-setenv BASEDIR    $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
-setenv BASELIB    $BASEDIR/lib
-setenv ESMF_INC   $BASEDIR/include/esmf
-setenv ESMF_LIB   $BASEDIR/lib
-setenv HDF_BIN    $BASEDIR/bin
-setenv HDF_INC    $BASEDIR/include/hdf
-setenv HDF_LIB    $BASEDIR/lib
-setenv HDFEOS_INC $BASEDIR/include/hdfeos
-setenv HDFEOS_LIB $BASEDIR/lib
-setenv JPEG_LIB   $BASEDIR/lib
-setenv NETCDF_BIN $BASEDIR/bin
-setenv NETCDF_INC $BASEDIR/include/netcdf
-setenv NETCDF_LIB $BASEDIR/lib
-setenv SZLIB_LIB  $BASEDIR/lib
-setenv ZLIB_LIB   $BASEDIR/lib
+setenv BASEDIR     $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
+setenv BASELIB     $BASEDIR/lib
+setenv ESMF_INC    $BASEDIR/include/esmf
+setenv ESMF_LIB    $BASEDIR/lib
+setenv HDF_BIN     $BASEDIR/bin
+setenv HDF_INC     $BASEDIR/include/hdf
+setenv HDF_LIB     $BASEDIR/lib
+setenv HDFEOS_INC  $BASEDIR/include/hdfeos
+setenv HDFEOS_LIB  $BASEDIR/lib
+setenv HDF5_BIN    $BASEDIR/bin
+setenv HDF5_INC    $BASEDIR/include/hdf5
+setenv HDF5_LIB    $BASEDIR/lib
+setenv HDFEOS5_INC $BASEDIR/include/hdfeos5
+setenv HDFEOS5_LIB $BASEDIR/lib
+setenv JPEG_LIB    $BASEDIR/lib
+setenv NETCDF_BIN  $BASEDIR/bin
+setenv NETCDF_INC  $BASEDIR/include/netcdf
+setenv NETCDF_LIB  $BASEDIR/lib
+setenv SZLIB_LIB   $BASEDIR/lib
+setenv ZLIB_LIB    $BASEDIR/lib
 
 # for MAPL
 setenv ESMADIR    /home/bmy/NASA/esmadir
@@ -153,6 +164,7 @@ alias  ll          "ls -l"
 alias  llt         "ls -lt"
 alias  la          "ls -a"
 alias  lla         "ls -la"
+alias  llh         "ls -lh"
 alias  m           "more"
 alias  mail        "Mail"
 alias  proc        "ps -ef | grep $user | sort"
@@ -166,7 +178,7 @@ alias  who         "who | sort"
 alias  zap         "kill -9"
 
 # Directory display (replacing paths w/ generic /home, /as, /as2 links)
-alias  pwd         "pwd | sed 's/\/mnt\/lstr04\/srv\/home\/b\/bmy/\/home\/bmy/' | sed 's/\/mnt\/lstr05\/srv/\/as/'| sed 's/\/mnt\/lstr01\/srv/\/as2/' | sed 's/\/mnt\/group/\/as\/group/' | sed 's/\/lustre\/group/\/as\/group/' | sed 's/\/lustre\/pub/\/as2\/pub/'"
+alias  pwd         "pwd | sed 's/\/mnt\/lstr00\/srv\/home/\/home/'|  sed 's/\/mnt\/lstr04\/srv\/home/\/home/' | sed 's/\/mnt\/lstr05\/srv/\/as/'| sed 's/\/mnt\/lstr01\/srv/\/as2/' | sed 's/\/mnt\/group/\/as\/group/' | sed 's/\/lustre\/group/\/as\/group/' | sed 's/\/lustre\/pub/\/as2\/pub/'"
 
 # IDL settings
 setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
@@ -179,11 +191,10 @@ alias  IS          "cd $home/IDL/tests"
 alias  nccs        "$home/bin/xt -h login.nccs.nasa.gov &"
 alias  arg         "$home/bin/xt -h argus &"
 alias  sol         "$home/bin/xt -h sol &"
-alias  tet         "$home/bin/xt -h tethys &"
 alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
-alias  bgf         "$home/bin/xt -h boggle.seas.harvard.edu -u yantosca &"
 alias  pro         "$home/bin/xt -h prometheus &"
 alias  rhe         "$home/bin/xt -h rhea &"
+alias  gmao        "ftp ftp-priv.as.harvard.edu"
 
 # For monitoring /as2/dao directories
 alias  AL          "cd /as/group/geos/dao/logs"
@@ -192,7 +203,13 @@ alias  GL          "ls -lt /as/group/geos/dao/logs | more"
 # CVS commands (now on rhea.as.harvard.edu)
 setenv CVS_RSH     "ssh"
 alias  cvsl        "cvs -d /home/bmy/CVS"
-alias  remacs      "ssh -X bmy@rhea emacs &"
+
+# Git commands (on rhea.as.harvard.edu)
+setenv MY_GIT_DIR "/as/pub/git/bmy"
+alias  MG          "cd $MY_GIT_DIR; pwd"
+alias  gci         "git cvsimport -v -d /home/bmy/CVS"
+alias  gui         "git gui &"
+alias  gk          "gitk &"
 
 # Sun Grid Engine commands
 alias  qq          "qconf -spl"
@@ -200,9 +217,9 @@ alias  qs          "qstat -f"
 alias  qj          "qstat -f -j"
 
 # Printer aliases
-alias  lport       "lpr -o sides=two-sided-long-edge -P prc-1flr-clr"
-alias  lland       "lpr -o sides=two-sided-short-edge -P prc-1flr-clr"
-alias  lpq         "lpq -P prc-1flr-clr"
+alias  lport       "lpr -H print.seas.harvard.edu -o sides=two-sided-long-edge -P prc-1flr-clr"
+alias  lland       "lpr -H print.seas.harvard.edu -o sides=two-sided-short-edge -P prc-1flr-clr"
+alias  lpq         "lpq -h print.seas.harvard.edu -P prc-1flr-clr"
 
 # Column code development directory aliases
 alias  RC         "cd ~/gc_column/run/column"
@@ -271,70 +288,6 @@ alias  DP     "cd /as/group/geos/dao/bin/perl"
 # Unset the temp variable
 unset dataDir
 
-#==============================================================================
-# Data directory aliases on /as2/data/ (all machines)
-#
-# NOTE: These are Bob Y's aliases.  You may not need these.
-#==============================================================================
-
-# Data directory
-set dataDir = "/as2/pub/ftp/pub/geos-chem/data"
-
-# GEOS_05x05 
-alias  YCC    "cd $dataDir/GEOS_0.5x0.666_CH/"
-alias  YCC5   "cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"
-alias  YNA    "cd $dataDir/GEOS_0.5x0.666_NA.d"
-alias  YNA5   "cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"
-
-# GEOS_1x1
-alias  Y1     "cd $dataDir/GEOS_1x1"
-alias  YC     "cd $dataDir/GEOS_1x1_CH"
-alias  YC3    "cd $dataDir/GEOS_1x1_CH.d/GEOS_3"
-alias  YN     "cd $dataDir/GEOS_1x1_NA"
-alias  YN3    "cd $dataDir/GEOS_1x1_NA/GEOS_3"
-
-# GEOS_1x1.25.d
-alias  Y14    "cd $dataDir/GEOS_1x1.25.d/GEOS_4_v4"
-alias  Y1F    "cd $dataDir/GEOS_1x1.25.d/GEOS_4_flk"
-
-# GEOS_2x2.5
-alias  Y2     "cd $dataDir/GEOS_2x2.5"
-alias  Y21    "cd $dataDir/GEOS_2x2.5.d/GEOS_1"
-alias  Y2S    "cd $dataDir/GEOS_2x2.5.d/GEOS_S"
-alias  Y23    "cd $dataDir/GEOS_2x2.5.d/GEOS_3"
-alias  Y24    "cd $dataDir/GEOS_2x2.5.d/GEOS_4_v4"
-alias  Y2F    "cd $dataDir/GEOS_2x2.5.d/GEOS_4_flk"
-alias  Y25    "cd $dataDir/GEOS_2x2.5.d/GEOS_5"
-
-# GEOS_4x5
-alias  Y4     "cd $dataDir/GEOS_4x5"
-alias  Y41    "cd $dataDir/GEOS_4x5.d/GEOS_1"
-alias  Y4S    "cd $dataDir/GEOS_4x5.d/GEOS_S"
-alias  Y43    "cd $dataDir/GEOS_4x5.d/GEOS_3"
-alias  Y44    "cd $dataDir/GEOS_4x5.d/GEOS_4_v4"
-alias  Y4F    "cd $dataDir/GEOS_4x5.d/GEOS_4_flk"
-alias  Y45    "cd $dataDir/GEOS_4x5.d/GEOS_5"
-
-# ESMF data
-alias  E      "cd $dataDir/ESMF_Data"
-
-#=============================================================================
-# NRT-ARCTAS directories 
-#
-# NOTE: These are Bob Y's aliases.  You may not need these.
-#==============================================================================
-
-# Public directories for NRT-ARCTAS output on /as2/pub/ftp/pub
-alias  N      "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS"
-alias  NB     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/bpch"
-alias  NC     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/columns"
-alias  NF     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/flighttrack"
-alias  NE     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/flambe"
-alias  NL     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/logs"
-alias  NP     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/plane"
-alias  NR     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/restarts"
-alias  NT     "cd /as2/pub/ftp/pub/geos-chem/NRT-ARCTAS/timeseries"
-
 # Local directories
 alias  Nc     "cd /home/bmy/NRT-ARCTAS/Code.ARCTAS"
 alias  Nl     "cd /home/bmy/NRT-ARCTAS/logs"
@@ -376,6 +329,13 @@ else
     limit threads      unlimited
     limit vmemoryuse   unlimited
 
+endif
+
+#==============================================================================
+# For RHEA only: set the # of threads for OpenMP
+#==============================================================================
+if ( $hostabbr == "rhea" || $hostabbr == "prometheus" ) then
+   setenv OMP_NUM_THREADS 4
 endif
 
 #==============================================================================

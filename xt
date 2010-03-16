@@ -40,6 +40,8 @@
 #  23 Jan 2006 - R. Yantosca - Added line for dirac.gsfc.nasa.gov
 #  14 Dec 2007 - R. Yantosca - Now remove references to /bin/sh
 #  13 Aug 2009 - R. Yantosca - Added ProTeX header
+#  04 Mar 2010 - R. Yantosca - Modified to pass local key name
+
 #EOP
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
@@ -166,6 +168,7 @@ sub main() {
 #  27 Jul 2009 - R. Yantosca - Sleep 3 seconds to avoid timeouts
 #  13 Aug 2009 - R. Yantosca - Added ProTeX header
 #  13 Aug 2009 - R. Yantosca - Removed special machine logins
+#  04 Mar 2010 - R. Yantosca - Modified to pass local key name
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -174,16 +177,21 @@ sub main() {
 #
 
   # Various settings (change as you like!)
-  my $host = "";                 # Hostname
-  my $user = "";                 # User ID
-  my $cmd  = "";                 # Command to be executed
-  my $fn   = "10x20";            # Font size
-  my $bg   = "DarkSlateGray";    # Background color
-  my $fg   = "LemonChiffon";     # Foreground color
-  my $cr   = "FireBrick";        # Cursor color
-# my $geom = "110x30";           # Geometry
-  my $geom = "110x19";           # Geometry
-  my $sl   = 500;                # Number of lines to save
+  my $host   = "";                 # Hostname
+  my $user   = "";                 # User ID
+  my $cmd    = "";                 # Command to be executed
+  my $fn     = "10x20";            # Font size
+  my $bg     = "DarkSlateGray";    # Background color
+  my $fg     = "LemonChiffon";     # Foreground color
+  my $cr     = "FireBrick";        # Cursor color
+  my $geom   = "90x22";            # Geometry
+  my $sl     = 500;                # Number of lines to save
+  my $client = "";                 # Name of local host 
+
+  # Get name of local host
+  $client =  qx( uname -n );
+  chomp( $client );
+  $client =~ s/.as.harvard.edu//g;
 
   # Get arguments from command line
   ( $host, $user, $cmd ) = &getArguments();
@@ -192,7 +200,7 @@ sub main() {
   if ( length( $cmd ) == 0 ) { 
 
     # Define command for logging in to remote machine
-    $cmd = "ssh -X $user\@$host";
+    $cmd = "ssh -X -i ~/.ssh/$client $user\@$host";
   }
 
   # Open XTERM window and connect to the remote host
