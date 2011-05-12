@@ -27,9 +27,9 @@
 #BOC
 
 # Force a mount with "who" commmand
-ssh -i ~/.ssh/argus bmy@argus  who
-ssh -i ~/.ssh/sol   bmy@sol    who
-ssh -i ~/.ssh/rhea  bmy@rhea   who
+ssh -A bmy@argus  who
+ssh -A bmy@sol    who
+ssh -A bmy@rhea   who
 
 # Open connections to several machines (add others if you want)
 # Delay each window by a few seconds to avoid problems w/ .Xauthority

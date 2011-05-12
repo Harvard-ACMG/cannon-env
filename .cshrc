@@ -1,4 +1,3 @@
-# $Id: .cshrc,v 1.35 2009/08/13 18:09:15 bmy Exp $
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
 #------------------------------------------------------------------------------
@@ -25,60 +24,98 @@
 #  03 Dec 2009 - R. Yantosca - Removed obsolete /as2/pub/ftp/pub directory 
 #                              aliases; now use /as/group/geos/data.
 #  15 Mar 2010 - R. Yantosca - Added aliases for Git
+#  01 Apr 2010 - R. Yantosca - Reordered environment variables section
+#  06 Aug 2010 - R. Yantosca - Added directories for MERRA data
+#  13 Aug 2010 - R. Yantosca - Added aliases for MERRA data
+#  22 Sep 2010 - R. Yantosca - Modified "qj" alias to "qstat -u bmy"
 #EOP
 #------------------------------------------------------------------------------
 #BOC
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #%%%    THE FOLLOWING THINGS HAVE TO BE PLACED BEFORE THE STATEMENT         %%%
-#%%%   WHICH EXITS IF WE ARE NOT ON AN INTERACTIVE SHELL (bmy, 9/26/08)     %%%
+#%%%   WHICH EXITS IF WE ARE NOT ON AN INTERACTIVE SHELL (bmy, 3/26/10)     %%%
 #%%%         THIS IS NECESSARY FOR THE SUN GRID ENGINE SCHEDULER            %%%
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+#------------------------------------------------------------------------
+# Set environment variables for ESMF & other libraries 
+# Assumes Intel/GCC configuration for OpenMPI and ESMF (bmy, 3/26/10)
 #-------------------------------------------------------------------------
-# Set environment variables for ESMF & other libraries (bmy, 6/4/08)
-# %%% NOTE: Everyone except Bob, Philippe, & Claire can ignore this! %%%
-#-------------------------------------------------------------------------
 
-# For OpenMPI
-setenv MPI_HOME   /opt/openmpi
-setenv MPI_INC    $MPI_HOME/include
-setenv MPI_LIB    $MPI_HOME/lib
-setenv OMPI_FC    ifort
-setenv OMPI_CC    icc
-setenv OMPI_CXX   icpc
+#%%%%% LIBRARY PATHS BASED ON NASA BASELIBS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-# For Baselibs
-setenv ROOTDIR    /home/bmy/NASA/basedir
-setenv BASEDIR     $ROOTDIR/x86_64-unknown-linux-gnu/ifort/Linux
-setenv BASELIB     $BASEDIR/lib
-setenv ESMF_INC    $BASEDIR/include/esmf
-setenv ESMF_LIB    $BASEDIR/lib
-setenv HDF_BIN     $BASEDIR/bin
-setenv HDF_INC     $BASEDIR/include/hdf
-setenv HDF_LIB     $BASEDIR/lib
-setenv HDFEOS_INC  $BASEDIR/include/hdfeos
-setenv HDFEOS_LIB  $BASEDIR/lib
-setenv HDF5_BIN    $BASEDIR/bin
-setenv HDF5_INC    $BASEDIR/include/hdf5
-setenv HDF5_LIB    $BASEDIR/lib
-setenv HDFEOS5_INC $BASEDIR/include/hdfeos5
-setenv HDFEOS5_LIB $BASEDIR/lib
-setenv JPEG_LIB    $BASEDIR/lib
-setenv NETCDF_BIN  $BASEDIR/bin
-setenv NETCDF_INC  $BASEDIR/include/netcdf
-setenv NETCDF_LIB  $BASEDIR/lib
-setenv SZLIB_LIB   $BASEDIR/lib
-setenv ZLIB_LIB    $BASEDIR/lib
+# Baselibs 2.2.0 (full build with Intel 10.1)
+setenv BASEDIR220      ~bmy/opt/Baselibs/v2.2.0/x86_64-unknown-linux-gnu/ifort
 
-# for MAPL
-setenv ESMADIR    /home/bmy/NASA/esmadir
+# Baselibs v3.1.5 (essential build with Intel 11.1)
+setenv BASEDIR315      ~bmy/opt/Baselibs/v3.1.5/x86_64-unknown-linux-gnu/ifort
 
-# For GNU C-Compiler
-setenv GCC_LIB    /usr/lib/gcc/x86_64-redhat-linux/4.1.2/
+# Baselibs v3.1.7 (full build with Intel 11.1)
+setenv BASEDIR317      ~bmy/opt/Baselibs/v3.1.7/x86_64-unknown-linux-gnu/ifort
+
+# Pick one of the Baselibs
+setenv BASEDIR         $BASEDIR315
+setenv ARCH            Linux
+
+# Baselib include paths
+setenv BL_INC_CURL     $BASEDIR/$ARCH/include/curl
+setenv BL_INC_ESMF     $BASEDIR/$ARCH/include/esmf
+setenv BL_INC_HDF      $BASEDIR/$ARCH/include/hdf
+setenv BL_INC_HDFEOS   $BASEDIR/$ARCH/include/hdfeos
+setenv BL_INC_HDF5     $BASEDIR/$ARCH/include/hdf5
+setenv BL_INC_HDFEOS5  $BASEDIR/$ARCH/include/hdfeos5
+setenv BL_INC_JPEG     $BASEDIR/$ARCH/include/jpeg
+setenv BL_INC_NETCDF   $BASEDIR/$ARCH/include/netcdf
+setenv BL_INC_SZLIB    $BASEDIR/$ARCH/include/szlib
+setenv BL_INC_ZLIB     $BASEDIR/$ARCH/include/zlib
+
+# Baselib library paths
+setenv BL_LIB_CURL     $BASEDIR/$ARCH/lib
+setenv BL_LIB_ESMF     $BASEDIR/$ARCH/lib
+setenv BL_LIB_HDF      $BASEDIR/$ARCH/lib
+setenv BL_LIB_HDFEOS   $BASEDIR/$ARCH/lib
+setenv BL_LIB_HDF5     $BASEDIR/$ARCH/lib
+setenv BL_LIB_HDFEOS5  $BASEDIR/$ARCH/lib
+setenv BL_LIB_JPEG     $BASEDIR/$ARCH/lib
+setenv BL_LIB_NETCDF   $BASEDIR/$ARCH/lib
+setenv BL_LIB_NCO      $BASEDIR/$ARCH/lib
+setenv BL_LIB_SZLIB    $BASEDIR/$ARCH/lib
+setenv BL_LIB_ZLIB     $BASEDIR/$ARCH/lib
+
+# Baselib binary paths
+setenv BL_BIN_CURL     $BASEDIR/$ARCH/bin
+setenv BL_BIN_ESMF     $BASEDIR/$ARCH/bin
+setenv BL_BIN_HDF      $BASEDIR/$ARCH/bin
+setenv BL_BIN_HDFEOS   $BASEDIR/$ARCH/bin
+setenv BL_BIN_HDF5     $BASEDIR/$ARCH/bin
+setenv BL_BIN_HDFEOS5  $BASEDIR/$ARCH/bin
+setenv BL_BIN_JPEG     $BASEDIR/$ARCH/bin
+setenv BL_BIN_NETCDF   $BASEDIR/$ARCH/bin
+setenv BL_BIN_SZLIB    $BASEDIR/$ARCH/bin
+setenv BL_BIN_ZLIB     $BASEDIR/$ARCH/bin
+
+#%%%%% OTHER ENVIRONMENT VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+# Compilers: Intel Fortran and GNU C/C++ compilers
+setenv FC              ifort
+setenv F90             $FC
+setenv F77             $FC
+setenv CC              gcc   
+setenv CXX             g++
+setenv OMPI_FC         $FC
+setenv OMPI_CC         $CC
+setenv OMPI_CXX        $CXX
+
+# For GEOS-Chem column code (use Baselibs 3.1.5 for now!!!)
+alias  COL             "cd ~/GEOSCHEMsa/src/Components/GEOSCHEMchem_GridComp"
+setenv ESMADIR         /home/bmy/GEOSCHEMsa
+setenv ESMA_FC         mpif90
+setenv USER_FFLAGS     "-extend-source -traceback -O2"
+setenv ESMF_LDFLAGS    "-lmpi_cxx -lstdc++ -limf -lrt -ldl"
 
 # Set the local root directory for CVS version control
-setenv CVSROOT    /home/bmy/CVS            
+setenv CVSROOT         /home/bmy/CVS            
 
 # Exit if this isn't an interactive shell
 if ( ! $?prompt ) exit(0)
@@ -153,7 +190,7 @@ setenv GREP_COLOR 32
 
 # General aliases
 alias  AD          "cd ~/archive/data"
-alias  disk        "du -k"
+alias  disk        "du -m"
 alias  ED          "cd ~/ESMF/dev"
 alias  EO          "cd ~/ESMF/dev/output/doc"
 alias  g           "grep -in"
@@ -165,14 +202,12 @@ alias  llt         "ls -lt"
 alias  la          "ls -a"
 alias  lla         "ls -la"
 alias  llh         "ls -lh"
-alias  m           "more"
+alias  m           "less"
 alias  mail        "Mail"
 alias  proc        "ps -ef | grep $user | sort"
 alias  pu          "rm *~"
-alias  qj          "pbstat"
-alias  ssh         "ssh -X"
+alias  ssh         "ssh -X -A"
 alias  tf          "tail --follow"
-alias  vt          "setenv TERM vt100; stty dec; setenv IDL_DEVICE null"
 alias  w           "w | sort"
 alias  who         "who | sort"
 alias  zap         "kill -9"
@@ -184,58 +219,88 @@ alias  pwd         "pwd | sed 's/\/mnt\/lstr00\/srv\/home/\/home/'|  sed 's/\/mn
 setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
 alias  I           "cd $home/IDL"
 alias  IG          "cd $home/IDL/gamap2"
-alias  IM          "cd $home/IDL/makefile"
 alias  IS          "cd $home/IDL/tests"
-    
+
+# KPP settings    
+setenv KPP_HOME    "$home/KPP/kpp-2.2.1.December2006"
+set    path =      ( $path $home/KPP/kpp-2.2.1.December2006/bin )
+alias  KPP         "cd $KPP_HOME"
+
 # Logins to other machines (delete what you don't need)
 alias  nccs        "$home/bin/xt -h login.nccs.nasa.gov &"
 alias  arg         "$home/bin/xt -h argus &"
 alias  sol         "$home/bin/xt -h sol &"
-alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
 alias  pro         "$home/bin/xt -h prometheus &"
 alias  rhe         "$home/bin/xt -h rhea &"
+alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
+alias  wum         "$home/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
 alias  gmao        "ftp ftp-priv.as.harvard.edu"
 
-# For monitoring /as2/dao directories
-alias  AL          "cd /as/group/geos/dao/logs"
-alias  GL          "ls -lt /as/group/geos/dao/logs | more"
-
-# CVS commands (now on rhea.as.harvard.edu)
-setenv CVS_RSH     "ssh"
-alias  cvsl        "cvs -d /home/bmy/CVS"
-
 # Git commands (on rhea.as.harvard.edu)
-setenv MY_GIT_DIR "/as/pub/git/bmy"
+setenv MY_GIT_DIR  "/as/pub/git/bmy"
 alias  MG          "cd $MY_GIT_DIR; pwd"
 alias  gci         "git cvsimport -v -d /home/bmy/CVS"
 alias  gui         "git gui &"
 alias  gk          "gitk &"
+alias  gka         "gitk --all &"
+
+# Website commands
+setenv ACMG_WEB    "/as/pub/git/jhy/acmg.seas.harvard.edu"
+alias  WG          "cd $home/web/geos"
+alias  WH          "cd $home/web/htdocs"
+alias  WP          "cd $home/web/publications"
+alias  wpg         "git pull $ACMG_WEB/geos master"
+alias  wph         "git pull $ACMG_WEB/htdocs master"
+alias  wpp         "git pull $ACMG_WEB/publications master"
 
 # Sun Grid Engine commands
 alias  qq          "qconf -spl"
 alias  qs          "qstat -f"
-alias  qj          "qstat -f -j"
+alias  qj          "qstat -u bmy"
 
-# Printer aliases
-alias  lport       "lpr -H print.seas.harvard.edu -o sides=two-sided-long-edge -P prc-1flr-clr"
-alias  lland       "lpr -H print.seas.harvard.edu -o sides=two-sided-short-edge -P prc-1flr-clr"
-alias  lpq         "lpq -h print.seas.harvard.edu -P prc-1flr-clr"
+# Aliases for the "pj" printer
+alias  pr_pj      "lpr -H print.seas.harvard.edu -P pj"
+alias  pq_pj      "lpq -h print.seas.harvard.edu -P pj"
+alias  rm_pj      "lprm -h print.seas.harvard.edu -P pj"
+
+# Aliases for the "prc-1flr-clr" printer
+alias  pr_1f_1s   "lpr -H print.seas.harvard.edu -P prc-1flr-clr -o sides=one-sided"
+alias  pr_1f_2p   "lpr -H print.seas.harvard.edu -P prc-1flr-clr -o sides=two-sided-long-edge"
+alias  pr_1f_2l   "lpr -H print.seas.harvard.edu -P prc-1flr-clr -o sides=two-sided-short-edge" 
+alias  pq_1f      "lpq -h print.seas.harvard.edu -P prc-1flr-clr"
+alias  rm_1f      "lprm -h print.seas.harvard.edu -P prc-1flr-clr"
+
+# Aliases for the "prc-2flr-clr" printer
+alias  pr_2f_1s   "lpr -H print.seas.harvard.edu -P prc-2flr-clr -o sides=one-sided"
+alias  pr_2f_2p   "lpr -H print.seas.harvard.edu -P prc-2flr-clr -o sides=two-sided-long-edge"
+alias  pr_2f_2l   "lpr -H print.seas.harvard.edu -P prc-2flr-clr -o sides=two-sided-short-edge" 
+alias  pq_2f      "lpq -h print.seas.harvard.edu -P prc-2flr-clr"
+alias  rm_2f      "lprm -h print.seas.harvard.edu -P prc-2flr-clr"
 
 # Column code development directory aliases
-alias  RC         "cd ~/gc_column/run/column"
-alias  RR         "cd ~/gc_column/run/reference"
-alias  CB         "cd ~/gc_column/Code/GeosCore"
-alias  CH         "cd ~/gc_column/Code/Headers"
-alias  CL         "cd ~/gc_column/Code/loop"
-alias  CR         "cd ~/gc_column/Code/ref"
+alias  RC          "cd ~/gc_column/run/column"
+alias  RR          "cd ~/gc_column/run/reference"
+alias  CB          "cd ~/gc_column/Code/GeosCore"
+alias  CH          "cd ~/gc_column/Code/Headers"
+alias  CL          "cd ~/gc_column/Code/loop"
+alias  CR          "cd ~/gc_column/Code/ref"
 
-# Updated GEOS-5 code & script directories (bmy, 7/31/09)
-alias  M          "cd $home/regrid/GEOS_5/"
-alias  Mb         "cd $home/regrid/GEOS_5/bin"
-alias  Mc         "cd $home/regrid/GEOS_5/Code"
-alias  Md         "cd $home/regrid/GEOS_5/doc"
-alias  Mp         "cd $home/regrid/GEOS_5/perl"
-alias  ML         "ls -lt $home/regrid/GEOS_5/logs/ | more"
+# GEOS-5 code & script directories
+alias  G           "cd $home/regrid/GEOS_5/"
+alias  Gb          "cd $home/regrid/GEOS_5/bin"
+alias  Gc          "cd $home/regrid/GEOS_5/Code"
+alias  Gd          "cd $home/regrid/GEOS_5/doc"
+alias  Gp          "cd $home/regrid/GEOS_5/perl"
+alias  GL          "ls -lt $home/regrid/GEOS_5/logs/ | less"
+
+# Updated MERRA code & script directories
+alias  M           "cd $home/regrid/MERRA/"
+alias  Mb          "cd $home/regrid/MERRA/bin"
+alias  Mc          "cd $home/regrid/MERRA/Code"
+alias  Md          "cd $home/regrid/MERRA/doc"
+alias  Mp          "cd $home/regrid/MERRA/perl"
+alias  Ml          "cd $home/regrid/MERRA/logs"
+alias  ML          "ls -lt $home/regrid/MERRA/logs/ | less"
 
 #==============================================================================
 # Data directory aliases on /as/group/geos/data
@@ -243,56 +308,41 @@ alias  ML         "ls -lt $home/regrid/GEOS_5/logs/ | more"
 # NOTE: These are Bob Y's aliases.  You may not need these.
 #==============================================================================
 
-# Data directory
-set dataDir = "/as/group/geos/data"
+set dataDir =      "/as/group/geos/data"                     # Root data dir
 
-# GEOS_05x0667
-alias  XCC    "cd $dataDir/GEOS_0.5x0.666_CH"
-alias  XCC5   "cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"
-alias  XNA    "cd $dataDir/GEOS_0.5x0.666_NA"
-alias  XNA5   "cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"
-   
-# GEOS_1x1 
-alias  X1     "cd $dataDir/GEOS_1x1"
-alias  XC     "cd $dataDir/GEOS_1x1_CH"
-alias  XC3    "cd $dataDir/GEOS_1x1_CH/GEOS_3"
-alias  XN     "cd $dataDir/GEOS_1x1_NA"
-alias  XN3    "cd $dataDir/GEOS_1x1_NA/GEOS_3"
-	
-# GEOS_1x1.25.d
-alias  X14    "cd $dataDir/GEOS_4_v4"
-alias  X1F    "cd $dataDir/GEOS_4_flk"
-		    
-# GEOS_2x2.5	   
-alias  X2     "cd $dataDir/GEOS_2x2.5"
-alias  X21    "cd $dataDir/GEOS_2x2.5/GEOS_1"
-alias  X2S    "cd $dataDir/GEOS_2x2.5/GEOS_S"
-alias  X23    "cd $dataDir/GEOS_2x2.5/GEOS_3"
-alias  X24    "cd $dataDir/GEOS_2x2.5/GEOS_4_v4"
-alias  X2F    "cd $dataDir/GEOS_2x2.5/GEOS_4_flk"
-alias  X25    "cd $dataDir/GEOS_2x2.5/GEOS_5"
-		   
-# GEOS_4x5	   
-alias  X4     "cd $dataDir/GEOS_4x5"
-alias  X41    "cd $dataDir/GEOS_4x5.d/GEOS_1"
-alias  X4S    "cd $dataDir/GEOS_4x5.d/GEOS_S"
-alias  X43    "cd $dataDir/GEOS_4x5.d/GEOS_3"
-alias  X44    "cd $dataDir/GEOS_4x5.d/GEOS_4_v4"
-alias  X4F    "cd $dataDir/GEOS_4x5.d/GEOS_4_flk"
-alias  X45    "cd $dataDir/GEOS_4x5.d/GEOS_5"
+alias  XCC         "cd $dataDir/GEOS_0.5x0.666_CH"           # GEOS 0.5x0.666 
+alias  XCC5        "cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"    
+alias  XNA         "cd $dataDir/GEOS_0.5x0.666_NA"             
+alias  XNA5        "cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"    
+alias  X1          "cd $dataDir/GEOS_1x1"                    # GEOS 1x1
+alias  XC          "cd $dataDir/GEOS_1x1_CH"
+alias  XC3         "cd $dataDir/GEOS_1x1_CH/GEOS_3"
+alias  XN          "cd $dataDir/GEOS_1x1_NA"
+alias  XN3         "cd $dataDir/GEOS_1x1_NA/GEOS_3"
+alias  X14         "cd $dataDir/GEOS_4_v4"                   # GEOS 1 x 1.25
+alias  X1F         "cd $dataDir/GEOS_4_flk" 
+alias  X2          "cd $dataDir/GEOS_2x2.5"                  # GEOS 2 x 2.5
+alias  X21         "cd $dataDir/GEOS_2x2.5.d/GEOS_1"
+alias  X2S         "cd $dataDir/GEOS_2x2.5.d/GEOS_S"
+alias  X23         "cd $dataDir/GEOS_2x2.5.d/GEOS_3"
+alias  X24         "cd $dataDir/GEOS_2x2.5.d/GEOS_4_v4"
+alias  X2F         "cd $dataDir/GEOS_2x2.5.d/GEOS_4_flk"
+alias  X25         "cd $dataDir/GEOS_2x2.5.d/GEOS_5"
+alias  X4          "cd $dataDir/GEOS_4x5"                    # GEOS 4x5
+alias  X41         "cd $dataDir/GEOS_4x5.d/GEOS_1"
+alias  X4S         "cd $dataDir/GEOS_4x5.d/GEOS_S"
+alias  X43         "cd $dataDir/GEOS_4x5.d/GEOS_3"
+alias  X44         "cd $dataDir/GEOS_4x5.d/GEOS_4_v4"
+alias  X4F         "cd $dataDir/GEOS_4x5.d/GEOS_4_flk"
+alias  X45         "cd $dataDir/GEOS_4x5.d/GEOS_5"
+alias  X4M         "cd $dataDir/GEOS_4x5.d/MERRA"
 
-# Dao met field disks
-alias  D5     "cd /as/group/geos/dao/bin/GEOS_5"
-alias  DP     "cd /as/group/geos/dao/bin/perl"
-
-# Unset the temp variable
 unset dataDir
 
-# Local directories
-alias  Nc     "cd /home/bmy/NRT-ARCTAS/Code.ARCTAS"
-alias  Nl     "cd /home/bmy/NRT-ARCTAS/logs"
-alias  Np     "cd /home/bmy/NRT-ARCTAS/perl"
-alias  Nr     "cd /home/bmy/NRT-ARCTAS/run"
+# Met field scratch directories
+alias  D5          "cd /as/group/geos/dao/bin/GEOS_5"
+alias  DP          "cd /as/group/geos/dao/bin/perl"
+alias  ME          "cd /as/scratch/tmp/bmy/MERRA"
 
 #==============================================================================
 #  Specific settings for interactive Linux login machines and clusters
@@ -332,7 +382,7 @@ else
 endif
 
 #==============================================================================
-# For RHEA only: set the # of threads for OpenMP
+# Set the # of threads for OpenMP (selected hosts only)
 #==============================================================================
 if ( $hostabbr == "rhea" || $hostabbr == "prometheus" ) then
    setenv OMP_NUM_THREADS 4

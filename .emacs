@@ -1,5 +1,5 @@
 ;==============================================================================
-;; $Id: .emacs,v 1.12 2009/08/13 18:09:15 bmy Exp $
+;; $Id: .emacs,v 1.10 2008/05/22 15:24:34 bmy Exp $
 ;;
 ;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
 ;; (phs, bmy, 12/20/07, 3/19/09)
@@ -26,9 +26,17 @@
 ;(set-face-font 
 ; 'default "-*-Lucidatypewriter-*-R-*-*-*-140-*-*-*-*-iso8859-1" )
 
+;; Lucida Typewriter 13pt bold
+;(set-face-font 
+; 'default "-*-Lucidatypewriter-Bold-R-*-*-*-130-*-*-*-*-iso8859-1" )
+
+;; Lucida Typewriter 13pt normal
+;(set-face-font 
+; 'default "-*-Lucidatypewriter-*-R-*-*-*-130-*-*-*-*-iso8859-1" )
+
 ;; Lucida Typewriter 12pt bold
 ;(set-face-font 
-; 'default "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1" )
+; 'default "-*-Lucidatypewriter-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
 
 ;; Lucida Typewriter 12pt normal
 ;(set-face-font 
@@ -46,7 +54,7 @@
 ;(set-face-font 
 ; 'default "-*-Courier-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
 
-;; Courier 14 pt normal
+;; Courier 12 pt normal
 ;(set-face-font 
 ; 'default "-*-Courier-*-R-*-*-*-120-*-*-*-*-iso8859-1" )
 
@@ -66,20 +74,19 @@
 ;; Set "colorization" colors for code
 ;; Use the same scheme as from the old .xemacs-options file
 (custom-set-faces
- '(font-lock-comment-face       ((t (:foreground "#6920ac"))) t) ; comments
- '(font-lock-doc-string-face    ((t (:foreground "green4" ))) t) ; strings
- '(font-lock-function-name-face ((t (:foreground "red2"   ))) t) ; func names
- '(font-lock-keyword-face       ((t (:foreground "orange3"))) t) ; commands
- '(font-lock-other-type-face    ((t (:foreground "blue"   ))) t) ; other type
- '(font-lock-preprocessor-face  ((t (:foreground "red2"   ))) t) ; Cpp blocks
- '(font-lock-reference-face     ((t (:foreground "red2"   ))) t) ; Cpp blocks
- '(font-lock-string-face        ((t (:foreground "green4" ))) t) ; strings
- '(font-lock-type-face          ((t (:foreground "brown"  ))) t) ; F90 types
- '(font-lock-variable-name-face ((t (:foreground "black"  ))) t) ; variables
-
- ;; Following was working in Xemacs, but no more in Emacs 21.4...:
+  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
  '(dired-face-symlink ((t (:foreground "white" :background "darkOrchid"))))
-)
+ '(font-lock-comment-face ((t (:foreground "#6920ac"))))
+ '(font-lock-doc-string-face ((t (:foreground "green4"))))
+ '(font-lock-function-name-face ((t (:foreground "red2"))))
+ '(font-lock-keyword-face ((t (:foreground "orange3"))))
+ '(font-lock-other-type-face ((t (:foreground "blue"))))
+ '(font-lock-preprocessor-face ((t (:foreground "red2"))))
+ '(font-lock-reference-face ((t (:foreground "red2"))))
+ '(font-lock-string-face ((t (:foreground "green4"))))
+ '(font-lock-type-face ((t (:foreground "brown"))))
+ '(font-lock-variable-name-face ((t (:foreground "black")))))
 
 ;;=============================================================================
 ;; FUNCTIONS and GLOBAL SETTINGS
@@ -327,15 +334,15 @@
 ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
 ;; Your init file should contain only one such instance.
 (custom-set-variables
- '(user-mail-address "yantosca@seas.harvard.edu" t)
- '(query-user-mail-address nil)
+  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
  '(auto-compression-mode t nil (jka-compr))
  '(case-fold-search t)
  '(current-language-environment "ASCII")
  '(global-font-lock-mode t nil (font-lock))
  '(query-user-mail-address nil)
  '(transient-mark-mode t)
-)
+ '(user-mail-address "yantosca@seas.harvard.edu"))
 
 ;;=============================================================================
 ;; BACKUPS (made "once per session" at first save)
@@ -1188,10 +1195,13 @@
 ;; 
 ;; You can comment out the stuff that you don't want.  You can also change
 ;; the default lines & columns that EMACS/XEMACS will start with
+;;
+;; Depending on the size of your monitor, you can customize this accordingly.
 ;;=============================================================================
 
 ;; Default --Open one window, 80 columns wide and 55 lines high
-(set-frame-height (selected-frame) 57)    ; %%% bmy changed to 57 lines high
+;;(set-frame-height (selected-frame) 57)    ; %%% bmy changed to 57 lines high
+(set-frame-height (selected-frame) 72)    ; %%% bmy changed to 72 lines high
 (set-frame-width  (selected-frame) 80)    ; 80 colums wide
 
 ;; Philippe's preference -- put 2 windows side by side
