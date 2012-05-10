@@ -28,6 +28,19 @@
 #  06 Aug 2010 - R. Yantosca - Added directories for MERRA data
 #  13 Aug 2010 - R. Yantosca - Added aliases for MERRA data
 #  22 Sep 2010 - R. Yantosca - Modified "qj" alias to "qstat -u bmy"
+#  08 Jun 2011 - R. Yantosca - Now replace "/lustre/home" w/ "/home" in pwd
+#  06 Jul 2011 - R. Yantosca - Updated aliases for SGE commands
+#  24 Oct 2011 - R. Yantosca - Updated netCDF4, HDF5 paths for GEOS-5.7.2
+#  22 Nov 2011 - R. Yantosca - Added Git aliases for presentations repo
+#  06 Dec 2011 - R. Yantosca - Added aliases for jacobsgroup-prn printer
+#  08 Dec 2011 - R. Yantosca - Use paths beginning with /as or /home
+#  16 Dec 2011 - R. Yantosca - Now point to the readonly /as/group/geos/data
+#                              from Sol.  Point to the read-write mount
+#                              /as/group/geos-rw/data from other machines.
+#  20 Dec 2011 - R. Yantosca - Use sed to replace /mnt from filepaths
+#  04 Jan 2012 - R. Yantosca - Updated Pierce Hall printer names
+#  04 Jan 2012 - R. Yantosca - Updated aliases for GEOS-5 chdir commands
+#  13 Jan 2012 - R. Yantosca - Added chdir commands for GEOS-5.7 dirs
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -94,6 +107,28 @@ setenv BL_BIN_JPEG     $BASEDIR/$ARCH/bin
 setenv BL_BIN_NETCDF   $BASEDIR/$ARCH/bin
 setenv BL_BIN_SZLIB    $BASEDIR/$ARCH/bin
 setenv BL_BIN_ZLIB     $BASEDIR/$ARCH/bin
+
+#------------------------------------------------------------------------------
+# Reset for locally-defined netCDF, HDF5 libraries; for reading GEOS-5.7.2 data
+# These are now located in /opt/GEOS-Chem-Libraries/ifort path
+setenv BL_INC_NETCDF   /opt/GEOS-Chem-Libraries/ifort/nc4/include
+setenv BL_LIB_NETCDF   /opt/GEOS-Chem-Libraries/ifort/nc4/lib
+setenv BL_INC_HDF5     /opt/GEOS-Chem-Libraries/ifort/nc4/include
+setenv BL_LIB_HDF5     /opt/GEOS-Chem-Libraries/ifort/nc4/lib
+setenv BL_LIB_ZLIB     /opt/GEOS-Chem-Libraries/ifort/nc4/lib
+setenv INC_NETCDF      $BL_INC_NETCDF
+setenv LIB_NETCDF      $BL_LIB_NETCDF
+setenv INC_HDF5        $BL_INC_HDF5
+setenv LIB_HDF5        $BL_LIB_HDF5
+setenv LIB_ZLIB        $BL_LIB_ZLIB
+
+# For the new GEOS-Chem-Libraries path (bmy, 5/9/12)
+setenv GC_BIN          /opt/GEOS-Chem-Libraries/ifort/nc4/bin
+setenv GC_INCLUDE      /opt/GEOS-Chem-Libraries/ifort/nc4/include 
+setenv GC_LIB          /opt/GEOS-Chem-Libraries/ifort/nc4/lib
+alias  gcnc            $GC_BIN/nc-config
+alias  gcnf            $GC_BIN/nf-config
+#------------------------------------------------------------------------------
 
 #%%%%% OTHER ENVIRONMENT VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -191,10 +226,10 @@ setenv GREP_COLOR 32
 # General aliases
 alias  AD          "cd ~/archive/data"
 alias  disk        "du -m"
-alias  ED          "cd ~/ESMF/dev"
-alias  EO          "cd ~/ESMF/dev/output/doc"
 alias  g           "grep -in"
+alias  gt          "grep -in --text"
 alias  gf          "gifview -a"
+alias  gvs         "gv --orientation=seascape"
 alias  ls          "ls -CF --time-style=long-iso --color=auto"
 alias  l1          "ls -1"
 alias  ll          "ls -l"
@@ -203,7 +238,6 @@ alias  la          "ls -a"
 alias  lla         "ls -la"
 alias  llh         "ls -lh"
 alias  m           "less"
-alias  mail        "Mail"
 alias  proc        "ps -ef | grep $user | sort"
 alias  pu          "rm *~"
 alias  ssh         "ssh -X -A"
@@ -212,8 +246,11 @@ alias  w           "w | sort"
 alias  who         "who | sort"
 alias  zap         "kill -9"
 
+# Use Mike Long's special emacs
+alias  mlemacs     "~mlong/tools/emacs/bin/emacs"
+
 # Directory display (replacing paths w/ generic /home, /as, /as2 links)
-alias  pwd         "pwd | sed 's/\/mnt\/lstr00\/srv\/home/\/home/'|  sed 's/\/mnt\/lstr04\/srv\/home/\/home/' | sed 's/\/mnt\/lstr05\/srv/\/as/'| sed 's/\/mnt\/lstr01\/srv/\/as2/' | sed 's/\/mnt\/group/\/as\/group/' | sed 's/\/lustre\/group/\/as\/group/' | sed 's/\/lustre\/pub/\/as2\/pub/'"
+alias  pwd         "pwd | sed 's/\/mnt\/as\/home/\/home/'| sed 's/\/mnt\/as/\/as/'| sed 's/\/mnt\/lstr00\/srv\/home/\/home/'| sed 's/\/mnt\/lstr04\/srv\/home/\/home/' | sed 's/\/mnt\/lstr05\/srv/\/as/'| sed 's/\/mnt\/lstr01\/srv/\/as2/' | sed 's/\/mnt\/group/\/as\/group/' | sed 's/\/lustre\/group/\/as\/group/' | sed 's/\/lustre\/pub/\/as2\/pub/' | sed 's/\/lustre\/home/\/home/'"
 
 # IDL settings
 setenv IDL_STARTUP "$home/IDL/idl_startup.pro"
@@ -227,14 +264,12 @@ set    path =      ( $path $home/KPP/kpp-2.2.1.December2006/bin )
 alias  KPP         "cd $KPP_HOME"
 
 # Logins to other machines (delete what you don't need)
-alias  nccs        "$home/bin/xt -h login.nccs.nasa.gov &"
 alias  arg         "$home/bin/xt -h argus &"
 alias  sol         "$home/bin/xt -h sol &"
 alias  pro         "$home/bin/xt -h prometheus &"
 alias  rhe         "$home/bin/xt -h rhea &"
 alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
 alias  wum         "$home/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
-alias  gmao        "ftp ftp-priv.as.harvard.edu"
 
 # Git commands (on rhea.as.harvard.edu)
 setenv MY_GIT_DIR  "/as/pub/git/bmy"
@@ -243,55 +278,72 @@ alias  gci         "git cvsimport -v -d /home/bmy/CVS"
 alias  gui         "git gui &"
 alias  gk          "gitk &"
 alias  gka         "gitk --all &"
+alias  gl          "git log"
+alias  glo         "git log --oneline"
 
 # Website commands
 setenv ACMG_WEB    "/as/pub/git/jhy/acmg.seas.harvard.edu"
 alias  WG          "cd $home/web/geos"
 alias  WH          "cd $home/web/htdocs"
 alias  WP          "cd $home/web/publications"
+alias  WE          "cd $home/web/presentations"
 alias  wpg         "git pull $ACMG_WEB/geos master"
 alias  wph         "git pull $ACMG_WEB/htdocs master"
 alias  wpp         "git pull $ACMG_WEB/publications master"
+alias  wpe         "git pull $ACMG_WEB/presentations master"
 
 # Sun Grid Engine commands
 alias  qq          "qconf -spl"
 alias  qs          "qstat -f"
 alias  qj          "qstat -u bmy"
+alias  qja         'qstat -u "*"'
+alias  qa          "qacct -j"
 
-# Aliases for the "pj" printer
-alias  pr_pj      "lpr -H print.seas.harvard.edu -P pj"
-alias  pq_pj      "lpq -h print.seas.harvard.edu -P pj"
-alias  rm_pj      "lprm -h print.seas.harvard.edu -P pj"
+# Aliases for the "jacobsgroup-prn" printer
+alias  pr_j_1s    "lpr -H print.seas.harvard.edu -P jacobsgroup-prn -o sides=one-sided"
+alias  pr_j_2p    "lpr -H print.seas.harvard.edu -P jacobsgroup-prn -o sides=two-sided-long-edge"
+alias  pr_j_2l    "lpr -H print.seas.harvard.edu -P jacobsgroup-prn -o sides=two-sided-short-edge" 
+alias  pq_j       "lpq -h print.seas.harvard.edu -P jacobsgroup-prn"
+alias  rm_j       "lprm -h print.seas.harvard.edu -P jacobsgroup-prn"
 
 # Aliases for the "prc-1flr-clr" printer
-alias  pr_1f_1s   "lpr -H print.seas.harvard.edu -P prc-1flr-clr -o sides=one-sided"
-alias  pr_1f_2p   "lpr -H print.seas.harvard.edu -P prc-1flr-clr -o sides=two-sided-long-edge"
-alias  pr_1f_2l   "lpr -H print.seas.harvard.edu -P prc-1flr-clr -o sides=two-sided-short-edge" 
-alias  pq_1f      "lpq -h print.seas.harvard.edu -P prc-1flr-clr"
-alias  rm_1f      "lprm -h print.seas.harvard.edu -P prc-1flr-clr"
+alias  pr_1f_1s   "lpr -H print.seas.harvard.edu -P prc-1flr-clr2 -o sides=one-sided"
+alias  pr_1f_2p   "lpr -H print.seas.harvard.edu -P prc-1flr-clr2 -o sides=two-sided-long-edge"
+alias  pr_1f_2l   "lpr -H print.seas.harvard.edu -P prc-1flr-clr2 -o sides=two-sided-short-edge" 
+alias  pq_1f      "lpq -h print.seas.harvard.edu -P prc-1flr-clr2"
+alias  rm_1f      "lprm -h print.seas.harvard.edu -P prc-1flr-clr2"
 
 # Aliases for the "prc-2flr-clr" printer
-alias  pr_2f_1s   "lpr -H print.seas.harvard.edu -P prc-2flr-clr -o sides=one-sided"
-alias  pr_2f_2p   "lpr -H print.seas.harvard.edu -P prc-2flr-clr -o sides=two-sided-long-edge"
-alias  pr_2f_2l   "lpr -H print.seas.harvard.edu -P prc-2flr-clr -o sides=two-sided-short-edge" 
-alias  pq_2f      "lpq -h print.seas.harvard.edu -P prc-2flr-clr"
-alias  rm_2f      "lprm -h print.seas.harvard.edu -P prc-2flr-clr"
+alias  pr_2f_1s   "lpr -H print.seas.harvard.edu -P prc-2flr-clr2 -o sides=one-sided"
+alias  pr_2f_2p   "lpr -H print.seas.harvard.edu -P prc-2flr-clr2 -o sides=two-sided-long-edge"
+alias  pr_2f_2l   "lpr -H print.seas.harvard.edu -P prc-2flr-clr2 -o sides=two-sided-short-edge" 
+alias  pq_2f      "lpq -h print.seas.harvard.edu -P prc-2flr-clr2"
+alias  rm_2f      "lprm -h print.seas.harvard.edu -P prc-2flr-clr2"
 
 # Column code development directory aliases
-alias  RC          "cd ~/gc_column/run/column"
-alias  RR          "cd ~/gc_column/run/reference"
-alias  CB          "cd ~/gc_column/Code/GeosCore"
-alias  CH          "cd ~/gc_column/Code/Headers"
-alias  CL          "cd ~/gc_column/Code/loop"
-alias  CR          "cd ~/gc_column/Code/ref"
+#alias  RC          "cd ~/gc_column/run/column"
+#alias  RR          "cd ~/gc_column/run/reference"
+#alias  CB          "cd ~/gc_column/Code/GeosCore"
+#alias  CH          "cd ~/gc_column/Code/Headers"
+#alias  CL          "cd ~/gc_column/Code/loop"
+#alias  CR          "cd ~/gc_column/Code/ref"
 
-# GEOS-5 code & script directories
+# GEOS-5.2.0 code & script directories
 alias  G           "cd $home/regrid/GEOS_5/"
-alias  Gb          "cd $home/regrid/GEOS_5/bin"
-alias  Gc          "cd $home/regrid/GEOS_5/Code"
-alias  Gd          "cd $home/regrid/GEOS_5/doc"
-alias  Gp          "cd $home/regrid/GEOS_5/perl"
-alias  GL          "ls -lt $home/regrid/GEOS_5/logs/ | less"
+alias  G2b         "cd $home/regrid/GEOS_5/bin"
+alias  G2c         "cd $home/regrid/GEOS_5/Code"
+alias  G2d         "cd $home/regrid/GEOS_5/doc"
+alias  G2p         "cd $home/regrid/GEOS_5/perl"
+alias  G2L         "ls -lt $home/regrid/GEOS_5/logs/ | less"
+
+# GEOS-5.7 code & script directories
+alias  G           "cd $home/regrid/GEOS_5.7/"
+alias  Gb          "cd $home/regrid/GEOS_5.7/bin"
+alias  Gc          "cd $home/regrid/GEOS_5.7/Code"
+alias  Gd          "cd $home/regrid/GEOS_5.7/doc"
+alias  Gj          "cd $home/regrid/GEOS_5.7/jobs"
+alias  Gp          "cd $home/regrid/GEOS_5.7/perl"
+alias  GL          "ls -lt $home/regrid/GEOS_5.7/logs/ | less"
 
 # Updated MERRA code & script directories
 alias  M           "cd $home/regrid/MERRA/"
@@ -308,40 +360,35 @@ alias  ML          "ls -lt $home/regrid/MERRA/logs/ | less"
 # NOTE: These are Bob Y's aliases.  You may not need these.
 #==============================================================================
 
-set dataDir =      "/as/group/geos/data"                     # Root data dir
+if ( $hostabbr == "sol" ) then                               # Root data dir
+   set dataDir =   "/as/group/geos/data/"                    # Readonly mount
+else
+   set dataDir =   "/as/group/geos-rw/data"                  # Read-write mount
+endif
 
-alias  XCC         "cd $dataDir/GEOS_0.5x0.666_CH"           # GEOS 0.5x0.666 
-alias  XCC5        "cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"    
-alias  XNA         "cd $dataDir/GEOS_0.5x0.666_NA"             
-alias  XNA5        "cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"    
+alias  XC          "cd $dataDir/GEOS_0.5x0.666_CH"           # GEOS 0.5x0.666 
+alias  XC5         "cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"    
+alias  XS          "cd $dataDir/GEOS_0.25x0.3125_SEA4CRS.d/"
+alias  XS57        "cd $dataDir/GEOS_0.25x0.3125_SEA4CRS.d/GEOS_5.7"    
+alias  XN          "cd $dataDir/GEOS_0.5x0.666_NA"             
+alias  XN5         "cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"    
 alias  X1          "cd $dataDir/GEOS_1x1"                    # GEOS 1x1
-alias  XC          "cd $dataDir/GEOS_1x1_CH"
-alias  XC3         "cd $dataDir/GEOS_1x1_CH/GEOS_3"
-alias  XN          "cd $dataDir/GEOS_1x1_NA"
-alias  XN3         "cd $dataDir/GEOS_1x1_NA/GEOS_3"
-alias  X14         "cd $dataDir/GEOS_4_v4"                   # GEOS 1 x 1.25
-alias  X1F         "cd $dataDir/GEOS_4_flk" 
+alias  XNN         "cd $dataDir/GEOS_NATIVE"                 # GEOS NATIVE
 alias  X2          "cd $dataDir/GEOS_2x2.5"                  # GEOS 2 x 2.5
-alias  X21         "cd $dataDir/GEOS_2x2.5.d/GEOS_1"
-alias  X2S         "cd $dataDir/GEOS_2x2.5.d/GEOS_S"
 alias  X23         "cd $dataDir/GEOS_2x2.5.d/GEOS_3"
 alias  X24         "cd $dataDir/GEOS_2x2.5.d/GEOS_4_v4"
-alias  X2F         "cd $dataDir/GEOS_2x2.5.d/GEOS_4_flk"
 alias  X25         "cd $dataDir/GEOS_2x2.5.d/GEOS_5"
+alias  X257        "cd $dataDir/GEOS_2x2.5.d/GEOS_5.7"
 alias  X4          "cd $dataDir/GEOS_4x5"                    # GEOS 4x5
-alias  X41         "cd $dataDir/GEOS_4x5.d/GEOS_1"
-alias  X4S         "cd $dataDir/GEOS_4x5.d/GEOS_S"
 alias  X43         "cd $dataDir/GEOS_4x5.d/GEOS_3"
 alias  X44         "cd $dataDir/GEOS_4x5.d/GEOS_4_v4"
-alias  X4F         "cd $dataDir/GEOS_4x5.d/GEOS_4_flk"
 alias  X45         "cd $dataDir/GEOS_4x5.d/GEOS_5"
+alias  X457        "cd $dataDir/GEOS_4x5.d/GEOS_5.7"
 alias  X4M         "cd $dataDir/GEOS_4x5.d/MERRA"
 
 unset dataDir
 
 # Met field scratch directories
-alias  D5          "cd /as/group/geos/dao/bin/GEOS_5"
-alias  DP          "cd /as/group/geos/dao/bin/perl"
 alias  ME          "cd /as/scratch/tmp/bmy/MERRA"
 
 #==============================================================================

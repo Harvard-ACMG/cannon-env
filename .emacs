@@ -1,18 +1,36 @@
-;==============================================================================
-;; $Id: .emacs,v 1.10 2008/05/22 15:24:34 bmy Exp $
-;;
-;; The .emacs customization file for both EMACS on Tethys and XEMACS on SGI.
-;; (phs, bmy, 12/20/07, 3/19/09)
-;;
-;; Please peruse this file carefully!  For many settings there are several 
-;; options that you can pick from.  You can uncomment the settings that you 
-;; would like to use and comment out the ones that you don't.  
-;;
-;; The comment character for this file is ";". 
-;; Logical switches are turned on with "t" and turned off with "nil".
-;;
-;; Also be sure to set your default email address under "MISCELLANEOUS STUFF".
-;==============================================================================
+;------------------------------------------------------------------------------
+;          Harvard University Atmospheric Chemistry Modeling Group            !
+;------------------------------------------------------------------------------
+;BOP
+;
+; !MODULE: .emacs
+;
+; !DESCRIPTION: The .emacs file specifes user-customization settings for
+;  the Emacs (or Xemacs) editor.
+;\\
+;\\
+; !REMARKS:
+;  Please peruse this file carefully!  For many settings there are several 
+;  options that you can pick from.  You can uncomment the settings that you 
+;  would like to use and comment out the ones that you don't.  
+;                                                                             .
+;  The comment character for this file is ";". 
+;  Logical switches are turned on with "t" and turned off with "nil".
+;                                                                             .
+;  Also be sure to set your default email address under "MISCELLANEOUS STUFF".
+;                                                                             .
+;  Changes made to this file will not take effect until the next time you
+;  start Emacs (or Xemacs).  Therefore, we recommend keeping one Emacs window
+;  open and then open additional Emacs windows to determine if you like the
+;  new settings (or if you wish to revert to the previous settings).
+;
+; !REVISION HISTORY: 
+;  20 Dec 2007 - P. Le Sager - Initial version
+;  08 Dec 2011 - R. Yantosca - Added ProTeX headers
+;  08 Dec 2011 - R. Yantosca - Now set for 74 rows (1920x1280 resolution)
+;EOP
+;------------------------------------------------------------------------------
+;BOC
 
 ;;=============================================================================
 ;; FONTS (pick the one that you like the best, or add your own!)
@@ -420,11 +438,10 @@
 
 ; EDIFF
 (global-set-key [(shift f1)]     'ediff-files)
-(global-set-key [(shift f2)]     'fullcleanediff)
+(global-set-key [(shift f2)]     'ediff-buffers)
+(global-set-key [(shift f3)]     'fullcleanediff)
 
-; CVS
-(global-set-key [(shift f3)]     'cvs-examine)
-(global-set-key [(shift f4)]     'cvs-update)
+;(global-set-key [(shift f4)]     'cvs-update)
 ;(global-set-key [(shift f5)]     'smerge-keep-mine) 
 ;(global-set-key [(shift f6)]     'smerge-keep-other)
 
@@ -1200,9 +1217,9 @@
 ;;=============================================================================
 
 ;; Default --Open one window, 80 columns wide and 55 lines high
-;;(set-frame-height (selected-frame) 57)    ; %%% bmy changed to 57 lines high
-(set-frame-height (selected-frame) 72)    ; %%% bmy changed to 72 lines high
-(set-frame-width  (selected-frame) 80)    ; 80 colums wide
+;;(set-frame-height (selected-frame) 72)    ; %%% 72 lines for 1920x1080 res
+(set-frame-height (selected-frame) 74)    ; %%% 74 lines for 1920x1200 res
+(set-frame-width  (selected-frame) 80)    ; 80 columns wide
 
 ;; Philippe's preference -- put 2 windows side by side
 ;(set-frame-height (selected-frame) 70 )  ; 70 lines high
@@ -1215,3 +1232,5 @@
 ;                                         ;  -has a problem in Tethys-
 ;;(rename-buffer "shell-first")           ; rename it
 ;(other-window 1)                         ; move back to first window 
+
+;EOC

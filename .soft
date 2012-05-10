@@ -5,16 +5,14 @@
 #   setting up variables such as PATH and MANPATH.  To learn more
 #   about this file, do a "man softenv".
 #
-# Modified for the following software packages: (bmy, 4/5/10)
+# Modified for the following software packages: (bmy, 09 May 2012)
 # (1) Intel Fortran Compiler 11.1
 # (2) OpenMPI 1.4.1 GNU-Intel build
-# (3) NetCDF 4.01 GNU-Intel build
-# (4) HDF5 1.8.4 GNU-Intel build for MPI
+# (3) NetCDF 4.01 GNU-Intel build#
+# (4) IDL v8.1
 #
 @default
 +intel_compilers-11.1
 +openmpi-1.4.1-gnu-intel
-+netcdf-4.0.1-mpi
-+hdf5-1.8.4p1-mpi
-
++idl-8.1
 
