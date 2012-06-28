@@ -169,6 +169,7 @@ sub main() {
 #  13 Aug 2009 - R. Yantosca - Removed special machine logins
 #  04 Mar 2010 - R. Yantosca - Modified to pass local key name
 #  17 Sep 2010 - R. Yantosca - Add one more vertical line to default geometry
+#  06 Dec 2011 - R. Yantosca - Use 26 vertical lines (for 1980x1200 display)
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -184,7 +185,8 @@ sub main() {
   my $bg     = "DarkSlateGray";    # Background color
   my $fg     = "LemonChiffon";     # Foreground color
   my $cr     = "FireBrick";        # Cursor color
-  my $geom   = "90x23";            # Geometry
+#  my $geom   = "90x23";            # Geometry
+  my $geom   = "90x26";            # Geometry
   my $sl     = 500;                # Number of lines to save
   my $client = "";                 # Name of local host 
 

@@ -41,6 +41,7 @@
 #  04 Jan 2012 - R. Yantosca - Updated Pierce Hall printer names
 #  04 Jan 2012 - R. Yantosca - Updated aliases for GEOS-5 chdir commands
 #  13 Jan 2012 - R. Yantosca - Added chdir commands for GEOS-5.7 dirs
+#  06 Jun 2012 - R. Yantosca - Updated for login.as.harvard.edu login
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -59,13 +60,13 @@
 #%%%%% LIBRARY PATHS BASED ON NASA BASELIBS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 # Baselibs 2.2.0 (full build with Intel 10.1)
-setenv BASEDIR220      ~bmy/opt/Baselibs/v2.2.0/x86_64-unknown-linux-gnu/ifort
+setenv BASEDIR220 /home/bmy/opt/Baselibs/v2.2.0/x86_64-unknown-linux-gnu/ifort
 
 # Baselibs v3.1.5 (essential build with Intel 11.1)
-setenv BASEDIR315      ~bmy/opt/Baselibs/v3.1.5/x86_64-unknown-linux-gnu/ifort
+setenv BASEDIR315 /home/bmy/opt/Baselibs/v3.1.5/x86_64-unknown-linux-gnu/ifort
 
 # Baselibs v3.1.7 (full build with Intel 11.1)
-setenv BASEDIR317      ~bmy/opt/Baselibs/v3.1.7/x86_64-unknown-linux-gnu/ifort
+setenv BASEDIR317 /home/bmy/opt/Baselibs/v3.1.7/x86_64-unknown-linux-gnu/ifort
 
 # Pick one of the Baselibs
 setenv BASEDIR         $BASEDIR315
@@ -116,11 +117,6 @@ setenv BL_LIB_NETCDF   /opt/GEOS-Chem-Libraries/ifort/nc4/lib
 setenv BL_INC_HDF5     /opt/GEOS-Chem-Libraries/ifort/nc4/include
 setenv BL_LIB_HDF5     /opt/GEOS-Chem-Libraries/ifort/nc4/lib
 setenv BL_LIB_ZLIB     /opt/GEOS-Chem-Libraries/ifort/nc4/lib
-setenv INC_NETCDF      $BL_INC_NETCDF
-setenv LIB_NETCDF      $BL_LIB_NETCDF
-setenv INC_HDF5        $BL_INC_HDF5
-setenv LIB_HDF5        $BL_LIB_HDF5
-setenv LIB_ZLIB        $BL_LIB_ZLIB
 
 # For the new GEOS-Chem-Libraries path (bmy, 5/9/12)
 setenv GC_BIN          /opt/GEOS-Chem-Libraries/ifort/nc4/bin
@@ -128,6 +124,11 @@ setenv GC_INCLUDE      /opt/GEOS-Chem-Libraries/ifort/nc4/include
 setenv GC_LIB          /opt/GEOS-Chem-Libraries/ifort/nc4/lib
 alias  gcnc            $GC_BIN/nc-config
 alias  gcnf            $GC_BIN/nf-config
+
+# For various other utility programs that use netCDF (bmy, 5/11/12)
+setenv BIN_NETCDF      $GC_BIN
+setenv INC_NETCDF      $GC_INCLUDE
+setenv LIB_NETCDF      $GC_LIB
 #------------------------------------------------------------------------------
 
 #%%%%% OTHER ENVIRONMENT VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,9 +247,6 @@ alias  w           "w | sort"
 alias  who         "who | sort"
 alias  zap         "kill -9"
 
-# Use Mike Long's special emacs
-alias  mlemacs     "~mlong/tools/emacs/bin/emacs"
-
 # Directory display (replacing paths w/ generic /home, /as, /as2 links)
 alias  pwd         "pwd | sed 's/\/mnt\/as\/home/\/home/'| sed 's/\/mnt\/as/\/as/'| sed 's/\/mnt\/lstr00\/srv\/home/\/home/'| sed 's/\/mnt\/lstr04\/srv\/home/\/home/' | sed 's/\/mnt\/lstr05\/srv/\/as/'| sed 's/\/mnt\/lstr01\/srv/\/as2/' | sed 's/\/mnt\/group/\/as\/group/' | sed 's/\/lustre\/group/\/as\/group/' | sed 's/\/lustre\/pub/\/as2\/pub/' | sed 's/\/lustre\/home/\/home/'"
 
@@ -264,10 +262,7 @@ set    path =      ( $path $home/KPP/kpp-2.2.1.December2006/bin )
 alias  KPP         "cd $KPP_HOME"
 
 # Logins to other machines (delete what you don't need)
-alias  arg         "$home/bin/xt -h argus &"
-alias  sol         "$home/bin/xt -h sol &"
-alias  pro         "$home/bin/xt -h prometheus &"
-alias  rhe         "$home/bin/xt -h rhea &"
+alias  bob         "$home/bin/xt -h bmy.as.harvard.edu -u bmy &"
 alias  seas        "$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
 alias  wum         "$home/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
 
@@ -282,7 +277,7 @@ alias  gl          "git log"
 alias  glo         "git log --oneline"
 
 # Website commands
-setenv ACMG_WEB    "/as/pub/git/jhy/acmg.seas.harvard.edu"
+setenv ACMG_WEB    "/as/pub-rw/git/jhy/acmg.seas.harvard.edu"
 alias  WG          "cd $home/web/geos"
 alias  WH          "cd $home/web/htdocs"
 alias  WP          "cd $home/web/publications"
@@ -320,14 +315,6 @@ alias  pr_2f_2l   "lpr -H print.seas.harvard.edu -P prc-2flr-clr2 -o sides=two-s
 alias  pq_2f      "lpq -h print.seas.harvard.edu -P prc-2flr-clr2"
 alias  rm_2f      "lprm -h print.seas.harvard.edu -P prc-2flr-clr2"
 
-# Column code development directory aliases
-#alias  RC          "cd ~/gc_column/run/column"
-#alias  RR          "cd ~/gc_column/run/reference"
-#alias  CB          "cd ~/gc_column/Code/GeosCore"
-#alias  CH          "cd ~/gc_column/Code/Headers"
-#alias  CL          "cd ~/gc_column/Code/loop"
-#alias  CR          "cd ~/gc_column/Code/ref"
-
 # GEOS-5.2.0 code & script directories
 alias  G           "cd $home/regrid/GEOS_5/"
 alias  G2b         "cd $home/regrid/GEOS_5/bin"
@@ -360,11 +347,7 @@ alias  ML          "ls -lt $home/regrid/MERRA/logs/ | less"
 # NOTE: These are Bob Y's aliases.  You may not need these.
 #==============================================================================
 
-if ( $hostabbr == "sol" ) then                               # Root data dir
-   set dataDir =   "/as/group/geos/data/"                    # Readonly mount
-else
-   set dataDir =   "/as/group/geos-rw/data"                  # Read-write mount
-endif
+set dataDir =      "/as/group/geos-rw/data"                  # Read-write mount
 
 alias  XC          "cd $dataDir/GEOS_0.5x0.666_CH"           # GEOS 0.5x0.666 
 alias  XC5         "cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"    
@@ -394,7 +377,7 @@ alias  ME          "cd /as/scratch/tmp/bmy/MERRA"
 #==============================================================================
 #  Specific settings for interactive Linux login machines and clusters
 #==============================================================================
-if ( $sysname  == "linux-rhel5-x86_64" ) then
+if ( $sysname == "linux-rhel5-x86_64" || $sysname  == "linux-fc16-x86_64" ) then
 
     # Max out machine limits
     limit cputime      unlimited
@@ -429,11 +412,15 @@ else
 endif
 
 #==============================================================================
-# Set the # of threads for OpenMP (selected hosts only)
+# Settings for OpenMP 
 #==============================================================================
-if ( $hostabbr == "rhea" || $hostabbr == "prometheus" ) then
-   setenv OMP_NUM_THREADS 4
-endif
+
+# Number of threads
+setenv OMP_NUM_THREADS 4
+
+# Reset the child stack size to a large positive number
+# (It's OK if this is larger than the max value, it's just a kludge)
+setenv KMP_STACKSIZE 500000000
 
 #==============================================================================
 # Display message of the day (if it exists)

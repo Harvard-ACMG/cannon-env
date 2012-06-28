@@ -8,8 +8,7 @@
 # Modified for the following software packages: (bmy, 09 May 2012)
 # (1) Intel Fortran Compiler 11.1
 # (2) OpenMPI 1.4.1 GNU-Intel build
-# (3) NetCDF 4.01 GNU-Intel build#
-# (4) IDL v8.1
+# (3) IDL v8.1
 #
 @default
 +intel_compilers-11.1

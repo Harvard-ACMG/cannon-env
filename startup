@@ -1,6 +1,5 @@
 #!/bin/tcsh
 
-# $Id: startup,v 1.2 2009/08/13 18:09:13 bmy Exp $
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
 #------------------------------------------------------------------------------
@@ -17,29 +16,34 @@
 # !CALLING SEQUENCE:
 #  startup
 #
+# !REMARKS:
+#  You also need an .Xdefaults file with xterminal settings (such as the
+#  one that Bob Yantosca has set up).
+#
 # !REVISION HISTORY: 
 #  01 Oct 2003 - R. Yantosca - Initial version
 #  13 Aug 2009 - R. Yantosca - Removed obsolete commands
 #  13 Aug 2009 - R. Yantosca - Added ProTeX header
 #  05 Mar 2010 - R. Yantosca - Modified for new keys
+#  05 Jun 2012 - R. Yantosca - Modified for bmy@bmy.as.harvard.edu
+#  21 Jun 2012 - R. Yantosca - Now use xterm instead of xt, since we are
+#                              already logged into the same system
 #EOP
 #------------------------------------------------------------------------------
 #BOC
 
-# Force a mount with "who" commmand
-ssh -A bmy@argus  who
-ssh -A bmy@sol    who
-ssh -A bmy@rhea   who
+# Force a mount with the who command
+ssh -A bmy@bmy.as.harvard.edu  who
 
-# Open connections to several machines (add others if you want)
-# Delay each window by a few seconds to avoid problems w/ .Xauthority
-$HOME/bin/xt -h argus &
+# Open connections to several Xterms
+xterm -n $user &      # Login window #1
 sleep 3
-$HOME/bin/xt -h sol   &
-sleep 3
-$HOME/bin/xt -h rhea  &
-sleep 3
-$HOME/bin/xt -h rhea  &
+
+xterm -n $user &      # Login window #2
+sleep 3 
+
+xterm -n $user &      # Login window #3
+sleep 3 
 
 # Open an EMACS window
 emacs &

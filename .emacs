@@ -28,6 +28,9 @@
 ;  20 Dec 2007 - P. Le Sager - Initial version
 ;  08 Dec 2011 - R. Yantosca - Added ProTeX headers
 ;  08 Dec 2011 - R. Yantosca - Now set for 74 rows (1920x1280 resolution)
+;  05 Jun 2012 - R. Yantosca - Now set for 72 rows (1920x1280 resolution)
+;  05 Jun 2012 - R. Yantosca - Now set mouse wheel behavior for Emacs 23
+;   5 Jun 2012 - R. Yantosca - Add time & date to mode bar (at bottom)
 ;EOP
 ;------------------------------------------------------------------------------
 ;BOC
@@ -96,15 +99,18 @@
   ;; Your init file should contain only one such instance.
  '(dired-face-symlink ((t (:foreground "white" :background "darkOrchid"))))
  '(font-lock-comment-face ((t (:foreground "#6920ac"))))
+ '(font-lock-doc-face ((t (:foreground "green4"))))
+ '(font-lock-string-face ((t (:foreground "green4"))))
  '(font-lock-doc-string-face ((t (:foreground "green4"))))
  '(font-lock-function-name-face ((t (:foreground "red2"))))
+ '(font-lock-builtin-face ((t (:foreground "red2"))))
  '(font-lock-keyword-face ((t (:foreground "orange3"))))
- '(font-lock-other-type-face ((t (:foreground "blue"))))
  '(font-lock-preprocessor-face ((t (:foreground "red2"))))
  '(font-lock-reference-face ((t (:foreground "red2"))))
  '(font-lock-string-face ((t (:foreground "green4"))))
  '(font-lock-type-face ((t (:foreground "brown"))))
- '(font-lock-variable-name-face ((t (:foreground "black")))))
+ '(font-lock-other-type-face ((t (:foreground "blue"))))
+ '(font-lock-variable-name-face ((t (:foreground "blue")))))
 
 ;;=============================================================================
 ;; FUNCTIONS and GLOBAL SETTINGS
@@ -196,12 +202,6 @@
 ;;=============================================================================
 
 
-;; to get rid of ^M in files imported from MS. In DIR mode,
-;; should use: ! to_unix
-;; Not available on Tethys?
-
-
-;;(setq delete-key-deletes-forward 0)     ; works for Xemacs ONLY 
 (global-set-key [(delete)] "\C-d")        ; Now do that instead: 
                                           ;  works for both emacs/Xemacs
 
@@ -302,18 +302,18 @@
 (setq-default column-number-mode t)
 
 ;; get date and time in the info bar ("mode line")
-;;(setq display-time-day-and-date t)
-;;(setq display-time-string-forms
-;;      (quote
-;;       ((if (and (not display-time-format)
-;;		 display-time-day-and-date)
-;;	    (format-time-string "%a %b %e   " now) "  ")
-;;	(format-time-string
-;;	 (or display-time-format
-;;	     (if display-time-24hr-format "%H:%M" "%-I:%M%p")) now)
-;;	))
-;;      )
-;;(display-time)
+(setq display-time-day-and-date t)
+(setq display-time-string-forms
+      (quote
+       ((if (and (not display-time-format)
+		 display-time-day-and-date)
+	    (format-time-string "%a %b %e   " now) "  ")
+	(format-time-string
+	 (or display-time-format
+	     (if display-time-24hr-format "%H:%M" "%-I:%M%p")) now)
+	))
+      )
+(display-time)
 
 ;; To insert a basic time stamp in a buffer
 (defun insert-timestamp ()
@@ -347,7 +347,7 @@
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; keep that one for idlwave?
 
 ;; change default Ediff splitting to horizontal
-;;(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-split-window-function 'split-window-horizontally)
 
 ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
 ;; Your init file should contain only one such instance.
@@ -391,15 +391,20 @@
 ;;=============================================================================
 ;; MOUSE WHEEL BUSINESS
 ;;=============================================================================
-(if (featurep 'xemacs) 
-    (progn
-      (global-set-key '(button4) 'scroll-down)
-      (global-set-key '(button5) 'scroll-up))
-  (progn
-    (global-set-key [mouse-4] 'scroll-down)
-    (global-set-key [mouse-5] 'scroll-up))
-  )
 
+;; Use this for EMACS 21 (bmy, 6/5/12)
+;;(if (featurep 'xemacs) 
+;;    (progn
+;;      (global-set-key '(button4) 'scroll-down)
+;;      (global-set-key '(button5) 'scroll-up))
+;;  (progn
+;;    (global-set-key [mouse-4] 'scroll-down)
+;;    (global-set-key [mouse-5] 'scroll-up))
+;;  )
+
+;; Use this for EMACS 23; scroll by 3 lines at a time (bmy, 6/5/12)
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 3) ((control) . nil))) 
+(setq mouse-wheel-progressive-speed nil)
 
 ;;=============================================================================
 ;; FUNCTION KEY BINDINGS -- Bob Y's preferences (updated 3/19/09)
@@ -957,84 +962,6 @@
   > "CHARACTER(LEN=ESMF_MAXSTR) :: ")
 
 ;;
-;; %%% ESMF abbreviations #2 %%%
-;;
-(define-abbrev f90-mode-abbrev-table "`ea"   ""  'f90-esmf-type-array)
-(define-abbrev f90-mode-abbrev-table "`eas"  ""  'f90-esmf-type-arrayspec)
-(define-abbrev f90-mode-abbrev-table "`eb"   ""  'f90-esmf-type-bundle)
-(define-abbrev f90-mode-abbrev-table "`ecl"  ""  'f90-esmf-type-clock)
-(define-abbrev f90-mode-abbrev-table "`eco"  ""  'f90-esmf-type-config)
-(define-abbrev f90-mode-abbrev-table "`ecc"  ""  'f90-esmf-type-cplcomp)
-(define-abbrev f90-mode-abbrev-table "`del"  ""  'f90-esmf-type-delayout)
-
-(define-skeleton f90-esmf-type-array
-  "Insert a ESMF Array template" nil
-  > "TYPE(ESMF_Array) :: ")
-
-(define-skeleton f90-esmf-type-arrayspec
-  "Insert a ESMF Array template" nil
-  > "TYPE(ESMF_ArraySpec) :: ")
-
-(define-skeleton f90-esmf-type-bundle
-  "Insert a ESMF Bundle template" nil
-  > "TYPE(ESMF_Bundle) :: ")
-
-(define-skeleton f90-esmf-type-clock
-  "Insert a ESMF Clock template" nil
-  > "TYPE(ESMF_Clock) :: ")
-
-(define-skeleton f90-esmf-type-config
-  "Insert a ESMF Config template" nil
-  > "TYPE(ESMF_Config) :: ")
-
-(define-skeleton f90-esmf-cplcomp
-  "Insert a ESMF CplComp template" nil
-  > "TYPE(ESMF_CplComp) :: ")
-
-(define-skeleton f90-esmf-delayout
-  "Insert a ESMF DeLayout template" nil
-  > "TYPE(ESMF_DeLayout) :: ")
-
-;;
-;; %%% ESMF abbreviations #3 %%%
-;;
-(define-abbrev f90-mode-abbrev-table "`ef"   ""  'f90-esmf-type-field)
-(define-abbrev f90-mode-abbrev-table "`eg"   ""  'f90-esmf-type-grid)
-(define-abbrev f90-mode-abbrev-table "`egc"  ""  'f90-esmf-type-gridcomp)
-(define-abbrev f90-mode-abbrev-table "`es"   ""  'f90-esmf-type-state)
-(define-abbrev f90-mode-abbrev-table "`et"   ""  'f90-esmf-type-time)
-(define-abbrev f90-mode-abbrev-table "`eti"  ""  'f90-esmf-type-timeinterval)
-(define-abbrev f90-mode-abbrev-table "`evm"  ""  'f90-esmf-type-vm)
-
-(define-skeleton f90-esmf-type-field
-  "Insert a ESMF Field template" nil
-  > "TYPE(ESMF_Field) :: ")
-
-(define-skeleton f90-esmf-type-grid
-  "Insert a ESMF Grid template" nil
-  > "TYPE(ESMF_Grid) :: ")
-
-(define-skeleton f90-esmf-type-gridcomp
-  "Insert a ESMF GridComp template" nil
-  > "TYPE(ESMF_GridComp) :: ")
-
-(define-skeleton f90-esmf-type-state
-  "Insert a ESMF State template" nil
-  > "TYPE(ESMF_State) :: ")
-
-(define-skeleton f90-esmf-type-time
-  "Insert a ESMF Time template" nil
-  > "TYPE(ESMF_Time) :: ")
-
-(define-skeleton f90-esmf-type-timeinterval
-  "Insert a ESMF TimeInterval template" nil
-  > "TYPE(ESMF_TimeInterval) :: ")
-
-(define-skeleton f90-esmf-type-vm
-  "Insert a ESMF VM template" nil
-  > "TYPE(ESMF_VM) :: ")
-
-;;
 ;; %%% ProTex header abbreviations %%%
 ;;
 (define-abbrev f90-mode-abbrev-table "`pi"   ""  'f90-protex-italic)
@@ -1206,31 +1133,32 @@
 
 
 ;;=============================================================================
-;; Define the frame size, and split it in two vertical windows.  
-;; These are for 17 inch monitor running 1280x1024 resolution. 
-;; If you change font sizes, you'll probably have to tweak this. 
-;; 
-;; You can comment out the stuff that you don't want.  You can also change
-;; the default lines & columns that EMACS/XEMACS will start with
-;;
-;; Depending on the size of your monitor, you can customize this accordingly.
+;; Define the frame size, and choose one or two windows.
+;; You can uncomment the lines that you want and comment the rest.
+;; NOTE: The defaults is for a screen of 1920x1200 resolution,
+;; so you can modify the # of lines & columns so that the Emacs
+;; window will fit onto your screen (bmy, 6/5/12)
 ;;=============================================================================
 
-;; Default --Open one window, 80 columns wide and 55 lines high
-;;(set-frame-height (selected-frame) 72)    ; %%% 72 lines for 1920x1080 res
-(set-frame-height (selected-frame) 74)    ; %%% 74 lines for 1920x1200 res
-(set-frame-width  (selected-frame) 80)    ; 80 columns wide
+;; %%%%% Open one window, 80 columns x 72 lines %%%%%
+;;(set-frame-height (selected-frame) 72)    ; 72 lines 
+;;(set-frame-width  (selected-frame) 80)    ; 80 columns
 
-;; Philippe's preference -- put 2 windows side by side
-;(set-frame-height (selected-frame) 70 )  ; 70 lines high
-;(set-frame-width  (selected-frame) 173)  ; 173 columns wide
-;(split-window-horizontally)              ; want two windows at startup 
-;(other-window 1)                         ; move to other window
-;(split-window-vertically)                ; and separate it in  2 windows 
-;(other-window 1)                         ; move to other window
-;(shell)                                  ; start a shell 
-;                                         ;  -has a problem in Tethys-
-;;(rename-buffer "shell-first")           ; rename it
-;(other-window 1)                         ; move back to first window 
+;; %%%%% Open two windows side by side, 80 columns x 72 lines
+(set-frame-height (selected-frame) 72)      ; 72 lines 
+(set-frame-width  (selected-frame) 164)     ; 164 columns
+(split-window-horizontally)                 ; Use two vertical windows
+;;(other-window 1)                            ; Start in the right window
+
+;; %%%%% Open two windows on top of each other, 80 columns x 72 lines %%%%%
+;;(set-frame-height (selected-frame) 72)    ; 72 lines 
+;;(set-frame-width  (selected-frame) 80)    ; 80 columns
+;;(split-window-vertically)                 ; Use two horizontal windows
+;;(other-window 1)                          ; Start in the bottom window
+
+;; %%%%% Open a shell (optional, but not really necessary) %%%%%
+;(shell)                                    ; start a shell 
+;;(rename-buffer "shell-first")             ; rename it
+;(other-window 1)                           ; move back to first window 
 
 ;EOC

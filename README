@@ -1,6 +1,6 @@
 README -- describes contents of ~bmy/env: System Environment Files
-16 Mar 2010
-Bob Yantosca and Claire Carouge
+28 Jun 2012
+GEOS-Chem Support Team
 geos-chem-support@as.harvard.edu
 
 
@@ -24,11 +24,12 @@ File Listing:
                    we recommend using Emacs from now on.  Copy this to your 
                    home directory (~).
 
-.xemacs-options -- File for xemacs on Hera, Europa, Sol that contains
-                   font colors and other settings.  This file is not
-                   read by the newer emacs on Tethys, Rhea, Gateway.
-                   Copy this to your home directory (~).
-	           %%% NOTE: THIS IS OBSOLETE NOW! %%%
+.soft           -- Customization file for the SoftEnv program.  This allows
+                   you to set which versions of installed software programs
+                   to use.
+\
+.Xdefaults      -- Sets specific setting (colors, window sizes, etc.) for
+                   X11 applications (such as xterm).
 
 startup         -- File that you use at login time to pop open several 
                    X-windows on various machines.  It also starts an emacs 
