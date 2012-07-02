@@ -171,7 +171,7 @@ set    sysname  =  `whatami`
 # Host name (e.g. "sol.as.harvard.edu")
 set    hostname =  `uname -n`
 
-# Abbreviated host name (e.g. "sol" instead of "sol.as.harvard.edu")
+# Abbreviated host name
 set    hostabbr  = `uname -n | sed 's/.as.harvard.edu//'`
 
 # Turn on file correction
@@ -277,15 +277,15 @@ alias  gl          "git log"
 alias  glo         "git log --oneline"
 
 # Website commands
-setenv ACMG_WEB    "/as/pub-rw/git/jhy/acmg.seas.harvard.edu"
+setenv ACMG_WEB    "git://git-home.as.harvard.edu/acmg.seas.harvard.edu"
 alias  WG          "cd $home/web/geos"
 alias  WH          "cd $home/web/htdocs"
 alias  WP          "cd $home/web/publications"
 alias  WE          "cd $home/web/presentations"
-alias  wpg         "git pull $ACMG_WEB/geos master"
-alias  wph         "git pull $ACMG_WEB/htdocs master"
-alias  wpp         "git pull $ACMG_WEB/publications master"
-alias  wpe         "git pull $ACMG_WEB/presentations master"
+alias  wpg         "git pull ${ACMG_WEB}/geos master"
+alias  wph         "git pull ${ACMG_WEB}/htdocs master"
+alias  wpp         "git pull ${ACMG_WEB}/publications master"
+alias  wpe         "git pull ${ACMG_WEB}/presentations master"
 
 # Sun Grid Engine commands
 alias  qq          "qconf -spl"
