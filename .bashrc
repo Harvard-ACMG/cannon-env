@@ -23,6 +23,7 @@
 # !REVISION HISTORY: 
 #  07 Oct 2014 - R. Yantosca - Initial version
 #  14 Oct 2014 - R. Yantosca - Fixes to add IDL on Odyssey
+#  14 Oct 2014 - R. Yantosca - Use $HOME, $USER instead of $home, $user
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -157,7 +158,6 @@ if [[ $isAsCluster == 1 ]] ; then
  export MY_GIT_DIR="/as/pub/git/bmy"
  alias  MG="cd $MY_GIT_DIR; pwd"
 fi
-alias  gci="git cvsimport -v -d /home/bmy/CVS"
 alias  gui="git gui &"
 alias  gk="gitk &"
 alias  gka="gitk --all &"
@@ -167,10 +167,10 @@ alias  glo="git log --oneline"
 # %%% Git commands for the Jacob-group websites %%%
 if [[ $isAsCluster == 1 ]] ; then
  export ACMG_WEB="git://git-home.as.harvard.edu/acmg.seas.harvard.edu"
- alias  WG="cd $home/web/geos"
- alias  WH="cd $home/web/htdocs"
- alias  WP="cd $home/web/publications"
- alias  WE="cd $home/web/presentations"
+ alias  WG="cd $HOME/web/geos"
+ alias  WH="cd $HOME/web/htdocs"
+ alias  WP="cd $HOME/web/publications"
+ alias  WE="cd $HOME/web/presentations"
  alias  wpg="git pull ${ACMG_WEB}/geos master"
  alias  wph="git pull ${ACMG_WEB}/htdocs master"
  alias  wpp="git pull ${ACMG_WEB}/publications master"
@@ -210,9 +210,9 @@ export OMPI_CXX=$CXX
 
 # %%%%% Settings for IDL %%%%%
 export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
-alias  I="cd $home/IDL"
-alias  IG="cd $home/IDL/gamap2"
-alias  IS="cd $home/IDL/tests"
+alias  I="cd $HOME/IDL"
+alias  IG="cd $HOME/IDL/gamap2"
+alias  IS="cd $HOME/IDL/tests"
 
 # %%%%% Settings for NCL %%%%%
 if [[ isAsCluster == 1 ]] ; then
@@ -222,7 +222,7 @@ if [[ isAsCluster == 1 ]] ; then
 fi
 
 # %%%%% Settings for Python %%%%%
-export PYTHONSTTARTUP="$home/python/python_startup.py"
+export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 
 # %%% Settings for TAU profiler %%%
 #if [[ $isAsCluster == 1 ]] ; then
@@ -265,8 +265,8 @@ alias  gt="grep -in --text"
 alias  gf="gifview -a"
 alias  gvs="gv --orientation=seascape"
 alias  m="less"
-alias  pan="$home/bin/panoply.sh &"
-alias  proc="ps -ef | grep $user | sort"
+alias  pan="$HOME/bin/panoply.sh &"
+alias  proc="ps -ef | grep $USER | sort"
 alias  pu="rm *~"
 alias  sb=". ~/.bash_profile"
 alias  ssh="ssh -X -A"
@@ -298,14 +298,14 @@ if [[ $isAsCluster == 1 ]] ; then
  alias  qa="qacct -j"
 
  # Logins from AS cluster to other machines
- alias  me="xterm $user &"
- alias  seas="$home/bin/xt -h login.seas.harvard.edu -u yantosca &"
- alias  wum="$home/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
- alias  nccs="$home/bin/xt -h login.nccs.nasa.gov -u ryantosc &"
- alias  disc="$home/bin/xt -h discover.nccs.nasa.gov -u ryantosc &"
- alias  dali="$home/bin/xt -h dali.nccs.nasa.gov -u ryantosc &"
- alias  gcfas="$home/bin/xt -h fas.harvard.edu -u geoschem &"
- alias  odyssey="$home/bin/xt -h login.rc.fas.harvard.edu -u ryantosca &"
+ alias  me="xterm $USER &"
+ alias  seas="$HOME/bin/xt -h login.seas.harvard.edu -u yantosca &"
+ alias  wum="$HOME/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
+ alias  nccs="$HOME/bin/xt -h login.nccs.nasa.gov -u ryantosc &"
+ alias  disc="$HOME/bin/xt -h discover.nccs.nasa.gov -u ryantosc &"
+ alias  dali="$HOME/bin/xt -h dali.nccs.nasa.gov -u ryantosc &"
+ alias  gcfas="$HOME/bin/xt -h fas.harvard.edu -u geoschem &"
+ alias  odyssey="$HOME/bin/xt -h login.rc.fas.harvard.edu -u ryantosca &"
 fi
 
 # %%%%% Add your personal aliases for Odyssey here
