@@ -31,6 +31,7 @@
 ;  05 Jun 2012 - R. Yantosca - Now set for 72 rows (1920x1280 resolution)
 ;  05 Jun 2012 - R. Yantosca - Now set mouse wheel behavior for Emacs 23
 ;   5 Jun 2012 - R. Yantosca - Add time & date to mode bar (at bottom)
+;  11 Sep 2013 - R. Yantosca - Updated for NCL mode
 ;EOP
 ;------------------------------------------------------------------------------
 ;BOC
@@ -347,7 +348,10 @@
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; keep that one for idlwave?
 
 ;; change default Ediff splitting to horizontal
-(setq ediff-split-window-function 'split-window-horizontally)
+;;(setq ediff-split-window-function 'split-window-horizontally)
+
+;; change default Ediff splitting to horizontal
+(setq ediff-split-window-function 'split-window-vertically)
 
 ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
 ;; Your init file should contain only one such instance.
@@ -438,7 +442,7 @@
 (global-set-key [(control f6)]   'idlwave-mode)
 (global-set-key [(control f7)]   'makefile-mode)
 (global-set-key [(control f8)]   'shell-script-mode)
-(global-set-key [(control f9)]   'perl-mode)
+(global-set-key [(control f9)]   'cperl-mode)
 (global-set-key [(control f10)]  'font-lock-mode)
 
 ; EDIFF
@@ -543,6 +547,7 @@
 				("\\.h$"   . fortran-mode)
 				("\\.hM$"  . fortran-mode)
 				("\\.F$"   . fortran-mode)
+				("\\.H$"   . f90-mode)
 				("\\.F90"  . f90-mode)
 				("\\.FM$"  . fortran-mode)
 				("\\.COM$" . fortran-mode)
@@ -626,8 +631,7 @@
 
       ;; Pad some operators with spaces (or not)
       (setq idlwave-do-actions         t
-	    idlwave-surround-by-blank  t
-	    idlwave-pad-keyword        nil )  
+	    idlwave-surround-by-blank  t)
 
       ;; Indent ";" comments with the code but not ";;", ";;;", ";;;;" etc.
       (setq idlwave-code-comment       ";[^;]"  )
@@ -719,6 +723,7 @@
 (define-abbrev fortran-mode-abbrev-table ";do2" ""  'fortran-skeleton-do-enddo-2)
 (define-abbrev fortran-mode-abbrev-table ";do3" ""  'fortran-skeleton-do-enddo-3)
 (define-abbrev fortran-mode-abbrev-table ";do4" ""  'fortran-skeleton-do-enddo-4)
+(define-abbrev fortran-mode-abbrev-table ";ar"  ""  'fortran-skeleton-am-I-Root)
 
 (define-skeleton fortran-skeleton-if-else-endif
   "Insert an if - else - end if region" nil
@@ -757,6 +762,11 @@
   -3 "ENDDO" \n
   -3 "ENDDO" \n
   -3 "ENDDO")
+
+(define-skeleton fortran-skeleton-am-I-Root
+  "Insert an if - else - end if region" nil
+  >  "IF ( am_I_Root ) THEN" \n
+  -3 "ENDIF")
 
 ;;
 ;; %%% FORTRAN data type abbreviations %%%
@@ -883,6 +893,7 @@
 (define-abbrev f90-mode-abbrev-table "`do2" ""  'f90-skeleton-do-enddo-2)
 (define-abbrev f90-mode-abbrev-table "`do3" ""  'f90-skeleton-do-enddo-3)
 (define-abbrev f90-mode-abbrev-table "`do4" ""  'f90-skeleton-do-enddo-4)
+(define-abbrev f90-mode-abbrev-table "`ar"  ""  'f90-skeleton-am-I-Root)
 
 (define-skeleton f90-skeleton-if-else-endif
   "Insert an if - else - end if region" nil
@@ -921,6 +932,11 @@
   -3 "ENDDO" \n
   -3 "ENDDO" \n
   -3 "ENDDO")
+
+(define-skeleton f90-skeleton-am-I-Root
+  "Insert an if - else - end if region" nil
+  >  "IF ( am_I_Root ) THEN" \n
+  -3 "ENDIF")
 
 ;;
 ;; %%% ESMF abbreviations #1 %%%
@@ -1063,6 +1079,17 @@
 ;; Extra indentation given to a sub-block
 (setq perl-continued-statement-offset 2)
 
+;;-----------------------------------------------------------------------------
+;; For NCL (NCAR Graphics) mode
+;;-----------------------------------------------------------------------------
+
+; Associate *.ncl files with NCL
+(setq auto-mode-alist (cons '("\.ncl$" . ncl-mode) auto-mode-alist))
+
+; Load the file with NCL editor enhancements
+; Use the color settings defined above.
+(autoload 'ncl-mode "/home/bmy/bin/ncl.el")  
+    
 ;;-----------------------------------------------------------------------------
 ;; For FONT-LOCK and AUTO-FILL
 ;;-----------------------------------------------------------------------------
