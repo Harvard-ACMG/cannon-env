@@ -22,6 +22,7 @@
 #
 # !REVISION HISTORY: 
 #  07 Oct 2014 - R. Yantosca - Initial version
+#  14 Oct 2014 - R. Yantosca - Fixes to add IDL on Odyssey
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -208,7 +209,7 @@ export OMPI_CC=$CC
 export OMPI_CXX=$CXX
 
 # %%%%% Settings for IDL %%%%%
-export IDL_STARTUP="$home/IDL/idl_startup.pro"
+export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
 alias  I="cd $home/IDL"
 alias  IG="cd $home/IDL/gamap2"
 alias  IS="cd $home/IDL/tests"
