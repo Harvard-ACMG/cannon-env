@@ -25,6 +25,8 @@
 #  14 Oct 2014 - R. Yantosca - Fixes to add IDL on Odyssey
 #  14 Oct 2014 - R. Yantosca - Use $HOME, $USER instead of $home, $user
 #  15 Oct 2014 - R. Yantosca - Now use bash syntax for Unix prompt
+#  15 Oct 2014 - R. Yantosca - Do not display message of the day, this 
+#                              causes WinSCP to choke
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -176,7 +178,7 @@ if [[ $isAsCluster == 1 ]] ; then
 fi
 
 # %%%%% Commands to sync .bashrc etc files %%%%%
-alias  getenv="git pull git://git.as.harvard.edu/bmy/env master"
+alias  getenv="cd ~/env; git pull git://git.as.harvard.edu/bmy/env master"
 
 # %%%%% GitHub commands %%%%%
 alias  fpu="git push https://github.com/GCST/GEOS_FP"
@@ -313,12 +315,5 @@ fi
 if [[ $isOdyssey == 1 ]] ; then
  alias  me="xterm &"
  alias  mkey="module keyword"
-fi
-
-#==============================================================================
-# %%%%% Display message of the day (if it exists) %%%%%
-#==============================================================================
-if [[ -f /etc/motd ]]; then
- cat /etc/motd
 fi
 #EOC
