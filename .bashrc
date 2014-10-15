@@ -308,6 +308,7 @@ fi
 
 # %%%%% Add your personal aliases for Odyssey here
 if [[ $isOdyssey == 1 ]] ; then
+ alias  me="xterm &"
  alias  mkey="module keyword"
 fi
 
