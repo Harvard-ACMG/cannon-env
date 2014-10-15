@@ -162,7 +162,7 @@ alias  gka="gitk --all &"
 alias  gl="git log"
 alias  glo="git log --oneline"
 
-# %%% Git commands for the Jacob-group websites %%%
+# %%%%% Git commands for the Jacob-group websites %%%%%
 if [[ $isAsCluster == 1 ]] ; then
  export ACMG_WEB="git://git-home.as.harvard.edu/acmg.seas.harvard.edu"
  alias  WG="cd $HOME/web/geos"
@@ -175,7 +175,10 @@ if [[ $isAsCluster == 1 ]] ; then
  alias  wpe="git pull ${ACMG_WEB}/presentations master"
 fi
 
-# %%% GitHub commands %%%
+# %%%%% Commands to sync .bashrc etc files %%%%%
+alias  getenv="git pull git://git.as.harvard.edu/bmy/env master"
+
+# %%%%% GitHub commands %%%%%
 alias  fpu="git push https://github.com/GCST/GEOS_FP"
 alias  fpp="git pull https://github.com/GCST/GEOS_FP"
 alias  hcou="git push https://github.com/GCST/HEMCO"
