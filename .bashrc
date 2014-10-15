@@ -24,6 +24,7 @@
 #  07 Oct 2014 - R. Yantosca - Initial version
 #  14 Oct 2014 - R. Yantosca - Fixes to add IDL on Odyssey
 #  14 Oct 2014 - R. Yantosca - Use $HOME, $USER instead of $home, $user
+#  15 Oct 2014 - R. Yantosca - Now use bash syntax for Unix prompt
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -41,18 +42,15 @@ fi
 if [[ $HOSTNAME =~ 'rc.fas.harvard.edu' ]] ; then
  export isOdyssey=1
  export isAsCluster=0
- hostabbr=`echo $HOSTNAME | sed 's/.rc.fas.harvard.edu//'`
 else
  if [[ $HOSTNAME =~ 'as.harvard.edu' ]] ; then
   export isOdyssey=0
   export isAsCluster=1
-  hostabbr=`echo $HOSTNAME | sed 's/.as.harvard.edu//'`
-  hostabbr=`echo $hostabbr | sed 's/\@\$HOSTNAME//g'`
  fi
 fi
 
-# %%%%% Settings for the Unix prompt %%%%%
-set prompt="[! $hostabbr $cwd:t]% "
+# %%%%% Set Unix prompt to be "[USER@HOST CWD]%" %%%%%
+PS1="[\u@\h \W]% "
 
 # %%%%% Startup settings %%%%%
 umask 022          # Make files readable by everyone by default
@@ -298,7 +296,7 @@ if [[ $isAsCluster == 1 ]] ; then
  alias  qa="qacct -j"
 
  # Logins from AS cluster to other machines
- alias  me="xterm $USER &"
+ alias  me="xterm &"
  alias  seas="$HOME/bin/xt -h login.seas.harvard.edu -u yantosca &"
  alias  wum="$HOME/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
  alias  nccs="$HOME/bin/xt -h login.nccs.nasa.gov -u ryantosc &"
