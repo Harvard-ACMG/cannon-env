@@ -27,6 +27,7 @@
 #  15 Oct 2014 - R. Yantosca - Now use bash syntax for Unix prompt
 #  15 Oct 2014 - R. Yantosca - Do not display message of the day, this 
 #                              causes WinSCP to choke
+#  16 Oct 2014 - R. Yantosca - Remove "set notify"
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -64,7 +65,6 @@ set filesc         #
 set emacs          # Use an emacs-style command-line editing interface
 set history        # Turn on history of commands
 set ignoreeof      # Prevent EOF from terminating the shell
-set notify         # Don't wait for next prompt to show background job
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
