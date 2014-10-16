@@ -28,22 +28,17 @@
 #  05 Jun 2012 - R. Yantosca - Modified for bmy@bmy.as.harvard.edu
 #  21 Jun 2012 - R. Yantosca - Now use xterm instead of xt, since we are
 #                              already logged into the same system
+#  14 Aug 2012 - R. Yantosca - Now start up 4 login windows
+#  16 Oct 2014 - R. Yantosca - Simplify, remove delays
 #EOP
 #------------------------------------------------------------------------------
 #BOC
 
-# Force a mount with the who command
-ssh -A bmy@bmy.as.harvard.edu  who
-
 # Open connections to several Xterms
-xterm -n $user &      # Login window #1
-sleep 3
-
-xterm -n $user &      # Login window #2
-sleep 3 
-
-xterm -n $user &      # Login window #3
-sleep 3 
+xterm &      # Login window #1
+xterm &      # Login window #2
+xterm &      # Login window #3
+xterm &      # Login window #4
 
 # Open an EMACS window
 emacs &
