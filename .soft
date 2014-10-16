@@ -9,9 +9,20 @@
 # (1) Intel Fortran Compiler 11.1
 # (2) OpenMPI 1.4.1 GNU-Intel build
 # (3) IDL v8.1
+# (4) NCL v6.1.2
 #
++cdo-1.6.4
++ncl-6.1.2
 @default
 +intel_compilers-11.1
 +openmpi-1.4.1-gnu-intel
-+idl-8.1
++idl-8.2
+
+##############################################################################
+# NOTE: If you want to use IFORT 12 for testing, then comment out the
+# line "+intel_compilers-11.1" above and uncomment the line below. 
+# Then type "resoft" at the Unix prompt. (bmy, 05 Oct 2012)
+#
+#+intel_compilers-12.1
+##############################################################################
 
