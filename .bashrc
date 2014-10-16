@@ -115,8 +115,8 @@ export LIB_HDF5=$GC_LIB
 
 # %%%%% Settings for met field & emissions directories %%%%%
 if [[ $isAsCluster == 1 ]] ; then
- dataDir="/mnt/gcgrid-rw/data/"
- dataDirReadOnly="/mnt/gcgrid/data/"
+ dataDir="/mnt/gcgrid-rw/data"
+ dataDirReadOnly="/mnt/gcgrid/data"
 elif [[ $isOdyssey == 1 ]] ; then
  dataDir="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid"
  dataDirReadOnly="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid"
