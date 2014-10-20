@@ -27,7 +27,8 @@
 #  15 Oct 2014 - R. Yantosca - Now use bash syntax for Unix prompt
 #  15 Oct 2014 - R. Yantosca - Do not display message of the day, this 
 #                              causes WinSCP to choke
-#  16 Oct 2014 - R. Yantosca - Remove "set notify"
+#  16 Oct 2014 - R. Yantosca - Remove "set notify"\
+#  20 Oct 2014 - R. Yantosca - Bug fix: set MPI_HOME and compilers for Odyssey
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -194,10 +195,14 @@ alias  hcop="git pull https://github.com/GCST/HEMCO"
 if [[ $isAsCluster == 1 ]] ; then
  export FC=ifort
  export CC=gcc
+ export CXX=g++
+elif [[ $isOdyssey == 1 ]] ; then
+ export FC=ifort
+ export CC=icc
+ export CXX=icpc
 fi
 export F90=$FC
 export F77=$FC
-export CXX=g++
 
 # %%%%% Settings for OpenMP parallelization %%%%%
 export OMP_NUM_THREADS=4
@@ -206,6 +211,8 @@ export KMP_STACKSIZE=500000000
 # %%%%% Settings for MPI parallelization %%%%%
 if [[ $isAsCluster == 1 ]] ; then
  export MPI_HOME="/home/mlong/tools/openmpi/1.2.8-ifort"
+elif [[ $isOdyssey == 1 ]] ; then
+ export MPI_HOME="/n/sw/openmpi-1.6.2_intel-13.0.079"
 fi
 export OMPI_FC=$FC
 export OMPI_CC=$CC
