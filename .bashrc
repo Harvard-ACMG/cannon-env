@@ -322,5 +322,27 @@ fi
 if [[ $isOdyssey == 1 ]] ; then
  alias  me="xterm &"
  alias  mkey="module keyword"
+
+# %%%%% KLUDGE FOR ODYSSEY %%%%%
+#
+# The available OpenMPI modules labeled (Intel) are actually built with
+# ifort & gcc. The module's specified environment acts like 'mpicc' and
+# 'mpicxx' are Intel-based, when in fact they point to the GNU compilers.
+# This creates an error compiling ESMF because when ESMF looks for <math.h>,
+# it finds a version specific to Intel that DOESN'T work with mpicc/mpicxx/gcc.
+#
+# Temporary Solution: Reconfigure the CPATH environment variable to remove
+# the entries:
+#
+#   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/
+#   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/intel64
+#
+# thus making the GNU version in /usr/include the available and first-seen
+# version.
+#   -- Mike Long (22 Oct 2014)
+#
+ CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include/intel64||g')
+ CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include||g')
+ export CPATH
 fi
 #EOC
