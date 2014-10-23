@@ -29,6 +29,7 @@
 #                              causes WinSCP to choke
 #  16 Oct 2014 - R. Yantosca - Remove "set notify"\
 #  20 Oct 2014 - R. Yantosca - Bug fix: set MPI_HOME and compilers for Odyssey
+#  23 Oct 2014 - R. Yantosca - Now use GEOS-Chem-Libraries for netCDF etc.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -85,8 +86,6 @@ if [[ $isOdyssey == 1 ]] ; then
  module load legacy
  module load hpc/intel-compilers-13.0.079
  module load hpc/openmpi-1.6.2_intel-13.0.079
- module load hpc/hdf5-1.8.9_openmpi-1.6.2_intel-13.0.079
- module load hpc/netcdf-4.3.0_intel-13.0.079
  module load math/IDL-8.3
 fi
 
@@ -103,9 +102,9 @@ if [[ $isAsCluster == 1 ]] ; then
  export GC_INCLUDE="/opt/GEOS-Chem-Libraries/ifort/nc4/include"
  export GC_LIB="/opt/GEOS-Chem-Libraries/ifort/nc4/lib"
 elif [[ $isOdyssey == 1 ]] ; then
- export GC_BIN="/n/sw/netcdf-4.3.0_intel-compilers-13.0.079/bin"
- export GC_INCLUDE="/n/sw/netcdf-4.3.0_intel-compilers-13.0.079/include"
- export GC_LIB="/n/sw/netcdf-4.3.0_intel-compilers-13.0.079/lib"
+ export GC_BIN="/n/home09/ryantosca/opt/bin"
+ export GC_INCLUDE="/n/home09/ryantosca/opt/include"
+ export GC_LIB="/n/home09/ryantosca/opt/lib"
 fi
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
@@ -192,15 +191,9 @@ alias  hcop="git pull https://github.com/GCST/HEMCO"
 #==============================================================================
 
 # %%%%% Settings for Fortran and C %%%%%
-if [[ $isAsCluster == 1 ]] ; then
- export FC=ifort
- export CC=gcc
- export CXX=g++
-elif [[ $isOdyssey == 1 ]] ; then
- export FC=ifort
- export CC=icc
- export CXX=icpc
-fi
+export FC=ifort
+export CC=gcc
+export CXX=g++
 export F90=$FC
 export F77=$FC
 
@@ -322,27 +315,37 @@ fi
 if [[ $isOdyssey == 1 ]] ; then
  alias  me="xterm &"
  alias  mkey="module keyword"
+fi
 
-# %%%%% KLUDGE FOR ODYSSEY %%%%%
-#
-# The available OpenMPI modules labeled (Intel) are actually built with
-# ifort & gcc. The module's specified environment acts like 'mpicc' and
-# 'mpicxx' are Intel-based, when in fact they point to the GNU compilers.
-# This creates an error compiling ESMF because when ESMF looks for <math.h>,
-# it finds a version specific to Intel that DOESN'T work with mpicc/mpicxx/gcc.
-#
-# Temporary Solution: Reconfigure the CPATH environment variable to remove
-# the entries:
-#
-#   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/
-#   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/intel64
-#
-# thus making the GNU version in /usr/include the available and first-seen
-# version.
-#   -- Mike Long (22 Oct 2014)
-#
+#==============================================================================
+# %%%%% Alter standard path settings if needed %%%%%
+#==============================================================================
+
+if [[ $isOdyssey == 1 ]] ; then
+
+ # %%%%% KLUDGE FOR ODYSSEY %%%%%
+ #
+ # The available OpenMPI modules labeled (Intel) are actually built with
+ # ifort & gcc. The module's specified environment acts like 'mpicc' and
+ # 'mpicxx' are Intel-based, when in fact they point to the GNU compilers.
+ # This creates an error compiling ESMF because when ESMF looks for <math.h>,
+ # it finds a version specific to Intel that DOESN'T work with mpicc/mpicxx/gcc.
+ #
+ # Temporary Solution: Reconfigure the CPATH environment variable to remove
+ # the entries:
+ #
+ #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/
+ #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/intel64
+ #
+ # thus making the GNU version in /usr/include the available and first-seen
+ # version.
+ #   -- Mike Long (22 Oct 2014)
+ #
  CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include/intel64||g')
  CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include||g')
  export CPATH
+
+ # %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
+ export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
 fi
 #EOC
