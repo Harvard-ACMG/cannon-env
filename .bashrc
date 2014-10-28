@@ -30,6 +30,9 @@
 #  16 Oct 2014 - R. Yantosca - Remove "set notify"\
 #  20 Oct 2014 - R. Yantosca - Bug fix: set MPI_HOME and compilers for Odyssey
 #  23 Oct 2014 - R. Yantosca - Now use GEOS-Chem-Libraries for netCDF etc.
+#  28 Oct 2014 - R. Yantosca - Now do not set $OMP_NUM_THREADS on Odyssey;
+#                              you will have to set that depending on # CPUs
+#  28 Oct 2014 - R. Yantosca - Also fix paths for HEMCO on Odyssey
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -118,8 +121,8 @@ if [[ $isAsCluster == 1 ]] ; then
  dataDir="/mnt/gcgrid-rw/data"
  dataDirReadOnly="/mnt/gcgrid/data"
 elif [[ $isOdyssey == 1 ]] ; then
- dataDir="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid"
- dataDirReadOnly="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid"
+ dataDir="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid/gcdata"
+ dataDirReadOnly="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid/gcdata"
 fi
 alias  XC="cd $dataDir/GEOS_0.5x0.666_CH"
 alias  XC5="cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"
@@ -198,8 +201,10 @@ export F90=$FC
 export F77=$FC
 
 # %%%%% Settings for OpenMP parallelization %%%%%
-export OMP_NUM_THREADS=4
-export KMP_STACKSIZE=500000000
+if [[ $isAsCluster ]] ; then
+ export OMP_NUM_THREADS=4
+fi
+export KMP_STACKSIZE=5000000
 
 # %%%%% Settings for MPI parallelization %%%%%
 if [[ $isAsCluster == 1 ]] ; then
@@ -315,6 +320,7 @@ fi
 if [[ $isOdyssey == 1 ]] ; then
  alias  me="xterm &"
  alias  mkey="module keyword"
+ alias  myscratch="cd /n/regal/jacob_lab/$USER"
 fi
 
 #==============================================================================
