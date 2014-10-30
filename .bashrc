@@ -33,6 +33,7 @@
 #  28 Oct 2014 - R. Yantosca - Now do not set $OMP_NUM_THREADS on Odyssey;
 #                              you will have to set that depending on # CPUs
 #  28 Oct 2014 - R. Yantosca - Also fix paths for HEMCO on Odyssey
+#  30 Oct 2014 - R. Yantosca - Now max out stacksize and other limits
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -61,15 +62,20 @@ fi
 PS1="[\u@\h \W]% "
 
 # %%%%% Startup settings %%%%%
-umask 022          # Make files readable by everyone by default
-set autolist       # Turn on list completion
-set correct        #
-set color          # 
-set colorcat       # 
-set filesc         #
-set emacs          # Use an emacs-style command-line editing interface
-set history        # Turn on history of commands
-set ignoreeof      # Prevent EOF from terminating the shell
+umask 022             # Make files readable by everyone by default
+set autolist          # Turn on list completion
+set correct           #
+set color             # 
+set colorcat          # 
+set filesc            #
+set emacs             # Use an emacs-style command-line editing interface
+set history           # Turn on history of commands
+set ignoreeof         # Prevent EOF from terminating the shell
+ulimit -t unlimited   # Max out cputime
+ulimit -f unlimited   # Max out filesize
+ulimit -d unlimited   # Max out datasize
+ulimit -s unlimited   # Max out stacksize
+ulimit -c unlimited   # Max out coredumpsize
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
