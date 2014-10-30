@@ -1,0 +1,28 @@
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: .my_personal_aliases
+#
+# !DESCRIPTION: A .bashrc-style file that you can use to contain your own
+#  personal aliases for either the AS cluster or Odyssey.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  source ~/.my_personal_aliases
+#
+# !REMARKS:
+#  The .bashrc file contains settings that are common to all users of 
+#  GEOS-Chem on either the AS cluster or Odyssey.  But here you can add
+#  aliases that would only be applicable to your own environment.
+#
+# !REVISION HISTORY: 
+#  30 Oct 2014 - R. Yantosca - Initial version
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+# %%%%% Add your aliases here! %%%%%
+
+#EOC

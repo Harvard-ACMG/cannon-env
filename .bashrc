@@ -13,12 +13,16 @@
 #  source ~/.bashrc
 #
 # !REMARKS:
-#  We have included settings for both the Odyssey cluster (rc.fas.harvard.edu)
-#  and for the Jacob-group Atmospheric Sciences cluster (as.harvard.edu). 
-#  These settings are blocked out with if stateements such as:
+#  We have included settings that are common to all GEOS-Chem users on both
+#  the Odyssey cluster (rc.fas.harvard.edu) and for the Jacob-group 
+#  Atmospheric Sciences cluster (as.harvard.edu).  These settings are blocked 
+#  out with if stateements such as:
 #
 #     if [[ $isOdyssey == 1   ]]; then ...    # Settings for Odyssey
 #     if [[ $isAsCluster == 1 ]]; then ...    # Settings for AS cluster
+#
+#  You can define additional aliases that are only applicable to your own
+#  environment in the file .my_personal_aliases.
 #
 # !REVISION HISTORY: 
 #  07 Oct 2014 - R. Yantosca - Initial version
@@ -34,6 +38,8 @@
 #                              you will have to set that depending on # CPUs
 #  28 Oct 2014 - R. Yantosca - Also fix paths for HEMCO on Odyssey
 #  30 Oct 2014 - R. Yantosca - Now max out stacksize and other limits
+#  30 Oct 2014 - R. Yantosca - Now look for user-defined aliases and env
+#                              settings in the .my_personal_aliases file.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -189,12 +195,6 @@ fi
 # %%%%% Commands to sync .bashrc etc files %%%%%
 alias  getenv="cd ~/env; git pull git://git.as.harvard.edu/bmy/env master"
 
-# %%%%% GitHub commands %%%%%
-alias  fpu="git push https://github.com/GCST/GEOS_FP"
-alias  fpp="git pull https://github.com/GCST/GEOS_FP"
-alias  hcou="git push https://github.com/GCST/HEMCO"
-alias  hcop="git pull https://github.com/GCST/HEMCO"
-
 #==============================================================================
 # %%%%% Settings for programming languages and applications %%%%%
 #==============================================================================
@@ -208,7 +208,7 @@ export F77=$FC
 
 # %%%%% Settings for OpenMP parallelization %%%%%
 if [[ $isAsCluster ]] ; then
- export OMP_NUM_THREADS=4
+ export OMP_NUM_THREADS=4               # NOTE: Set this manually on Odyssey!
 fi
 export KMP_STACKSIZE=5000000
 
@@ -231,8 +231,6 @@ alias  IS="cd $HOME/IDL/tests"
 # %%%%% Settings for NCL %%%%%
 if [[ isAsCluster == 1 ]] ; then
  export NCARG_ROOT="/opt/ncl-6.1.2"
- export NCL4GC="/home/bmy/NCL4GC"
- PATH=$PATH:$NCL4GC
 fi
 
 # %%%%% Settings for Python %%%%%
@@ -279,6 +277,7 @@ alias  gt="grep -in --text"
 alias  gf="gifview -a"
 alias  gvs="gv --orientation=seascape"
 alias  m="less"
+alias  me="xterm &"
 alias  pan="$HOME/bin/panoply.sh &"
 alias  proc="ps -ef | grep $USER | sort"
 alias  pu="rm *~"
@@ -298,35 +297,10 @@ alias  la="ls -a"
 alias  lla="ls -la"
 alias  llh="ls -lh"
 
-# %%%%% Add your personal aliases for the AS cluster here %%%%%
-if [[ $isAsCluster == 1 ]] ; then
-
- # Local directory paths
- alias  AD="cd ~/archive/data"
-
- # Sun Grid Engine commands
- alias  qq="qconf -spl"
- alias  qs="qstat -f"
- alias  qj="qstat -u bmy"
- alias  qja='qstat -u "*"'
- alias  qa="qacct -j"
-
- # Logins from AS cluster to other machines
- alias  me="xterm &"
- alias  seas="$HOME/bin/xt -h login.seas.harvard.edu -u yantosca &"
- alias  wum="$HOME/bin/xt -h wumpus.seas.harvard.edu -u yantosca &"
- alias  nccs="$HOME/bin/xt -h login.nccs.nasa.gov -u ryantosc &"
- alias  disc="$HOME/bin/xt -h discover.nccs.nasa.gov -u ryantosc &"
- alias  dali="$HOME/bin/xt -h dali.nccs.nasa.gov -u ryantosc &"
- alias  gcfas="$HOME/bin/xt -h fas.harvard.edu -u geoschem &"
- alias  odyssey="$HOME/bin/xt -h login.rc.fas.harvard.edu -u ryantosca &"
-fi
-
-# %%%%% Add your personal aliases for Odyssey here
-if [[ $isOdyssey == 1 ]] ; then
- alias  me="xterm &"
- alias  mkey="module keyword"
- alias  myscratch="cd /n/regal/jacob_lab/$USER"
+# %%%%% Source a file with your own personal aliases and settings %%%%%
+# %%%%% You can keep separate copies of these on AS and Odyssey   %%%%%
+if [[ -f .my_personal_aliases ]] ; then
+ . .my_personal_aliases
 fi
 
 #==============================================================================
