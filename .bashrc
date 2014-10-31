@@ -40,6 +40,7 @@
 #  30 Oct 2014 - R. Yantosca - Now max out stacksize and other limits
 #  30 Oct 2014 - R. Yantosca - Now look for user-defined aliases and env
 #                              settings in the .my_personal_aliases file.
+#  31 Oct 2014 - R. Yantosca - Set the KMP_STACKSIZE value 100x higher
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -210,7 +211,7 @@ export F77=$FC
 if [[ $isAsCluster ]] ; then
  export OMP_NUM_THREADS=4               # NOTE: Set this manually on Odyssey!
 fi
-export KMP_STACKSIZE=5000000
+export KMP_STACKSIZE=500000000          # NOTE: Set 100x larger than in csh!
 
 # %%%%% Settings for MPI parallelization %%%%%
 if [[ $isAsCluster == 1 ]] ; then
