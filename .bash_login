@@ -3,29 +3,29 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: .login
+# !MODULE: .bash_login
 #
-# !DESCRIPTION: Bob Y's .login file.  Sets various one-time parameters 
+# !DESCRIPTION: Bob Y's .bash_login file.  Sets various one-time parameters 
 #  at login time.
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/.login
+#  source ~/.bash_login
 #
 # !REMARKS:
 # .cshrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
 #
 # !REVISION HISTORY: 
-#  13 Aug 2009 - R. Yantosca - Added ProTeX headers
+#  03 Nov 2014 - R. Yantosca - Initial version
 #EOP
 #------------------------------------------------------------------------------
 #BOC
 
-setenv TERM         xterm                    # Default terminal
-setenv EDITOR       emacs                    # Default editor
-setenv LINK_TIMEOUT 3                        # ???
-setenv MAIL         /usr/spool/mail/$USER    # Default mail program
-set    mail =       $MAIL
-date                                         # Echo date & turn on mesages
+export TERM=xterm                   # Default terminal
+export EDITOR=emacs                 # Default editor
+export LINK_TIMEOUT=3               # 
+export MAIL=/usr/spool/mail/$USER   # Default mail program
+mail=$MAIL
+date                                # Echo date & turn on system messages
 #EOC
