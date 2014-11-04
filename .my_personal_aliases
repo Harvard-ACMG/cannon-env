@@ -23,6 +23,13 @@
 #------------------------------------------------------------------------------
 #BOC
 
-# %%%%% Add your aliases here! %%%%%
+# %%%%% Environment settings %%%%%%
+export TERM=xterm                        # Default terminal
+export EDITOR=emacs                      # Default editor (emacs or vim)
+export VISUAL=emacs                      # Default editor (emacs or vim)
+export GIT_EDITOR=emacs                  # Default Git editor (emacs or vim)
+export MAIL=/usr/spool/mail/$USER        # Default mail program
+mail=$MAIL
 
+# %%%%% Add your aliases here %%%%%
 #EOC
