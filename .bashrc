@@ -88,21 +88,11 @@ ulimit -c unlimited   # Max out coredumpsize
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 if [[ $isOdyssey == 1 ]] ; then
-
- # Turn on lmod modules
  export LMOD_COLORIZE=yes
  source new-modules.sh
-
- # Load newer modules w/ "lmod".  Note the naming convention is much simpler.
- module load git
-
- # These modules were defined with the older "module" command but are in the
- # process of being renamed during the transition to "lmod".  We still need
- # these for the GIGC/ESMF/MPI environment, so load them by their old names.
- module load legacy
- module load hpc/intel-compilers-13.0.079
- module load hpc/openmpi-1.6.2_intel-13.0.079
- module load math/IDL-8.3
+ module load git             # Git
+ module load intel           # ifort compilers
+ module load legacy          # IDL, etc.
 fi
 
 #==============================================================================
