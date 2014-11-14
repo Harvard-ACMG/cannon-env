@@ -110,7 +110,6 @@ if [[ $isAsCluster == 1 ]] ; then
  export GC_INCLUDE="/opt/GEOS-Chem-Libraries/ifort/nc4/include"
  export GC_LIB="/opt/GEOS-Chem-Libraries/ifort/nc4/lib"
 elif [[ $isOdyssey == 1 ]] ; then
-# For now use Mike's libraries:
  export GC_BIN="$NETCDF_HOME/bin"
  export GC_INCLUDE="$NETCDF_INCLUDE"
  export GC_LIB="$NETCDF_LIB"
