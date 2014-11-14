@@ -41,6 +41,7 @@
 #  30 Oct 2014 - R. Yantosca - Now look for user-defined aliases and env
 #                              settings in the .my_personal_aliases file.
 #  31 Oct 2014 - R. Yantosca - Set the KMP_STACKSIZE value 100x higher
+#  14 Nov 2014 - R. Yantosca - Found proper netCDF module command for Odyssey
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -90,9 +91,10 @@ ulimit -c unlimited   # Max out coredumpsize
 if [[ $isOdyssey == 1 ]] ; then
  export LMOD_COLORIZE=yes
  source new-modules.sh
- module load git             # Git
- module load intel           # ifort compilers
- module load legacy          # IDL, etc.
+ module load git                    
+ module load legacy
+ module load intel openmpi
+ module load netcdf/4.1.3-fasrc01
 fi
 
 #==============================================================================
@@ -108,9 +110,10 @@ if [[ $isAsCluster == 1 ]] ; then
  export GC_INCLUDE="/opt/GEOS-Chem-Libraries/ifort/nc4/include"
  export GC_LIB="/opt/GEOS-Chem-Libraries/ifort/nc4/lib"
 elif [[ $isOdyssey == 1 ]] ; then
- export GC_BIN="/n/home09/ryantosca/opt/bin"
- export GC_INCLUDE="/n/home09/ryantosca/opt/include"
- export GC_LIB="/n/home09/ryantosca/opt/lib"
+# For now use Mike's libraries:
+ export GC_BIN="$NETCDF_HOME/bin"
+ export GC_INCLUDE="$NETCDF_INCLUDE"
+ export GC_LIB="$NETCDF_LIB"
 fi
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
