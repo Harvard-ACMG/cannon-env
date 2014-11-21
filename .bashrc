@@ -70,31 +70,31 @@ fi
 PS1="[\u@\h \W]% "
 
 # %%%%% Startup settings %%%%%
-umask 022             # Make files readable by everyone by default
-set autolist          # Turn on list completion
-set correct           #
-set color             # 
-set colorcat          # 
-set filesc            #
-set emacs             # Use an emacs-style command-line editing interface
-set history           # Turn on history of commands
-set ignoreeof         # Prevent EOF from terminating the shell
-ulimit -t unlimited   # Max out cputime
-ulimit -f unlimited   # Max out filesize
-ulimit -d unlimited   # Max out datasize
-ulimit -s unlimited   # Max out stacksize
-ulimit -c unlimited   # Max out coredumpsize
+umask 022                          # Make files readable by everyone by default
+set autolist                       # Turn on list completion
+set correct                        #
+set color                          # 
+set colorcat                       # 
+set filesc                         #
+set emacs                          # Use an emacs-style editing interface
+set history                        # Turn on history of commands
+set ignoreeof                      # Prevent EOF from terminating the shell
+ulimit -t unlimited                # Max out cputime
+ulimit -f unlimited                # Max out filesize
+ulimit -d unlimited                # Max out datasize
+ulimit -s unlimited                # Max out stacksize
+ulimit -c unlimited                # Max out coredumpsize
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 if [[ $isOdyssey == 1 ]] ; then
- export LMOD_COLORIZE=yes
- source new-modules.sh
- module load git                    
- module load legacy
- module load intel openmpi
- module load netcdf/4.1.3-fasrc01
+ export LMOD_COLORIZE=yes          # Turn on colorization of display
+ source new-modules.sh             # Opt into Lmod modules
+ module load git                   # Load git
+ module load legacy                # Make all legacy modules available
+ module load intel openmpi         # Load both ifort and openmpi
+ module load netcdf/4.1.3-fasrc01  # Load netCDF compatible w/ ifort, openmpi
 fi
 
 #==============================================================================
@@ -106,14 +106,13 @@ export ARCH=`uname -s`
 
 # %%%%% Settings for netCDF, HDF, etc. libraries %%%%%
 if [[ $isAsCluster == 1 ]] ; then
- export GC_BIN="/opt/GEOS-Chem-Libraries/ifort/nc4/bin"
- export GC_INCLUDE="/opt/GEOS-Chem-Libraries/ifort/nc4/include"
- export GC_LIB="/opt/GEOS-Chem-Libraries/ifort/nc4/lib"
+ export NETCDF_HOME="/opt/GEOS-Chem-Libraries/ifort/nc4"
 elif [[ $isOdyssey == 1 ]] ; then
- export GC_BIN="$NETCDF_HOME/bin"
- export GC_INCLUDE="$NETCDF_INCLUDE"
- export GC_LIB="$NETCDF_LIB"
+ export NETCDF_HOME=`nc-config --prefix`
 fi
+export GC_BIN="$NETCDF_HOME/bin"
+export GC_INCLUDE="$NETCDF_HOME/include"
+export GC_LIB="$NETCDF_HOME/lib"
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
 export LIB_NETCDF=$GC_LIB
@@ -205,12 +204,7 @@ if [[ $isAsCluster ]] ; then
 fi
 export KMP_STACKSIZE=500000000          # NOTE: Set 100x larger than in csh!
 
-# %%%%% Settings for MPI parallelization %%%%%
-if [[ $isAsCluster == 1 ]] ; then
- export MPI_HOME="/home/mlong/tools/openmpi/1.2.8-ifort"
-elif [[ $isOdyssey == 1 ]] ; then
- export MPI_HOME="/n/sw/openmpi-1.6.2_intel-13.0.079"
-fi
+# %%%%% Settings for OpenMPI parallelization %%%%%
 export OMPI_FC=$FC
 export OMPI_CC=$CC
 export OMPI_CXX=$CXX
