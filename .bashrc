@@ -42,6 +42,7 @@
 #                              settings in the .my_personal_aliases file.
 #  31 Oct 2014 - R. Yantosca - Set the KMP_STACKSIZE value 100x higher
 #  14 Nov 2014 - R. Yantosca - Found proper netCDF module command for Odyssey
+#  11 Dec 2014 - R. Yantosca - Also load ncview, nco modules
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -89,12 +90,12 @@ ulimit -c unlimited                # Max out coredumpsize
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 if [[ $isOdyssey == 1 ]] ; then
- export LMOD_COLORIZE=yes          # Turn on colorization of display
- source new-modules.sh             # Opt into Lmod modules
- module load git                   # Load git
- module load legacy                # Make all legacy modules available
- module load intel openmpi         # Load both ifort and openmpi
- module load netcdf/4.1.3-fasrc01  # Load netCDF compatible w/ ifort, openmpi
+ export LMOD_COLORIZE=yes                     # Colorize modules display
+ source new-modules.sh                        # Opt into Lmod modules
+ module load git                              # Load git
+ module load legacy                           # Use all legacy modules
+ module load intel openmpi                    # Load both ifort and openmpi
+ module load ncview nco netcdf/4.1.3-fasrc01  # Load compatible netCDF modules
 fi
 
 #==============================================================================
