@@ -44,6 +44,7 @@
 #  14 Nov 2014 - R. Yantosca - Found proper netCDF module command for Odyssey
 #  11 Dec 2014 - R. Yantosca - Also load ncview, nco modules
 #  12 Dec 2014 - R. Yantosca - Bug fix: now look for ~/.my_personal_aliases
+#  16 Dec 2014 - R. Yantosca - Now specifically pick ifort/13.0.079
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -96,7 +97,7 @@ if [[ $isOdyssey == 1 ]] ; then
  module purge                                 # Unload all previous modules
  module load git                              # Load git
  module load legacy                           # Use all legacy modules
- module load intel openmpi                    # Load both ifort and openmpi
+ module load intel/13.0.079-fasrc01 openmpi   # Load both ifort and openmpi
  module load ncview nco netcdf/4.1.3-fasrc01  # Load compatible netCDF modules
 fi
 
