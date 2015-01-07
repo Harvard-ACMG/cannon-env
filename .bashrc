@@ -45,6 +45,7 @@
 #  11 Dec 2014 - R. Yantosca - Also load ncview, nco modules
 #  12 Dec 2014 - R. Yantosca - Bug fix: now look for ~/.my_personal_aliases
 #  16 Dec 2014 - R. Yantosca - Now specifically pick ifort/13.0.079
+#  07 Jan 2015 - R. Yantosca - Now specify openmpi/1.8.1-fasrc01 explicitly
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -92,13 +93,13 @@ ulimit -c unlimited                # Max out coredumpsize
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 if [[ $isOdyssey == 1 ]] ; then
- export LMOD_COLORIZE=yes                     # Colorize modules display
- source new-modules.sh                        # Opt into Lmod modules
- module purge                                 # Unload all previous modules
- module load git                              # Load git
- module load legacy                           # Use all legacy modules
- module load intel/13.0.079-fasrc01 openmpi   # Load both ifort and openmpi
- module load ncview nco netcdf/4.1.3-fasrc01  # Load compatible netCDF modules
+ export LMOD_COLORIZE=yes                                 # Colorize display
+ source new-modules.sh                                    # Turn on Lmod
+ module purge                                             # Unload everything
+ module load git                                          # Load Git
+ module load legacy                                       # Load older modules
+ module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # Load ifort/openmpi
+ module load ncview nco netcdf/4.1.3-fasrc01              # Load netCDF
 fi
 
 #==============================================================================
