@@ -46,6 +46,7 @@
 #  12 Dec 2014 - R. Yantosca - Bug fix: now look for ~/.my_personal_aliases
 #  16 Dec 2014 - R. Yantosca - Now specifically pick ifort/13.0.079
 #  07 Jan 2015 - R. Yantosca - Now specify openmpi/1.8.1-fasrc01 explicitly
+#  12 Jan 2015 - R. Yantosca - Bug fix; now unset env vars for NCL 6.1.2
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -204,7 +205,7 @@ export F90=$FC
 export F77=$FC
 
 # %%%%% Settings for OpenMP parallelization %%%%%
-if [[ $isAsCluster ]] ; then
+if [[ $isAsCluster == 1 ]] ; then
  export OMP_NUM_THREADS=4               # NOTE: Set this manually on Odyssey!
 fi
 export KMP_STACKSIZE=500000000          # NOTE: Set 100x larger than in csh!
@@ -221,7 +222,13 @@ alias  IG="cd $HOME/IDL/gamap2"
 alias  IS="cd $HOME/IDL/tests"
 
 # %%%%% Settings for NCL %%%%%
-if [[ isAsCluster == 1 ]] ; then
+if [[ $isAsCluster == 1 ]] ; then
+ unset  NCARG_FONTCAPS
+ unset  NCARG_GRAPHCAPS
+ unset  NCARG_ROOT
+ unset  NCARG_DATABASE
+ unset  NCARG_LIB
+ unset  NCARG_NCARG
  export NCARG_ROOT="/opt/ncl-6.1.2"
 fi
 
