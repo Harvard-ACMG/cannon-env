@@ -49,6 +49,7 @@
 #  12 Jan 2015 - R. Yantosca - Bug fix; now unset env vars for NCL 6.1.2
 #  07 Apr 2015 - R. Yantosca - Bug fix: for now just load netCDF/4.1.3
 #  07 Apr 2015 - R. Yantosca - Bug fix: load an older version of ncview
+#  10 Apr 2015 - R. Yantosca - Migrate to IFORT 15 and related modules
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -101,9 +102,10 @@ if [[ $isOdyssey == 1 ]] ; then
  module purge                                             # Unload everything
  module load git                                          # Load Git
  module load legacy                                       # Load older modules
- module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # Load ifort/openmpi
- module load netcdf/4.1.3-fasrc01                         # Load netCDF
- module load centos6/ncview-2.1.2                         # Load ncview
+ module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
+ module load netcdf/4.1.3-fasrc04                         # Load netCDF
+ module load ncview/2.1.5-fasrc01                         # Load ncview
+ module load nco/4.3.6-fasrc01                            # Load nco
 fi
 
 #==============================================================================
