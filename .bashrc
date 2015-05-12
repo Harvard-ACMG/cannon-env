@@ -50,6 +50,9 @@
 #  07 Apr 2015 - R. Yantosca - Bug fix: for now just load netCDF/4.1.3
 #  07 Apr 2015 - R. Yantosca - Bug fix: load an older version of ncview
 #  10 Apr 2015 - R. Yantosca - Migrate to IFORT 15 and related modules
+#  12 May 2015 - R. Yantosca - Now define separate variables for nc-fortran
+#                              bin, include, and lib paths
+#  12 May 2015 - R. Yantosca - Add module loads for PGI compiler
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -102,10 +105,17 @@ if [[ $isOdyssey == 1 ]] ; then
  module purge                                             # Unload everything
  module load git                                          # Load Git
  module load legacy                                       # Load older modules
+#------------------------------------------------------------------------------
+# Loads for Intel compilers
  module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
  module load netcdf/4.1.3-fasrc04                         # Load netCDF
  module load ncview/2.1.5-fasrc01                         # Load ncview
  module load nco/4.3.6-fasrc01                            # Load nco
+#------------------------------------------------------------------------------
+# Loads for PGI compilers
+# module load pgi/14.10-fasrc01                            # Load PGI
+# module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2        # Load netCDF
+#------------------------------------------------------------------------------
 fi
 
 #==============================================================================
@@ -117,13 +127,21 @@ export ARCH=`uname -s`
 
 # %%%%% Settings for netCDF, HDF, etc. libraries %%%%%
 if [[ $isAsCluster == 1 ]] ; then
- export NETCDF_HOME="/opt/GEOS-Chem-Libraries/ifort/nc4"
+ export NETCDF_HOME="/opt/GEOS-Chem-Libraries/ifort/nc4"   # nc dir
+ export NETCDF_F_HOME=$NETCDF_HOME                         # nc-fortran dir
 elif [[ $isOdyssey == 1 ]] ; then
- export NETCDF_HOME=`nc-config --prefix`
+ export NETCDF_HOME=`nc-config --prefix`                   # nc dir
+ export NETCDF_F_HOME=`nf-config --prefix 2>/dev/null`     # nc-fortran dir
+ if [[ $NETCDF_F_HOME == "" ]] ; then                      # If not found,
+  export NETCDF_F_HOME=$NETCDF_HOME                        #  set nc-fortran
+ fi                                                        #  same as nc dir.
 fi
-export GC_BIN="$NETCDF_HOME/bin"
-export GC_INCLUDE="$NETCDF_HOME/include"
-export GC_LIB="$NETCDF_HOME/lib"
+export GC_BIN="$NETCDF_HOME/bin"                           # nc bin dir
+export GC_INCLUDE="$NETCDF_HOME/include"                   # nc include dir
+export GC_LIB="$NETCDF_HOME/lib"                           # nc lib dir
+export GC_F_BIN="$NETCDF_F_HOME/bin"                       # nc-fortran bin dir
+export GC_F_INCLUDE="$NETCDF_F_HOME/include"               # nc-fortran inc dir
+export GC_F_LIB="$NETCDF_F_HOME/lib"                       # nc-fortran lib dir
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
 export LIB_NETCDF=$GC_LIB
