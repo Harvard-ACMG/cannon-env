@@ -36,4 +36,4 @@ XTerm*TitleBar:        true
 XTerm*TextUnderIcon:   true
 XTerm*AllowIconInput:  true
 XTerm*AutoRaise:       true
-
+#EOC

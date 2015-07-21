@@ -1,4 +1,4 @@
-#!/bin/tcsh
+#!/bin/bash
 
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
@@ -44,5 +44,5 @@ xterm &      # Login window #4
 emacs &
 
 # Exit normally
-exit(0)
+exit 0
 #EOC

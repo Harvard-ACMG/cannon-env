@@ -53,6 +53,9 @@
 #  12 May 2015 - R. Yantosca - Now define separate variables for nc-fortran
 #                              bin, include, and lib paths
 #  12 May 2015 - R. Yantosca - Add module loads for PGI compiler
+#  21 Jul 2015 - M. Sulprizio- Add sshod alias for establishing a ssh connection
+#                              to Odyssey in the background. This can be used
+#                              to simplify transfers between AS and Odyssey.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -60,6 +63,14 @@
 #==============================================================================
 # %%%%% General system startup settings %%%%%
 #==============================================================================
+
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+    # Shell is non-interactive.  Be done now!
+    return
+fi
 
 # %%%%% Source systemwide global definitions from /etc/bashrc %%%%%
 if [[ -f /etc/bashrc ]] ; then
@@ -95,6 +106,7 @@ ulimit -f unlimited                # Max out filesize
 ulimit -d unlimited                # Max out datasize
 ulimit -s unlimited                # Max out stacksize
 ulimit -c unlimited                # Max out coredumpsize
+umask 022
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
@@ -104,9 +116,14 @@ if [[ $isOdyssey == 1 ]] ; then
  source new-modules.sh                                    # Turn on Lmod
  module purge                                             # Unload everything
  module load git                                          # Load Git
- module load legacy                                       # Load older modules
+ module load perl                                         # Load Perl
+ module load IDL                                          # Load IDL
 #------------------------------------------------------------------------------
-# Loads for Intel compilers
+# Loads for Intel 13 compilers
+# module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # Load ifort/openmpi
+# module load ncview nco netcdf/4.1.3-fasrc01              # Load netCDF
+#------------------------------------------------------------------------------
+# Loads for Intel 15 compilers
  module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
  module load netcdf/4.1.3-fasrc04                         # Load netCDF
  module load ncview/2.1.5-fasrc01                         # Load ncview
@@ -139,9 +156,6 @@ fi
 export GC_BIN="$NETCDF_HOME/bin"                           # nc bin dir
 export GC_INCLUDE="$NETCDF_HOME/include"                   # nc include dir
 export GC_LIB="$NETCDF_HOME/lib"                           # nc lib dir
-export GC_F_BIN="$NETCDF_F_HOME/bin"                       # nc-fortran bin dir
-export GC_F_INCLUDE="$NETCDF_F_HOME/include"               # nc-fortran inc dir
-export GC_F_LIB="$NETCDF_F_HOME/lib"                       # nc-fortran lib dir
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
 export LIB_NETCDF=$GC_LIB
@@ -175,6 +189,8 @@ alias  X44="cd $dataDir/GEOS_4x5/GEOS_4_v4"
 alias  X45="cd $dataDir/GEOS_4x5/GEOS_5"
 alias  X4FP="cd $dataDir/GEOS_4x5/GEOS_FP"
 alias  X4M="cd $dataDir/GEOS_4x5/MERRA"
+export DATA_ROOT="$dataDir/ExtData/"
+export DATA_ROOT_RW="$dataDirReadOnly/ExtData/"
 export HEMCO_DATA_ROOT="$dataDirReadOnly/ExtData/HEMCO"
 export HEMCO_DATA_ROOT_RW="$dataDir/ExtData/HEMCO"
 export EXTDATA="$dataDirReadOnly/ExtData"
@@ -201,6 +217,7 @@ alias  gk="gitk &"
 alias  gka="gitk --all &"
 alias  gl="git log"
 alias  glo="git log --oneline"
+alias  glp="git log --pretty=format:'%h : %s' --topo-order --graph"
 
 # %%%%% Git commands for the Jacob-group websites %%%%%
 if [[ $isAsCluster == 1 ]] ; then
@@ -261,21 +278,25 @@ fi
 export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 
 # %%% Settings for TAU profiler %%%
-#if [[ $isAsCluster == 1 ]] ; then
-#path= "$path /home/jlinford/TAU/pdtoolkit-3.20/x86_64/bin"
-#path= "$path /home/jlinford/TAU/tau2/x86_64/bin"
-#path= "$path /home/jlinford/TAU/tau-2.23b0/x86_64/bin"
-#export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
-#export TAU_VERBOSE=1
-#export TAU_PROFILE=1
-#export TAU_TRACE=0
-#export TAU_OPENMP_RUNTIME=1
-#export TAU_OPENMP_RUNTIME_EVENTS=1
-#export TAU_OPENMP_RUNTIME_CONTEXT=region
-#export TAU_TRACK_MEMORY_LEAKS=0
-#alias  set_tau "source /home/jlinford/TAU/tau.csh"
-#alias  pe_load 'taudb_loadtrial -c geos-chem -m "APPLICATION=geos-chem:EXPERIMENT=tutorial"'
-#fi
+if [[ $isAsCluster == 1 ]] ; then
+PATH=$PATH:/home/jlinford/TAU/pdtoolkit-3.20/x86_64/bin
+PATH=$PATH:/home/jlinford/TAU/tau2/x86_64/bin
+PATH=$PATH:/home/jlinford/TAU/tau-2.23b0/x86_64/bin
+export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
+export TAU_VERBOSE=1
+# Turn off throttling to avoid bug (mps, 10/31/14)
+export TAU_THROTTLE=0
+export TAU_PROFILE=1
+export TAU_TRACE=0
+#export TAU_CALLPATH=1
+#export TAU_CALLPATH_DEPTH=100
+export TAU_OPENMP_RUNTIME=1
+export TAU_OPENMP_RUNTIME_EVENTS=1
+export TAU_OPENMP_RUNTIME_CONTEXT=region
+export TAU_TRACK_MEMORY_LEAKS=0
+alias  set_tau="source /home/jlinford/TAU/tau.csh"
+alias  pe_load='taudb_loadtrial -c geos-chem -m "APPLICATION=geos-chem:EXPERIMENT=tutorial"'
+fi
 
 # %%%%% Settings for Ghostview %%%%%
 export GS_DEVICE="x11"
@@ -294,7 +315,7 @@ export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 #==============================================================================
 
 # %%%%% Aliases for general Unix commands %%%%
-alias  disk="du -m"
+alias  disk="du -h -s -c"
 alias  g="grep -in"
 alias  gf="gifview"
 alias  gt="grep -in --text"
@@ -320,6 +341,23 @@ alias  lltm="ls -lt | less"
 alias  la="ls -a"
 alias  lla="ls -la"
 alias  llh="ls -lh"
+
+# %%%%% Aliases for transferring files %%%%%
+# This command sets up a ssh connection to Odyssey in the background. For it
+# to work properly, you need to make sure Host OD is defined in your
+# ~/.ssh/config file. You will be prompted for your password and verification
+# code. Once a connection is established, you will not need to enter this
+# information for subsequent ssh or scp commands.
+alias sshod="ssh -Y -C -o ServerAliveInterval=30 -fN OD"
+
+# %%%%% Sun Grid Engine commands for AS %%%%%
+if [[ $isAsCluster == 1 ]] ; then
+alias  qq="qconf -spl"
+alias  qs="qstat -f"
+alias  qj="qstat -u $USER"
+alias  qja='qstat -u "*"'
+alias  qa="qacct -j"
+fi
 
 # %%%%% Source a file with your own personal aliases and settings %%%%%
 # %%%%% You can keep separate copies of these on AS and Odyssey   %%%%%
@@ -357,5 +395,6 @@ if [[ $isOdyssey == 1 ]] ; then
 
  # %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
  export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
+
 fi
 #EOC
