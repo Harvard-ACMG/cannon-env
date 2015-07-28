@@ -1,0 +1,65 @@
+#!/bin/bash
+
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: interactive
+#
+# !DESCRIPTION: Shell script to request an interactive session on Odyssey.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  interactive CPUS NODES MEMORY-PER-CPU [TIME-IN-MINUTES]
+#
+# !REMARKS:
+#  Executes the srun command.  For now, all CPUs are placed on one node,
+#  for traditional GEOS-Chem usage.
+#
+# !REVISION HISTORY: 
+#  28 Oct 2014 - R. Yantosca - Initial version
+#  10 Jul 2015 - R. Yantosca - Now print the input arguments to stdout
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+
+# Process the input arguments.  Use defaults if the
+# user supplies less than 4 argumetnts. (bmy, 7/10/15)
+if [[ $# == 4 ]]; then
+   cpus=$1
+   nodes=$2
+   mem=$3
+   time=$4
+elif [[ $# == 3 ]]; then
+   cpus=$1
+   nodes=$2
+   mem=$3
+   time=60
+elif [[ $# == 2 ]] ; then
+   cpus=$1
+   nodes=1
+   mem=$2
+   time=60
+else
+   echo "Usage: interactive CPUS NODES MEM-PER-CPU [TIME-IN-MINUTES]"
+   exit 1
+fi
+
+# Print information
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+echo "%%% Starting an Odyssey interactive session!"
+echo "%%% Number of CPUs  : $cpus"
+echo "%%% Number of Nodes : $nodes"
+echo "%%% Memory per CPU  : $mem MB"
+echo "%%% Requested time  : $time minutes"
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+
+# Start the interactive session
+srun --pty --x11=first -n $cpus -N $nodes --mem-per-cpu=$mem -p interact /bin/bash
+
+# Also set the proper # of CPUs for OpenMP parallelization
+export OMP_NUM_THREADS=$1
+
+#EOC
