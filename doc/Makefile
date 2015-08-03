@@ -22,6 +22,7 @@
 #
 # !REVISION HISTORY: 
 #  13 Aug 2009 - R. Yantosca - Initial version
+#  03 Aug 2015 - E. Lundgren - Updated to include all current files in env
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -44,13 +45,20 @@ clean:
 # Build documentation for system environment files
 #==============================================================================
 
-# Source files 
-SRC1 =       \
-./intro.txt  \
-./.login     \
-./.cshrc     \
-./startup    \
-./xt
+# Source files that use '#' as comment character
+SRC1 =                       \
+./intro.txt                  \
+../root/.bash_profile        \
+../root/.bashrc              \
+../root/.login               \
+../root/.cshrc               \
+../root/.Xdefaults           \
+../root/.my_personal_aliases \
+../bin/startup               \
+../bin/xt                    \
+../bash/run_geos_chem        \
+../bin/interactive           \
+../bin/interactive_openmp    
 
 # LaTeX etc. files
 TEX1 = SystemEnvFiles.tex

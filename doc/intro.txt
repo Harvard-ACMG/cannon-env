@@ -5,7 +5,7 @@
 #BOI
 # !TITLE: System Environment Files
 # !AUTHORS: Bob Yantosca
-# !AFFILIATION: School of Engineering and Applied Sciences, Harvard University
-# !DATE: August 13, 2009
+# !AFFILIATION: Paulson School of Engineering and Applied Sciences, Harvard University
+# !DATE: July 2015
 #EOI
 #------------------------------------------------------------------------------
