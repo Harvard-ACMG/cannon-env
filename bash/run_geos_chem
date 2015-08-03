@@ -1,12 +1,11 @@
 #!/bin/bash
 
-#EOC
 #------------------------------------------------------------------------------
 #                  GEOS-Chem Global Chemical Transport Model                  !
 #------------------------------------------------------------------------------
 #BOP
 #
-# !IROUTINE: run_geos_chem
+# !MODULE: run_geos_chem
 # 
 # !DESCRIPTION: Runs a GEOS-Chem "classic" simulation on Odyssey.
 #\\
