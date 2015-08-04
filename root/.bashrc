@@ -56,6 +56,8 @@
 #  21 Jul 2015 - M. Sulprizio- Add sshod alias for establishing a ssh connection
 #                              to Odyssey in the background. This can be used
 #                              to simplify transfers between AS and Odyssey.
+#  04 Aug 2015 - R. Yantosca - Add module load commands for Jacob Group
+#                              customized libraries   
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -104,24 +106,34 @@ umask 022
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 if [[ $isOdyssey == 1 ]] ; then
- export LMOD_COLORIZE=yes                                 # Colorize display
- source new-modules.sh                                    # Turn on Lmod
- module purge                                             # Unload everything
- module load git                                          # Load Git
- module load perl                                         # Load Perl
- module load IDL                                          # Load IDL
+ export LMOD_COLORIZE=yes                                  # Colorize display
+ source new-modules.sh                                     # Turn on Lmod
+ module purge                                              # Unload everything
+ module load git                                           # Load Git
+ module load perl                                          # Load Perl
+ module load IDL                                           # Load IDL
 #------------------------------------------------------------------------------
-# Loads for Intel 13 compilers
+# %%%%% JACOB-GROUP LIBRARIES %%%%% 
+# If you just want to compile GEOS-Chem "Classic" (i.e. 
+# without using the ESMF/MPI interface) then you should 
+# use these modules.  These replicate the setup that we
+# had on the AS cluster. (bmy, 8/4/15)
+ export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH" # Jacob grp modules
+ module load GEOS-Chem-Libraries                           # netCDF/HDF5
+ module load intel/11.1                                    # IFORT compiler
+ module load totalview                                     # Totalview debugger
+#------------------------------------------------------------------------------
+# %%%%% FOR GEOS-CHEM HP with IFORT 13 %%%%%
 # module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # Load ifort/openmpi
 # module load ncview nco netcdf/4.1.3-fasrc01              # Load netCDF
 #------------------------------------------------------------------------------
-# Loads for Intel 15 compilers
- module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
- module load netcdf/4.1.3-fasrc04                         # Load netCDF
- module load ncview/2.1.5-fasrc01                         # Load ncview
- module load nco/4.3.6-fasrc01                            # Load nco
+# %%%%% FOR GEOS-CHEM HP with IFORT 15 %%%%%
+# module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
+# module load netcdf/4.1.3-fasrc04                         # Load netCDF
+# module load ncview/2.1.5-fasrc01                         # Load ncview
+# module load nco/4.3.6-fasrc01                            # Load nco
 #------------------------------------------------------------------------------
-# Loads for PGI compilers
+# %%%%% FOR GEOS-CHEM HP with PGI COMPILER %%%%%
 # module load pgi/14.10-fasrc01                            # Load PGI
 # module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2        # Load netCDF
 #------------------------------------------------------------------------------
@@ -363,27 +375,31 @@ fi
 
 if [[ $isOdyssey == 1 ]] ; then
 
- # %%%%% KLUDGE FOR ODYSSEY %%%%%
- #
- # The available OpenMPI modules labeled (Intel) are actually built with
- # ifort & gcc. The module's specified environment acts like 'mpicc' and
- # 'mpicxx' are Intel-based, when in fact they point to the GNU compilers.
- # This creates an error compiling ESMF because when ESMF looks for <math.h>,
- # it finds a version specific to Intel that DOESN'T work with mpicc/mpicxx/gcc.
- #
- # Temporary Solution: Reconfigure the CPATH environment variable to remove
- # the entries:
- #
- #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/
- #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/intel64
- #
- # thus making the GNU version in /usr/include the available and first-seen
- # version.
- #   -- Mike Long (22 Oct 2014)
- #
- CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include/intel64||g')
- CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include||g')
- export CPATH
+#-----------------------------------------------------------------------------
+# Prior to 8/4/15:
+# This is no longer needed (bmy, 8/4/15)
+# # %%%%% KLUDGE FOR ODYSSEY %%%%%
+# #
+# # The available OpenMPI modules labeled (Intel) are actually built with
+# # ifort & gcc. The module's specified environment acts like 'mpicc' and
+# # 'mpicxx' are Intel-based, when in fact they point to the GNU compilers.
+# # This creates an error compiling ESMF because when ESMF looks for <math.h>,
+# # it finds a version specific to Intel that DOESN'T work with mpicc/mpicxx/gcc.
+# #
+# # Temporary Solution: Reconfigure the CPATH environment variable to remove
+# # the entries:
+# #
+# #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/
+# #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/intel64
+# #
+# # thus making the GNU version in /usr/include the available and first-seen
+# # version.
+# #   -- Mike Long (22 Oct 2014)
+# #
+# CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include/intel64||g')
+# CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include||g')
+# export CPATH
+#-----------------------------------------------------------------------------
 
  # %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
  export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
