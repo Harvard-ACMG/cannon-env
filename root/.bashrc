@@ -283,22 +283,26 @@ fi
 # %%%%% Settings for Python %%%%%
 export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 
-# %%% Settings for TAU profiler %%%
-if [[ $isAsCluster == 1 ]] ; then
- path= "$path /home/jlinford/TAU/pdtoolkit-3.20/x86_64/bin"
- path= "$path /home/jlinford/TAU/tau2/x86_64/bin"
- path= "$path /home/jlinford/TAU/tau-2.23b0/x86_64/bin"
- export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
- export TAU_VERBOSE=1
- export TAU_PROFILE=1
- export TAU_TRACE=0
- export TAU_OPENMP_RUNTIME=1
- export TAU_OPENMP_RUNTIME_EVENTS=1
- export TAU_OPENMP_RUNTIME_CONTEXT=region
- export TAU_TRACK_MEMORY_LEAKS=0
- alias  set_tau "source /home/jlinford/TAU/tau.csh"
- alias  pe_load 'taudb_loadtrial -c geos-chem -m "APPLICATION=geos-chem:EXPERIMENT=tutorial"'
-fi
+#------------------------------------------------------------------------------
+# Prior to 8/4/15:
+# Comment out TAU settings for now, most people don't need them (bmy, 8/4/15)
+## %%% Settings for TAU profiler %%%
+#if [[ $isAsCluster == 1 ]] ; then
+# path= "$path /home/jlinford/TAU/pdtoolkit-3.20/x86_64/bin"
+# path= "$path /home/jlinford/TAU/tau2/x86_64/bin"
+# path= "$path /home/jlinford/TAU/tau-2.23b0/x86_64/bin"
+# export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
+# export TAU_VERBOSE=1
+# export TAU_PROFILE=1
+# export TAU_TRACE=0
+# export TAU_OPENMP_RUNTIME=1
+# export TAU_OPENMP_RUNTIME_EVENTS=1
+# export TAU_OPENMP_RUNTIME_CONTEXT=region
+# export TAU_TRACK_MEMORY_LEAKS=0
+# alias  set_tau "source /home/jlinford/TAU/tau.csh"
+# alias  pe_load 'taudb_loadtrial -c geos-chem -m "APPLICATION=geos-chem:EXPERIMENT=tutorial"'
+#fi
+#------------------------------------------------------------------------------
 
 # %%%%% Settings for Ghostview %%%%%
 export GS_DEVICE="x11"
