@@ -133,10 +133,12 @@ if [[ $isOdyssey == 1 ]] ; then
 # module load ncview/2.1.5-fasrc01                         # Load ncview
 # module load nco/4.3.6-fasrc01                            # Load nco
 #------------------------------------------------------------------------------
-# %%%%% FOR GEOS-CHEM HP with PGI COMPILER %%%%%
+# %%%%% FOR GEOS-CHEM with PGI COMPILER (EXPERIMENTAL) %%%%%
 # module load pgi/14.10-fasrc01                            # Load PGI
 # module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2        # Load netCDF
 #------------------------------------------------------------------------------
+ # Display loaded modules
+ module list
 fi
 
 #==============================================================================
@@ -157,15 +159,15 @@ elif [[ $isOdyssey == 1 ]] ; then
   export NETCDF_F_HOME=$NETCDF_HOME                        #  set nc-fortran
  fi                                                        #  same as nc dir.
 fi
-export GC_BIN="$NETCDF_HOME/bin"                           # nc bin dir
-export GC_INCLUDE="$NETCDF_HOME/include"                   # nc include dir
-export GC_LIB="$NETCDF_HOME/lib"                           # nc lib dir
-export BIN_NETCDF=$GC_BIN
-export INC_NETCDF=$GC_INCLUDE
-export LIB_NETCDF=$GC_LIB
-export BIN_HDF5=$GC_BIN
-export INC_HDF5=$GC_INCLUDE
-export LIB_HDF5=$GC_LIB
+export GC_BIN="$NETCDF_HOME/bin"                           # netcdf bin dir
+export GC_INCLUDE="$NETCDF_HOME/include"                   # netcdf include dir
+export GC_LIB="$NETCDF_HOME/lib"                           # netcdf library dir
+export BIN_NETCDF=$GC_BIN                                  # aka GC_BIN
+export INC_NETCDF=$GC_INCLUDE                              # aka GC_INCLUDE
+export LIB_NETCDF=$GC_LIB                                  # aka GC_LIB
+export BIN_HDF5=$GC_BIN                                    # aka GC_BIN
+export INC_HDF5=$GC_INCLUDE                                # aka GC_INCLUDE
+export LIB_HDF5=$GC_LIB                                    # aka GC_LIB
 
 # %%%%% Settings for met field & emissions directories %%%%%
 if [[ $isAsCluster == 1 ]] ; then
@@ -283,23 +285,19 @@ export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 
 # %%% Settings for TAU profiler %%%
 if [[ $isAsCluster == 1 ]] ; then
-PATH=$PATH:/home/jlinford/TAU/pdtoolkit-3.20/x86_64/bin
-PATH=$PATH:/home/jlinford/TAU/tau2/x86_64/bin
-PATH=$PATH:/home/jlinford/TAU/tau-2.23b0/x86_64/bin
-export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
-export TAU_VERBOSE=1
-# Turn off throttling to avoid bug (mps, 10/31/14)
-export TAU_THROTTLE=0
-export TAU_PROFILE=1
-export TAU_TRACE=0
-#export TAU_CALLPATH=1
-#export TAU_CALLPATH_DEPTH=100
-export TAU_OPENMP_RUNTIME=1
-export TAU_OPENMP_RUNTIME_EVENTS=1
-export TAU_OPENMP_RUNTIME_CONTEXT=region
-export TAU_TRACK_MEMORY_LEAKS=0
-alias  set_tau="source /home/jlinford/TAU/tau.csh"
-alias  pe_load='taudb_loadtrial -c geos-chem -m "APPLICATION=geos-chem:EXPERIMENT=tutorial"'
+ path= "$path /home/jlinford/TAU/pdtoolkit-3.20/x86_64/bin"
+ path= "$path /home/jlinford/TAU/tau2/x86_64/bin"
+ path= "$path /home/jlinford/TAU/tau-2.23b0/x86_64/bin"
+ export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
+ export TAU_VERBOSE=1
+ export TAU_PROFILE=1
+ export TAU_TRACE=0
+ export TAU_OPENMP_RUNTIME=1
+ export TAU_OPENMP_RUNTIME_EVENTS=1
+ export TAU_OPENMP_RUNTIME_CONTEXT=region
+ export TAU_TRACK_MEMORY_LEAKS=0
+ alias  set_tau "source /home/jlinford/TAU/tau.csh"
+ alias  pe_load 'taudb_loadtrial -c geos-chem -m "APPLICATION=geos-chem:EXPERIMENT=tutorial"'
 fi
 
 # %%%%% Settings for Ghostview %%%%%
@@ -356,11 +354,11 @@ alias sshod="ssh -Y -C -o ServerAliveInterval=30 -fN OD"
 
 # %%%%% Sun Grid Engine commands for AS %%%%%
 if [[ $isAsCluster == 1 ]] ; then
-alias  qq="qconf -spl"
-alias  qs="qstat -f"
-alias  qj="qstat -u $USER"
-alias  qja='qstat -u "*"'
-alias  qa="qacct -j"
+ alias  qq="qconf -spl"
+ alias  qs="qstat -f"
+ alias  qj="qstat -u $USER"
+ alias  qja='qstat -u "*"'
+ alias  qa="qacct -j"
 fi
 
 # %%%%% Source a file with your own personal aliases and settings %%%%%
@@ -374,32 +372,6 @@ fi
 #==============================================================================
 
 if [[ $isOdyssey == 1 ]] ; then
-
-#-----------------------------------------------------------------------------
-# Prior to 8/4/15:
-# This is no longer needed (bmy, 8/4/15)
-# # %%%%% KLUDGE FOR ODYSSEY %%%%%
-# #
-# # The available OpenMPI modules labeled (Intel) are actually built with
-# # ifort & gcc. The module's specified environment acts like 'mpicc' and
-# # 'mpicxx' are Intel-based, when in fact they point to the GNU compilers.
-# # This creates an error compiling ESMF because when ESMF looks for <math.h>,
-# # it finds a version specific to Intel that DOESN'T work with mpicc/mpicxx/gcc.
-# #
-# # Temporary Solution: Reconfigure the CPATH environment variable to remove
-# # the entries:
-# #
-# #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/
-# #   :/n/sw/intel_cluster_studio-2013/composerxe/compiler/include/intel64
-# #
-# # thus making the GNU version in /usr/include the available and first-seen
-# # version.
-# #   -- Mike Long (22 Oct 2014)
-# #
-# CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include/intel64||g')
-# CPATH=$(echo "$CPATH" | sed 's|:/n/sw/intel_cluster_studio-2013/composerxe/include||g')
-# export CPATH
-#-----------------------------------------------------------------------------
 
  # %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
  export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
