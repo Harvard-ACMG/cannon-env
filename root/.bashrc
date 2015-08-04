@@ -83,7 +83,7 @@ else
 fi
 
 # %%%%% Set Unix prompt to be "[USER@HOST CWD]%" %%%%%
-PS1="[\u@\h \W]% "
+PS1="[\u@\h \W] "
 
 # %%%%% Startup settings %%%%%
 umask 022                          # Make files readable by everyone by default
@@ -100,7 +100,6 @@ ulimit -f unlimited                # Max out filesize
 ulimit -d unlimited                # Max out datasize
 ulimit -s unlimited                # Max out stacksize
 ulimit -c unlimited                # Max out coredumpsize
-umask 022
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
@@ -108,6 +107,7 @@ umask 022
 if [[ $isOdyssey == 1 ]] ; then
  export LMOD_COLORIZE=yes                                  # Colorize display
  source new-modules.sh                                     # Turn on Lmod
+ export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH" # Jacob grp modules
  module purge                                              # Unload everything
  module load git                                           # Load Git
  module load perl                                          # Load Perl
@@ -118,7 +118,6 @@ if [[ $isOdyssey == 1 ]] ; then
 # without using the ESMF/MPI interface) then you should 
 # use these modules.  These replicate the setup that we
 # had on the AS cluster. (bmy, 8/4/15)
- export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH" # Jacob grp modules
  module load GEOS-Chem-Libraries                           # netCDF/HDF5
  module load intel/11.1                                    # IFORT compiler
  module load totalview                                     # Totalview debugger
