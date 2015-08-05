@@ -24,8 +24,8 @@
 #BOC
 
 # Specific settings for X-terminal
-XTerm*Background:      DarkSlateGray
-XTerm*Foreground:      LemonChiffon
+XTerm*Background:      black
+XTerm*Foreground:      white
 XTerm*CursorColor:     FireBrick
 XTerm*TermType:        xterm
 XTerm*Geometry:        90x26+0+0
@@ -36,4 +36,5 @@ XTerm*TitleBar:        true
 XTerm*TextUnderIcon:   true
 XTerm*AllowIconInput:  true
 XTerm*AutoRaise:       true
+xterm*boldMode:        false
 #EOC

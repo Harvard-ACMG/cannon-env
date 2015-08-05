@@ -18,10 +18,11 @@
 #  Jacob-group Atmospheric Sciences cluster (as.harvard.edu), including
 #  frequently used libraries and paths and aliases for common unix commands.
 #  You can define additional aliases that are only applicable to your own
-#  environment in the file .my_personal_aliases.
+#  environment in the file .my_personal_settings.
 #
 # !REVISION HISTORY: 
-#  Type 'gitk' at the prompt to browse revision history.
+#  Change directory to ~/env and type 'gitk' at the prompt to browse
+#  revision history.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -120,8 +121,6 @@ PATH=$PATH:/usr/lib64
 #==============================================================================
 
 # %%%%% Basic Git commands %%%%%
-export MY_GIT_DIR="/as/pub/git/bmy"
-alias  MG="cd $MY_GIT_DIR; pwd"
 alias  gui="git gui &"
 alias  gk="gitk &"
 alias  gka="gitk --all &"
@@ -141,7 +140,7 @@ alias  wpp="git pull ${ACMG_WEB}/publications master"
 alias  wpe="git pull ${ACMG_WEB}/presentations master"
 
 # %%%%% Commands to sync .bashrc etc files %%%%%
-alias  getenv="cd ~/env; git pull git://git.as.harvard.edu/bmy/env master"
+alias  getenv="cd ~/env; git pull origin master"
 
 #==============================================================================
 # %%%%% Settings for programming languages and applications %%%%%
@@ -242,6 +241,14 @@ alias  la="ls -a"
 alias  lla="ls -la"
 alias  llh="ls -lh"
 
+# %%%%% Aliases for transferring files %%%%%
+# This command sets up a ssh connection to Odyssey in the background. For it
+# to work properly, you need to make sure Host OD is defined in your
+# ~/.ssh/config file. You will be prompted for your password and verification
+# code. Once a connection is established, you will not need to enter this
+# information for subsequent ssh or scp commands.
+alias sshod="ssh -Y -C -o ServerAliveInterval=30 -fN OD"
+
 # %%%%% Sun Grid Engine commands for AS %%%%%
 alias  qq="qconf -spl"
 alias  qs="qstat -f"
@@ -250,7 +257,7 @@ alias  qja='qstat -u "*"'
 alias  qa="qacct -j"
 
 # %%%%% Source a file with your own personal aliases and settings %%%%%
-if [[ -f $HOME/.my_personal_aliases ]] ; then
- . $HOME/.my_personal_aliases
+if [[ -f $HOME/.my_personal_settings ]] ; then
+ . $HOME/.my_personal_settings
 fi
 #EOC
