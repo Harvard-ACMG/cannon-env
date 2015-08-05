@@ -37,55 +37,63 @@
 ;BOC
 
 ;;=============================================================================
-;; FONTS (pick the one that you like the best, or add your own!)
+;; FRAME SIZE AND POSITION
+;; NOTE: The default is for a screen of 1920x1200 resolution,
+;; You will likely want to modify these settings if working
+;; with a different resolution (e.g. on your laptop)
+;;=============================================================================
+
+;; %%%%% Open one window, 80 columns x 60 lines, centered on screen %%%%%
+(set-frame-height (selected-frame) 60)    ; 60 lines 
+(set-frame-width  (selected-frame) 80)    ; 80 columns
+(set-frame-position (selected-frame) 550 30)
+
+;; %%%%% Open two windows side by side, 164 columns x 72 lines
+;;(set-frame-height (selected-frame) 72)      ; 72 lines 
+;;(set-frame-width  (selected-frame) 164)     ; 164 columns
+;;(split-window-horizontally)                 ; Use two vertical windows
+;;(other-window 1)                            ; Start in the right window
+
+;; %%%%% Open two windows on top of each other, 80 columns x 72 lines %%%%%
+;;(set-frame-height (selected-frame) 72)    ; 72 lines 
+;;(set-frame-width  (selected-frame) 80)    ; 80 columns
+;;(split-window-vertically)                 ; Use two horizontal windows
+;;(other-window 1)                          ; Start in the bottom window
+
+;; %%%%% Open a shell (optional, but not really necessary) %%%%%
+;(shell)                                    ; start a shell 
+;;(rename-buffer "shell-first")             ; rename it
+;(other-window 1)                           ; move back to first window 
+
+
+;;=============================================================================
+;; FONTS - customize to look best on your system!
 ;;=============================================================================
 
 ;; Lucida Typewriter 14pt bold
 (set-face-font 
  'default "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1" )
 
+;; Example of normal instead of bold 
 ;; Lucida Typewriter 14pt normal
 ;(set-face-font 
 ; 'default "-*-Lucidatypewriter-*-R-*-*-*-140-*-*-*-*-iso8859-1" )
 
-;; Lucida Typewriter 13pt bold
+;; Example of different font size
+;;Lucida Typewriter 13pt bold
 ;(set-face-font 
 ; 'default "-*-Lucidatypewriter-Bold-R-*-*-*-130-*-*-*-*-iso8859-1" )
 
-;; Lucida Typewriter 13pt normal
+;; Example of different font type
+;; Courier 13 pt bold
 ;(set-face-font 
-; 'default "-*-Lucidatypewriter-*-R-*-*-*-130-*-*-*-*-iso8859-1" )
-
-;; Lucida Typewriter 12pt bold
-;(set-face-font 
-; 'default "-*-Lucidatypewriter-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
-
-;; Lucida Typewriter 12pt normal
-;(set-face-font 
-; 'default "-*-Lucidatypewriter-*-R-*-*-*-120-*-*-*-*-iso8859-1" )
-
-;; Courier 14 pt bold
-;(set-face-font 
-; 'default "-*-Courier-Bold-R-*-*-*-140-*-*-*-*-iso8859-1" )
-
-;; Courier 14 pt normal
-;(set-face-font 
-; 'default "-*-Courier-*-R-*-*-*-140-*-*-*-*-iso8859-1" )
-
-;; Courier 12 pt bold
-;(set-face-font 
-; 'default "-*-Courier-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
-
-;; Courier 12 pt normal
-;(set-face-font 
-; 'default "-*-Courier-*-R-*-*-*-120-*-*-*-*-iso8859-1" )
-
+; 'default "-*-Courier-Bold-R-*-*-*-130-*-*-*-*-iso8859-1" )
 
 ;;=============================================================================
-;; COLOR SETTINGS
+;; COLOR SETTINGS - customize
 ;;=============================================================================
 
-;; Set the background colors (pick the one that you like best)
+;; BACKGROUND COLOR
 (set-face-background 'default "gray75")            ; Bob's preference
 ;(set-face-background 'default "FloralWhite")      ; Philippe's preference
 ;(set-face-background 'default "dark slate gray")  ; ... a 
@@ -93,8 +101,7 @@
 ;(set-face-foreground 'default "black")            ;     other
 ;(set-face-foreground 'default "white")            ;     options ...
 
-;; Set "colorization" colors for code
-;; Use the same scheme as from the old .xemacs-options file
+;; "COLORIZATION" COLORS FOR CODE
 (custom-set-faces
   ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
   ;; Your init file should contain only one such instance.
@@ -121,6 +128,11 @@
 ;; FUNCTIONS and GLOBAL SETTINGS
 ;;=============================================================================
 
+;; Whatever your configuration is, you get TWO WINDOWS SPLIT VERTICAL. If
+;; it is already the case, the left and right buffers are switched.
+(defalias 'two-windows-vertical
+  (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
+
 ;; kill process (like a tail -f) and purge output. In shell mode.
 (defalias 'quitnclean
   (read-kbd-macro "C-c C-\\ C-c C-o"))
@@ -133,10 +145,15 @@
 (defalias 'clean-after-ediff
   (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
 
-;; EDIFF : like clean-after-ediff but close the two compared windows
+;;; EDIFF : like clean-after-ediff but close the two compared windows
+;;; This one depends on the bindings below
+;(defalias 'fullcleanediff
+;  (read-kbd-macro "<f3> <C-f2> <f3>"))
+
+;; EDIFF : close the two compared windows
 ;; This one depends on the bindings below
 (defalias 'fullcleanediff
-  (read-kbd-macro "<f3> <C-f2> <f3>"))
+  (read-kbd-macro "<f3> <f2> <f3>"))
 
 ;; OMIT :
 ;; This C-o business was working in Xemacs, but it is not in Emacs...:
@@ -157,29 +174,6 @@
 	  [?% ?m ?^ ?\\ ?. ?\\ ?| ?\\ ?. ?o ?$ ?\\ ?| ?\\ ?. ?m ?o ?d ?$ ?\\ ?| ?~ ?$ return ?k])
   )
 
-
-;;=============================================================================
-;; FUNCTIONS and GLOBAL SETTINGS
-;;=============================================================================
-
-;; kill process (like a tail -f) and purge output. In shell mode.
-(defalias 'quitnclean
-  (read-kbd-macro "C-c C-\\ C-c C-o"))
-
-;; to swicth back and forth b/w 2 buffers
-(defalias 'swapbuffer
-  (read-kbd-macro "C-x b RET"))
-
-;; Whatever your configuration is, you get TWO WINDOWS SPLIT VERTICAL. If
-;; it is already the case, the left and right buffers are switched.
-(defalias 'two-windows-vertical
-  (read-kbd-macro "C-x 1 C-x 3 C-x b RET"))
-
-;; EDIFF : close the two compared windows
-;; This one depends on the bindings below
-(defalias 'fullcleanediff
-  (read-kbd-macro "<f3> <f2> <f3>"))
-
 ; -- some little tricks for F90 mode:
 
 ;; macro used in F90 mode. Since line starting with a ! in 1st col are
@@ -190,7 +184,6 @@
 ;; customized insertion of timestamp (function is defined below in miscella.)
 (fset 'macrotimestamp
    [?\M-x ?i ?n ?s ?e ?r ?t ?- ?t ?i ?m ?e ?s ?t tab return return left ? ])
-
 
 ;;=============================================================================
 ;; DELETE COMMANDS (new = set here)
@@ -205,18 +198,13 @@
 ;;
 ;; so, like in Windows:
 ;;=============================================================================
-
-
 (global-set-key [(delete)] "\C-d")        ; Now do that instead: 
                                           ;  works for both emacs/Xemacs
-
 (global-set-key [(control delete)]    'kill-word)
 (global-set-key [(control backspace)] 'backward-kill-word)
-
 ;; to replaces (when typing) or delete (when pressing DEL 
 ;; or Backspace) **highlighted** text (very  useful!)
 (delete-selection-mode t)
-
 
 ;;=============================================================================
 ;;            MOTION STUFF
@@ -1092,7 +1080,7 @@
 
 ; Load the file with NCL editor enhancements
 ; Use the color settings defined above.
-(autoload 'ncl-mode "/home/bmy/bin/ncl.el")  
+(autoload 'ncl-mode "~/bin/ncl.el")  
     
 ;;-----------------------------------------------------------------------------
 ;; For FONT-LOCK and AUTO-FILL
@@ -1162,34 +1150,5 @@
 (desktop-load-default)
 (desktop-read)
 
-
-;;=============================================================================
-;; Define the frame size, and choose one or two windows.
-;; You can uncomment the lines that you want and comment the rest.
-;; NOTE: The defaults is for a screen of 1920x1200 resolution,
-;; so you can modify the # of lines & columns so that the Emacs
-;; window will fit onto your screen (bmy, 6/5/12)
-;;=============================================================================
-
-;; %%%%% Open one window, 80 columns x 72 lines %%%%%
-;;(set-frame-height (selected-frame) 72)    ; 72 lines 
-;;(set-frame-width  (selected-frame) 80)    ; 80 columns
-
-;; %%%%% Open two windows side by side, 80 columns x 72 lines
-(set-frame-height (selected-frame) 72)      ; 72 lines 
-(set-frame-width  (selected-frame) 164)     ; 164 columns
-(split-window-horizontally)                 ; Use two vertical windows
-;;(other-window 1)                            ; Start in the right window
-
-;; %%%%% Open two windows on top of each other, 80 columns x 72 lines %%%%%
-;;(set-frame-height (selected-frame) 72)    ; 72 lines 
-;;(set-frame-width  (selected-frame) 80)    ; 80 columns
-;;(split-window-vertically)                 ; Use two horizontal windows
-;;(other-window 1)                          ; Start in the bottom window
-
-;; %%%%% Open a shell (optional, but not really necessary) %%%%%
-;(shell)                                    ; start a shell 
-;;(rename-buffer "shell-first")             ; rename it
-;(other-window 1)                           ; move back to first window 
 
 ;EOC
