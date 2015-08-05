@@ -49,7 +49,8 @@ clean:
 SRC1 =                       \
 ./intro.txt                  \
 ../root/.bash_profile        \
-../root/.bashrc              \
+../root/.bashrc_AS           \
+../root/.bashrc_OD           \
 ../root/.login               \
 ../root/.cshrc               \
 ../root/.Xdefaults           \

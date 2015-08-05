@@ -20,7 +20,8 @@
 #  aliases that are only applicable to your own environment in the file 
 #  .my_personal_aliases.
 #
-# !REVISION HISTORY: type 'gitk' at the prompt to browse revision history
+# !REVISION HISTORY: 
+#  Type 'gitk' at the prompt to browse revision history.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
