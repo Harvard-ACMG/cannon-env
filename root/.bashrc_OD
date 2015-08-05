@@ -1,0 +1,262 @@
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: .bashrc_OD
+#
+# !DESCRIPTION: File containing environment settings for the bash shell on
+#  the Odyssey cluster. Rename this file .bashrc when copying to your
+#  home directory on Odyssey.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  source ~/.bashrc
+#
+# !REMARKS:
+#  We have included settings that are common to all GEOS-Chem users on the 
+#  Odyssey cluster (rc.fas.harvard.edu), including frequently used libraries 
+#  and paths and aliases for common unix commands. You can define additional 
+#  aliases that are only applicable to your own environment in the file 
+#  .my_personal_aliases.
+#
+# !REVISION HISTORY: type 'gitk' at the prompt to browse revision history
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+#==============================================================================
+# %%%%% General system startup settings %%%%%
+#==============================================================================
+
+# %%%%% Source systemwide global definitions from /etc/bashrc %%%%%
+if [[ -f /etc/bashrc ]] ; then
+ . /etc/bashrc
+fi
+
+# %%%%% Set Unix prompt to be "[USER@HOST CWD]%" %%%%%
+# Use green for Odyssey to contrast with AS
+PS1="\[\e[1;32m\]\u@\h \W $\[\e[0m\] "
+
+# %%%%% Startup settings %%%%%
+umask 022                          # Make files readable by everyone by default
+set autolist                       # Turn on list completion
+set correct                        #
+set color                          # 
+set colorcat                       # 
+set filesc                         #
+set emacs                          # Use an emacs-style editing interface
+set history                        # Turn on history of commands
+set ignoreeof                      # Prevent EOF from terminating the shell
+ulimit -t unlimited                # Max out cputime
+ulimit -f unlimited                # Max out filesize
+ulimit -d unlimited                # Max out datasize
+ulimit -s unlimited                # Max out stacksize
+ulimit -c unlimited                # Max out coredumpsize
+
+#==============================================================================
+# %%%%% Settings for loading software modules %%%%%
+#==============================================================================
+export LMOD_COLORIZE=yes                                  # Colorize display
+source new-modules.sh                                     # Turn on Lmod
+export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH" # Jacob grp modules
+module purge                                              # Unload everything
+module load git                                           # Load Git
+module load perl                                          # Load Perl
+module load IDL                                           # Load IDL
+
+#------------------------------------------------------------------------------
+# %%%%% JACOB-GROUP LIBRARIES %%%%% 
+# If you just want to compile GEOS-Chem "Classic" (i.e. 
+# without using the ESMF/MPI interface) then you should 
+# use these modules.  These replicate the setup that we
+# had on the AS cluster. (bmy, 8/4/15)
+module load GEOS-Chem-Libraries                           # netCDF/HDF5
+module load intel/11.1                                    # IFORT compiler
+module load totalview                                     # Totalview debugger
+
+#------------------------------------------------------------------------------
+# %%%%% FOR GEOS-CHEM HP with IFORT 13 %%%%%
+# module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # Load ifort/openmpi
+# module load ncview nco netcdf/4.1.3-fasrc01              # Load netCDF
+
+#------------------------------------------------------------------------------
+# %%%%% FOR GEOS-CHEM HP with IFORT 15 %%%%%
+# module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
+# module load netcdf/4.1.3-fasrc04                         # Load netCDF
+# module load ncview/2.1.5-fasrc01                         # Load ncview
+# module load nco/4.3.6-fasrc01                            # Load nco
+
+#------------------------------------------------------------------------------
+# %%%%% FOR GEOS-CHEM with PGI COMPILER (EXPERIMENTAL) %%%%%
+# NOTE: A license file is automatically set when loading IDL upon startup
+# but must be unset prior to compiling with PGI. To subsequently use IDL, type:
+# 'export LM_LICENSE_FILE=27001@rlic1' after you are done compiling.
+# unset LM_LICENSE_FILE                              # unset 27001@rclic1 
+# module load pgi/14.10-fasrc01                      # Load PGI
+# module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2  # Load netCDF
+
+#------------------------------------------------------------------------------
+# Display loaded modules
+module list
+
+#==============================================================================
+# %%%%% Settings for data paths %%%%%
+#==============================================================================
+
+# %%%%% Settings for GIGCsa %%%%%
+export ARCH=`uname -s`
+
+# %%%%% Settings for netCDF, HDF, etc. libraries %%%%%
+export NETCDF_HOME=`nc-config --prefix`                   # nc dir
+export NETCDF_F_HOME=`nf-config --prefix 2>/dev/null`     # nc-fortran dir
+if [[ $NETCDF_F_HOME == "" ]] ; then                      # If not found,
+ export NETCDF_F_HOME=$NETCDF_HOME                        #  set nc-fortran
+fi                                                        #  same as nc dir.
+export GC_BIN="$NETCDF_HOME/bin"                          # netcdf bin dir
+export GC_INCLUDE="$NETCDF_HOME/include"                  # netcdf include dir
+export GC_LIB="$NETCDF_HOME/lib"                          # netcdf library dir
+export BIN_NETCDF=$GC_BIN                                 # aka GC_BIN
+export INC_NETCDF=$GC_INCLUDE                             # aka GC_INCLUDE
+export LIB_NETCDF=$GC_LIB                                 # aka GC_LIB
+export BIN_HDF5=$GC_BIN                                   # aka GC_BIN
+export INC_HDF5=$GC_INCLUDE                               # aka GC_INCLUDE
+export LIB_HDF5=$GC_LIB                                   # aka GC_LIB
+
+# %%%%% Settings for met field & emissions directories %%%%%
+dataDir="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid/gcdata"
+dataDirReadOnly="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid/gcdata"
+alias  XC="cd $dataDir/GEOS_0.5x0.666_CH"
+alias  XC5="cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"
+alias  XS="cd $dataDir/GEOS_0.25x0.3125_NA/"
+alias  XNFP="cd $dataDir/GEOS_0.25x0.3125_NA.d/GEOS_FP/"
+alias  XN="cd $dataDir/GEOS_0.5x0.666_NA"
+alias  XN5="cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"
+alias  X1="cd $dataDir/GEOS_1x1"
+alias  XNN="cd $dataDir/GEOS_NATIVE"
+alias  X2="cd $dataDir/GEOS_2x2.5"
+alias  X24="cd $dataDir/GEOS_2x2.5.d/GEOS_4_v4"
+alias  X25="cd $dataDir/GEOS_2x2.5.d/GEOS_5"
+alias  X2FP="cd $dataDir/GEOS_2x2.5.d/GEOS_FP"
+alias  X2M="cd $dataDir/GEOS_2x2.5.d/MERRA"
+alias  X4="cd $dataDir/GEOS_4x5"
+alias  X44="cd $dataDir/GEOS_4x5/GEOS_4_v4"
+alias  X45="cd $dataDir/GEOS_4x5/GEOS_5"
+alias  X4FP="cd $dataDir/GEOS_4x5/GEOS_FP"
+alias  X4M="cd $dataDir/GEOS_4x5/MERRA"
+export DATA_ROOT="$dataDir/ExtData/"
+export DATA_ROOT_RW="$dataDirReadOnly/ExtData/"
+export HEMCO_DATA_ROOT="$dataDirReadOnly/ExtData/HEMCO"
+export HEMCO_DATA_ROOT_RW="$dataDir/ExtData/HEMCO"
+export EXTDATA="$dataDirReadOnly/ExtData"
+export EXTDATA_RW="$dataDir/ExtData"
+unset dataDir
+unset dataDirReadOnly
+
+#==============================================================================
+# %%%%% Settings for Git and GitHub %%%%%
+#==============================================================================
+
+# %%%%% Basic Git commands %%%%%
+alias  gui="git gui &"
+alias  gk="gitk &"
+alias  gka="gitk --all &"
+alias  gl="git log"
+alias  glo="git log --oneline"
+alias  glp="git log --pretty=format:'%h : %s' --topo-order --graph"
+
+# %%%%% Commands to sync .bashrc etc files %%%%%
+alias  getenv="cd ~/env; git pull origin master"
+
+#==============================================================================
+# %%%%% Settings for programming languages and applications %%%%%
+#==============================================================================
+
+# %%%%% Settings for Fortran and C %%%%%
+export FC=ifort
+export CC=gcc
+export CXX=g++
+export F90=$FC
+export F77=$FC
+
+# %%%%% Settings for OpenMP parallelization %%%%%
+export KMP_STACKSIZE=500000000          # NOTE: Set 100x larger than in csh!
+
+# %%%%% Settings for OpenMPI parallelization %%%%%
+export OMPI_FC=$FC
+export OMPI_CC=$CC
+export OMPI_CXX=$CXX
+
+# %%%%% Settings for IDL %%%%%
+export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
+alias  I="cd $HOME/IDL"
+alias  IG="cd $HOME/IDL/gamap2"
+alias  IS="cd $HOME/IDL/tests"
+
+# %%%%% Settings for Python %%%%%
+export PYTHONSTTARTUP="$HOME/python/python_startup.py"
+
+# %%%%% Settings for Ghostview %%%%%
+export GS_DEVICE="x11"
+
+#==============================================================================
+# %%%%% Display options %%%%%
+#==============================================================================
+# %%% Settings for colorization %%%
+export GREP_OPTIONS=--color=auto
+export GREP_COLOR=32
+export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;37:*.tgz=01;37:*.arj=01;37:*.taz=01;37:*.lzh=01;37:*.zip=01;37:*.z=01;37:*.Z=01;37:*.gz=01;37:*.bz2=01;37:*.deb=01;37:*.rpm=01;37:*.jar=01;37:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.flac=01;35:*.mp3=01;35:*.mpc=01;35:*.ogg=01;35:*.wav=01;35:'
+
+#==============================================================================
+# %%%%% User-defined shortcut aliases %%%%%
+#==============================================================================
+
+# %%%%% Aliases for general Unix commands %%%%
+alias  disk="du -h -s -c"
+alias  g="grep -in"
+alias  gf="gifview"
+alias  gt="grep -in --text"
+alias  gf="gifview -a"
+alias  gvs="gv --orientation=seascape"
+alias  m="less"
+alias  me="xterm &"
+alias  pan="$HOME/bin/panoply.sh &"
+alias  proc="ps -ef | grep $USER | sort"
+alias  pu="rm *~"
+alias  sb=". ~/.bash_profile"
+alias  ssh="ssh -X -A"
+alias  gsh="ssh -xT"
+alias  tf="tail --follow"
+alias  zap="kill -9"
+
+# %%%%% Aliases for directory listing %%%%%
+alias  ls="ls -CF --time-style=long-iso --color=auto"
+alias  l1="ls -1"
+alias  ll="ls -l"
+alias  llt="ls -lt"
+alias  lltm="ls -lt | less"
+alias  la="ls -a"
+alias  lla="ls -la"
+alias  llh="ls -lh"
+
+# %%%%% Aliases for transferring files %%%%%
+# This command sets up a ssh connection to Odyssey in the background. For it
+# to work properly, you need to make sure Host OD is defined in your
+# ~/.ssh/config file. You will be prompted for your password and verification
+# code. Once a connection is established, you will not need to enter this
+# information for subsequent ssh or scp commands.
+alias sshod="ssh -Y -C -o ServerAliveInterval=30 -fN OD"
+
+# %%%%% Source a file with your own personal aliases and settings %%%%%
+if [[ -f $HOME/.my_personal_aliases ]] ; then
+ . $HOME/.my_personal_aliases
+fi
+
+#==============================================================================
+# %%%%% Alter standard path settings for Odyssey %%%%%
+#==============================================================================
+
+# %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
+export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
+
+#EOC
