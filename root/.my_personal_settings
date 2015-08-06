@@ -24,20 +24,6 @@
 #------------------------------------------------------------------------------
 #BOC
 
-# %%%%% Environment settings %%%%%%
-export TERM=xterm                        # Default terminal
-export EDITOR=emacs                      # Default editor (emacs or vim)
-export VISUAL=emacs                      # Default editor (emacs or vim)
-export GIT_EDITOR=emacs                  # Default Git editor (emacs or vim)
-export MAIL=/usr/spool/mail/$USER        # Default mail program
-mail=$MAIL
-
-# %%%%% Load different compiler versions %%%%%
-alias  load_15="export LOAD_COMPILER=ifort15; sb; unset LOAD_COMPILER"
-alias  load_13="export LOAD_COMPILER=ifort13; sb; unset LOAD_COMPILER"
-alias  load_11="export LOAD_COMPILER=ifort11; sb; unset LOAD_COMPILER"
-alias  load_pg="export LOAD_COMPILER=pgi; sb; unset LOAD_COMPILER"
-
 # %%%%% Add your settings and aliases here %%%%%
 
 #EOC
