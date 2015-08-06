@@ -24,47 +24,18 @@
 ;  open and then open additional Emacs windows to determine if you like the
 ;  new settings (or if you wish to revert to the previous settings).
 ;
+;  NOTE: The "FRAME SIZE AND POSITION" section works better at the bottom
+;  of the file, so we will leave it there.  You can uncomment the various
+;  lines of code to control the height and width of the Emacs window.
+;  You can also decide if you want to stack windows horizontally or
+;  vertically.
+;
 ; !REVISION HISTORY: 
-;  20 Dec 2007 - P. Le Sager - Initial version
-;  08 Dec 2011 - R. Yantosca - Added ProTeX headers
-;  08 Dec 2011 - R. Yantosca - Now set for 74 rows (1920x1280 resolution)
-;  05 Jun 2012 - R. Yantosca - Now set for 72 rows (1920x1280 resolution)
-;  05 Jun 2012 - R. Yantosca - Now set mouse wheel behavior for Emacs 23
-;   5 Jun 2012 - R. Yantosca - Add time & date to mode bar (at bottom)
-;  11 Sep 2013 - R. Yantosca - Updated for NCL mode
+;  Change directory to ~/env and type 'gitk' at the prompt to browse
+;  revision history.
 ;EOP
 ;------------------------------------------------------------------------------
 ;BOC
-
-;;=============================================================================
-;; FRAME SIZE AND POSITION
-;; NOTE: The default is for a screen of 1920x1200 resolution,
-;; You will likely want to modify these settings if working
-;; with a different resolution (e.g. on your laptop)
-;;=============================================================================
-
-;; %%%%% Open one window, 80 columns x 60 lines, centered on screen %%%%%
-(set-frame-height (selected-frame) 60)    ; 60 lines 
-(set-frame-width  (selected-frame) 80)    ; 80 columns
-(set-frame-position (selected-frame) 550 30)
-
-;; %%%%% Open two windows side by side, 164 columns x 72 lines
-;;(set-frame-height (selected-frame) 72)      ; 72 lines 
-;;(set-frame-width  (selected-frame) 164)     ; 164 columns
-;;(split-window-horizontally)                 ; Use two vertical windows
-;;(other-window 1)                            ; Start in the right window
-
-;; %%%%% Open two windows on top of each other, 80 columns x 72 lines %%%%%
-;;(set-frame-height (selected-frame) 72)    ; 72 lines 
-;;(set-frame-width  (selected-frame) 80)    ; 80 columns
-;;(split-window-vertically)                 ; Use two horizontal windows
-;;(other-window 1)                          ; Start in the bottom window
-
-;; %%%%% Open a shell (optional, but not really necessary) %%%%%
-;(shell)                                    ; start a shell 
-;;(rename-buffer "shell-first")             ; rename it
-;(other-window 1)                           ; move back to first window 
-
 
 ;;=============================================================================
 ;; FONTS - customize to look best on your system!
@@ -1150,5 +1121,33 @@
 (desktop-load-default)
 (desktop-read)
 
+;;=============================================================================
+;; FRAME SIZE AND POSITION
+;; NOTE: The default is for a screen of 1920x1200 resolution,
+;; You will likely want to modify these settings if working
+;; with a different resolution (e.g. on your laptop)
+;;=============================================================================
+
+;; %%%%% Open one window, 80 columns x 60 lines, centered on screen %%%%%
+(set-frame-height (selected-frame) 60)    ; 60 lines 
+(set-frame-width  (selected-frame) 80)    ; 80 columns
+(set-frame-position (selected-frame) 550 30)
+
+;; %%%%% Open two windows side by side, 164 columns x 72 lines
+;;(set-frame-height (selected-frame) 72)      ; 72 lines 
+;;(set-frame-width  (selected-frame) 164)     ; 164 columns
+;;(split-window-horizontally)                 ; Use two vertical windows
+;;(other-window 1)                            ; Start in the right window
+
+;; %%%%% Open two windows on top of each other, 80 columns x 72 lines %%%%%
+;;(set-frame-height (selected-frame) 72)    ; 72 lines 
+;;(set-frame-width  (selected-frame) 80)    ; 80 columns
+;;(split-window-vertically)                 ; Use two horizontal windows
+;;(other-window 1)                          ; Start in the bottom window
+
+;; %%%%% Open a shell (optional, but not really necessary) %%%%%
+;(shell)                                    ; start a shell 
+;;(rename-buffer "shell-first")             ; rename it
+;(other-window 1)                           ; move back to first window 
 
 ;EOC
