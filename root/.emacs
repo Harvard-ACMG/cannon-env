@@ -121,8 +121,10 @@
  '(font-lock-variable-name-face ((t (:foreground "blue")))))
 
 ;; Enable syntax highlighting for .bashrc_OD and .bashrc_AS templates
+;; and other startup files
 (add-to-list 'auto-mode-alist '("\\.bashrc_OD$" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.bashrc_AS$" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.my_personal_settings$" . conf-unix-mode))
 
 ;;=============================================================================
 ;; FUNCTIONS and GLOBAL SETTINGS
