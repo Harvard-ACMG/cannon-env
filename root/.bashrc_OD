@@ -81,8 +81,10 @@ else
   loadThisCompiler="ifort11" 
 fi
 
-# Echo info
-echo "Loading modules for compiler $loadThisCompiler, please wait ..."
+# Echo info if it's an interactive session
+if [[ $- = *i* ]] ; then
+  echo "Loading modules for compiler $loadThisCompiler, please wait ..."
+fi
 
 # Activate Lmod and load commonly-used modules 
 export LMOD_COLORIZE=yes                                   # Colorize
@@ -141,8 +143,10 @@ else
 
 fi
 
-# Display loaded modules
-module list
+# Display loaded modules if it's an interactive session
+if [[ $- = *i* ]] ; then
+  module list
+fi
 
 # Undefine temporary variables
 unset loadThisCompiler
