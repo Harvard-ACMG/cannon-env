@@ -36,7 +36,7 @@ if [[ -f /etc/bashrc ]] ; then
  . /etc/bashrc
 fi
 
-# %%%%% Set Unix prompt to be "[USER@HOST CWD]%" %%%%%
+# %%%%% Set Unix prompt to be "[USER@HOST CWD]$" %%%%%
 # Use red to contrast with green on Odyssey
 PS1="\[\e[1;31m\][\u@AS \W]$\[\e[0m\] "
 
