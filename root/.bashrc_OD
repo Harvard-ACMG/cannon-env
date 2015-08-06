@@ -16,11 +16,24 @@
 # !REMARKS:
 #  We have included settings that are common to all GEOS-Chem users on the 
 #  Odyssey cluster (rc.fas.harvard.edu), including frequently used libraries 
-#  and paths and aliases for common unix commands. You can define additional 
+#  and paths and aliases for common Unix commands. You can define additional 
 #  aliases that are only applicable to your own environment in the file 
 #  .my_personal_settings.
 #
-# !REVISION HISTORY: 
+#  You can copy this file to ~/.bashrc in your root directory and edit
+#  as you wish.
+#
+#  To load a new set of modules for a different compiler version, you can
+#  issue the folloiwng commands:
+#
+#    export LOAD_COMPILER=ifort15; . ~/.bashrc; unset LOAD_COMPILER
+#    export LOAD_COMPILER=ifort13; . ~/.bashrc; unset LOAD_COMPILER
+#    export LOAD_COMPILER=ifort11; . ~/.bashrc; unset LOAD_COMPILER
+#    export LOAD_COMPILER=pgi;     . ~/.bashrc; unset LOAD_COMPILER
+#
+#  You can define these above commands as aliases in .my_personal_settings.
+#
+# !REVISION HISTORY:
 #  Change directory to ~/env and type 'gitk' at the prompt to browse
 #  revision history.
 #EOP
@@ -36,9 +49,9 @@ if [[ -f /etc/bashrc ]] ; then
  . /etc/bashrc
 fi
 
-# %%%%% Set Unix prompt to be "[USER@HOST CWD]%" %%%%%
+# %%%%% Set Unix prompt to be "[USER@HOST CWD]$" %%%%%
 # Use green for Odyssey to contrast with AS
-PS1="\[\e[1;32m\]\u@\h \W $\[\e[0m\] "
+PS1="\[\e[1;32m\][\u@\h \W]$\[\e[0m\] "
 
 # %%%%% Startup settings %%%%%
 umask 022                          # Make files readable by everyone by default
@@ -59,48 +72,80 @@ ulimit -c unlimited                # Max out coredumpsize
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
-export LMOD_COLORIZE=yes                                  # Colorize display
-source new-modules.sh                                     # Turn on Lmod
-export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH" # Jacob grp modules
-module purge                                              # Unload everything
-module load git                                           # Load Git
-module load perl                                          # Load Perl
-module load IDL                                           # Load IDL
 
-#------------------------------------------------------------------------------
-# %%%%% JACOB-GROUP LIBRARIES %%%%% 
-# If you just want to compile GEOS-Chem "Classic" (i.e. 
-# without using the ESMF/MPI interface) then you should 
-# use these modules.  These replicate the setup that we
-# had on the AS cluster. (bmy, 8/4/15)
-module load GEOS-Chem-Libraries                           # netCDF/HDF5
-module load intel/11.1                                    # IFORT compiler
-module load totalview                                     # Totalview debugger
+# Pick the compiler version to load, based on the LOAD_COMPILER env var
+# If LOAD_COMPILER is not set, then load the Jacob-group libraries 
+if [[ -n "${LOAD_COMPILER+1}" ]]; then
+  loadThisCompiler=$LOAD_COMPILER
+else
+  loadThisCompiler="ifort11" 
+fi
 
-#------------------------------------------------------------------------------
-# %%%%% FOR GEOS-CHEM HP with IFORT 13 %%%%%
-# module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # Load ifort/openmpi
-# module load ncview nco netcdf/4.1.3-fasrc01              # Load netCDF
+# Echo info
+echo "Loading modules for compiler $loadThisCompiler, please wait ..."
 
-#------------------------------------------------------------------------------
-# %%%%% FOR GEOS-CHEM HP with IFORT 15 %%%%%
-# module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # Load ifort, MPI
-# module load netcdf/4.1.3-fasrc04                         # Load netCDF
-# module load ncview/2.1.5-fasrc01                         # Load ncview
-# module load nco/4.3.6-fasrc01                            # Load nco
+# Activate Lmod and load commonly-used modules 
+export LMOD_COLORIZE=yes                                   # Colorize
+source new-modules.sh                                      # Turn on Lmod
+export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH"  # Jacob grp path
+module purge                                               # Initialize
+module load git                                            # Load Git
+module load perl                                           # Load Perl
+module load IDL                                            # Load IDL
 
-#------------------------------------------------------------------------------
-# %%%%% FOR GEOS-CHEM with PGI COMPILER (EXPERIMENTAL) %%%%%
-# NOTE: A license file is automatically set when loading IDL upon startup
-# but must be unset prior to compiling with PGI. To subsequently use IDL, type:
-# 'export LM_LICENSE_FILE=27001@rlic1' after you are done compiling.
-# unset LM_LICENSE_FILE                              # unset 27001@rclic1 
-# module load pgi/14.10-fasrc01                      # Load PGI
-# module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2  # Load netCDF
+if [[ $loadThisCompiler == "ifort15" ]]; then
 
-#------------------------------------------------------------------------------
+  #-----------------------------------------------------
+  # %%%%% FOR GEOS-CHEM with IFORT 15 %%%%%
+  #-----------------------------------------------------
+  module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # ifort v15 & MPI
+  module load netcdf/4.1.3-fasrc04                         # Load netCDF
+  module load ncview/2.1.5-fasrc01                         # Load ncview
+  module load nco/4.3.6-fasrc01                            # Load nco
+
+elif [[ $loadThisCompiler == "ifort13" ]]; then
+
+  #-----------------------------------------------------
+  # %%%%% FOR GEOS-CHEM with IFORT 13 %%%%%
+  #-----------------------------------------------------
+  module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc01 # ifort v13 & MPI
+  module load ncview nco netcdf/4.1.3-fasrc01              # netCDF
+
+elif [[ $loadThisCompiler == "pgi" ]]; then
+
+  #-----------------------------------------------------
+  # %%%%% FOR GEOS-CHEM with PGI COMPILER %%%%%
+  #
+  # NOTE: A license file is automatically set when 
+  # loading IDL upon startup but must be unset prior to
+  # compiling with PGI. To subsequently use IDL, type:
+  #    export LM_LICENSE_FILE=27001@rlic1
+  # after you are done compiling.
+  #------------------------------------------------------
+  unset LM_LICENSE_FILE                                    # unset 27001@rclic1 
+  module load pgi/14.10-fasrc01                            # Load PGI
+  module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2        # Load netCDF
+
+else
+
+  #-----------------------------------------------------
+  # %%%%% GEOS-CHEM WITH JACOB-GROUP LIBRARIES %%%%% 
+  #
+  # This is the default setting.  This will load the
+  # same netCDF, IFORT compiler (v11), and Totalview 
+  # versions that are used on the AS cluster. 
+  #-----------------------------------------------------
+  module load GEOS-Chem-Libraries                          # netCDF/HDF5
+  module load intel/11.1                                   # ifort v11
+  module load totalview                                    # Totalview
+
+fi
+
 # Display loaded modules
 module list
+
+# Undefine temporary variables
+unset loadThisCompiler
 
 #==============================================================================
 # %%%%% Settings for data paths %%%%%
