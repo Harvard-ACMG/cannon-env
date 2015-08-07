@@ -27,8 +27,13 @@ File Listing for Root Directory:
 root/.bash_profile  -- Login file for bash. This file is only executed the 
                        first time you log into a machine. 
 
-root/.bashrc        -- bash environment file. This file is executed every time 
-                       you start a new shell on a machine.
+root/.bashrc_OD     -- bash environment file for Odyssey. Once copied to your
+                       root directory and renamed .bashrc, this file is executed 
+                       every time you start a new shell on a machine.
+
+root/.bashrc_AS     -- bash environment file for AS. Once copied to your
+                       root directory and renamed .bashrc, this file is executed 
+                       every time you start a new shell on a machine.
 
 root/.login         -- tcsh login file. This file is only executed the first 
                        time you log into a machine. 
@@ -47,7 +52,8 @@ root/.soft          -- Customization file for the SoftEnv program.  This allows
 root/.Xdefaults     -- Sets specific setting (colors, window sizes, etc.) for
                        X11 applications (such as xterm).
 
-root/.my_personal_aliases -- file to store your customized aliases
+root/.my_personal_settings -- file to store your customized settings, such as
+                              personal aliases and customizing your prompt.
 
 
 File Listing for Bin Directory:
