@@ -133,7 +133,7 @@ elif [[ $loadThisCompiler == "pgi" ]]; then
   #------------------------------------------------------
   unset LM_LICENSE_FILE                                    # unset 27001@rclic1 
   module load pgi/14.10-fasrc01                            # Load PGI
-  module load hpc/netcdf-4.2 hpc/netcdf-fortran-4.2        # Load netCDF
+  module load legacy hpc/netcdf-4.2 hpc/netcdf-fortran-4.2 # Load netCDF
 
 else
 
