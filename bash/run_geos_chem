@@ -43,6 +43,7 @@
 # !REVISION HISTORY: 
 #  05 Dec 2014 - R. Yantosca - Initial version, based on Lu Hu's script
 #  16 Jul 2015 - M. Sulprizio- Now use jacob partition by default 
+#  12 Aug 2015 - M. Sulprizio- Now set OMP_NUM_THREADS to $SLURM_NTASKS
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -59,8 +60,8 @@
 #SBATCH --mail-user=<YOUR_EMAIL_ADDRESS>    # Your email address
 
 # Set the proper # of threads for OpenMP
-# This must match the number you set with -n above!
-export OMP_NUM_THREADS=8
+# SLURM_NTASKS ensures this matches the number you set with -n above
+export OMP_NUM_THREADS=$SLURM_NTASKS
 
 # GEOS-Chem output log file name
 log=v10-01.log
