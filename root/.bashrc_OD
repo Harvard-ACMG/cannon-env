@@ -184,15 +184,14 @@ export LIB_HDF5=$GC_LIB                                   # aka GC_LIB
 # %%%%% Settings for met field & emissions directories %%%%%
 dataDir="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid/gcdata"
 dataDirReadOnly="/net/seasasfs01/srv/export/seasasfs01/share_root/gcgrid/gcdata"
-export DATA_ROOT="$dataDir/ExtData/"
-export DATA_ROOT_RW="$dataDirReadOnly/ExtData/"
+export DATA_ROOT="$dataDirReadOnly/ExtData"
+export DATA_ROOT_RW="$dataDir/ExtData"
 export HEMCO_DATA_ROOT="$dataDirReadOnly/ExtData/HEMCO"
 export HEMCO_DATA_ROOT_RW="$dataDir/ExtData/HEMCO"
 export EXTDATA="$dataDirReadOnly/ExtData"
 export EXTDATA_RW="$dataDir/ExtData"
 unset dataDir
 unset dataDirReadOnly
-
 
 #==============================================================================
 # %%%%% Settings for programming languages and applications %%%%%
@@ -295,24 +294,26 @@ alias  IG="cd $HOME/IDL/gamap2"
 alias  IS="cd $HOME/IDL/tests"
 
 # %%%%% Aliases for MET data %%%%%
-alias  XC="cd $dataDir/GEOS_0.5x0.666_CH"
-alias  XC5="cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"
-alias  XS="cd $dataDir/GEOS_0.25x0.3125_NA/"
-alias  XNFP="cd $dataDir/GEOS_0.25x0.3125_NA.d/GEOS_FP/"
-alias  XN="cd $dataDir/GEOS_0.5x0.666_NA"
-alias  XN5="cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"
-alias  X1="cd $dataDir/GEOS_1x1"
-alias  XNN="cd $dataDir/GEOS_NATIVE"
-alias  X2="cd $dataDir/GEOS_2x2.5"
-alias  X24="cd $dataDir/GEOS_2x2.5.d/GEOS_4_v4"
-alias  X25="cd $dataDir/GEOS_2x2.5.d/GEOS_5"
-alias  X2FP="cd $dataDir/GEOS_2x2.5.d/GEOS_FP"
-alias  X2M="cd $dataDir/GEOS_2x2.5.d/MERRA"
-alias  X4="cd $dataDir/GEOS_4x5"
-alias  X44="cd $dataDir/GEOS_4x5/GEOS_4_v4"
-alias  X45="cd $dataDir/GEOS_4x5/GEOS_5"
-alias  X4FP="cd $dataDir/GEOS_4x5/GEOS_FP"
-alias  X4M="cd $dataDir/GEOS_4x5/MERRA"
+alias  XC="cd $DATA_ROOT_RW/GEOS_0.5x0.666_CH"
+alias  XC5="cd $DATA_ROOT_RW/GEOS_0.5x0.666_CH.d/GEOS_5"
+alias  XS="cd $DATA_ROOT_RW/GEOS_0.25x0.3125_NA"
+alias  XNFP="cd $DATA_ROOT_RW/GEOS_0.25x0.3125_NA.d/GEOS_FP"
+alias  XN="cd $DATA_ROOT_RW/GEOS_0.5x0.666_NA"
+alias  XN5="cd $DATA_ROOT_RW/GEOS_0.5x0.666_NA.d/GEOS_5"
+alias  X1="cd $DATA_ROOT_RW/GEOS_1x1"
+alias  XNN="cd $DATA_ROOT_RW/GEOS_NATIVE"
+alias  X2="cd $DATA_ROOT_RW/GEOS_2x2.5"
+alias  X24="cd $DATA_ROOT_RW/GEOS_2x2.5.d/GEOS_4_v4"
+alias  X25="cd $DATA_ROOT_RW/GEOS_2x2.5.d/GEOS_5"
+alias  X2FP="cd $DATA_ROOT_RW/GEOS_2x2.5.d/GEOS_FP"
+alias  X2M="cd $DATA_ROOT_RW/GEOS_2x2.5.d/MERRA"
+alias  X2M="cd $DATA_ROOT_RW/GEOS_2x2.5.d/MERRA2"
+alias  X4="cd $DATA_ROOT_RW/GEOS_4x5"
+alias  X44="cd $DATA_ROOT_RW/GEOS_4x5/GEOS_4_v4"
+alias  X45="cd $DATA_ROOT_RW/GEOS_4x5/GEOS_5"
+alias  X4FP="cd $DATA_ROOT_RW/GEOS_4x5/GEOS_FP"
+alias  X4M="cd $DATA_ROOT_RW/GEOS_4x5/MERRA"
+alias  X4M2="cd $DATA_ROOT_RW/GEOS_4x5/MERRA2"
 
 #==============================================================================
 # %%%%% Source a file with your own personal aliases and settings %%%%%
