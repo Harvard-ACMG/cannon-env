@@ -57,7 +57,7 @@ echo "%%% Memory per CPU      : $mem MB"
 echo "%%% Requested time      : $time minutes"
 echo "%%% Requested partition : $part"
 echo "%%%"
-echo "%%% Reminder: Make sure $OMP_NUM_THREADS in your shell is set"
+echo "%%% Reminder: Make sure \$OMP_NUM_THREADS in your shell is set"
 echo "%%% to the same number of CPUs that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
