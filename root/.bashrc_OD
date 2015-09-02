@@ -101,6 +101,7 @@ module purge                                               # Initialize
 module load git                                            # Load Git
 module load perl                                           # Load Perl
 module load IDL                                            # Load IDL
+module load ncl                                            # Load NCL v6.1.2
 
 if [[ $loadThisCompiler == "ifort15" ]]; then
 
