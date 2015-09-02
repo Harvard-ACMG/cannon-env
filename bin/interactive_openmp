@@ -12,25 +12,33 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  interactive CPUS MEMORY-PER-CPU [TIME-IN-MINUTES]
+#  interactive CPUS MEMORY-PER-CPU [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
-#  Executes the srun command.  For now, all CPUs are placed on one node,
-#  for traditional GEOS-Chem usage.
+#  Executes the srun command to start an interactive SLURM session.
+#  If PARTITION is omitted, then the job will start on the "jacob" partition.
+#  If TIME-IN-MINUTES is omitted, then the job will run for 60 minutes.
 #
 # !REVISION HISTORY: 
 #  28 Oct 2014 - R. Yantosca - Initial version
 #  10 Jul 2015 - R. Yantosca - Now print the input arguments to stdout
+#  01 Sep 2015 - R. Yantosca - Now pass the partition as the 4th argument
 #EOP
 #------------------------------------------------------------------------------
 #BOC
 
 # Process the input arguments.  Use defaults if the
 # user supplies less than 3 argumetnts. (bmy, 7/10/15)
-if [[ $# == 3 ]]; then
+if [[ $# == 4 ]]; then
    cpus=$1
    mem=$2
    time=$3
+   part=$4
+elif [[ $# == 3 ]]; then
+   cpus=$1
+   mem=$2
+   time=$3
+   part=jacob
 elif [[ $# == 2 ]] ; then
    cpus=$1
    mem=$2
@@ -41,18 +49,19 @@ else
 fi
 
 # Print information
-echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 echo "%%% Starting an Odyssey interactive session!"
-echo "%%% Number of CPUs  : $cpus"
-echo "%%% Number of Nodes : 1"
-echo "%%% Memory per CPU  : $mem MB"
-echo "%%% Requested time  : $time minutes"
-echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+echo "%%% Number of CPUs      : $cpus"
+echo "%%% Number of Nodes     : 1"
+echo "%%% Memory per CPU      : $mem MB"
+echo "%%% Requested time      : $time minutes"
+echo "%%% Requested partition : $part"
+echo "%%%"
+echo "%%% Reminder: Make sure $OMP_NUM_THREADS in your shell is set"
+echo "%%% to the same number of CPUs that you requested!"
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --x11=first -n $cpus -N 1 --mem-per-cpu=$mem -t $time -p interact /bin/bash
-
-# Also set the proper # of CPUs for OpenMP parallelization
-export OMP_NUM_THREADS=$cpus
+srun --pty --x11=first -n $cpus -N 1 --mem-per-cpu=$mem -t $time -p $part /bin/bash
 
 #EOC
