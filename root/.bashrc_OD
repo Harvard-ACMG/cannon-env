@@ -213,6 +213,15 @@ export F77=$FC
 # %%%%% Settings for OpenMP parallelization %%%%%
 export KMP_STACKSIZE=500000000          # NOTE: Set 100x larger than in csh!
 
+# If we are in a SLURM environment (i.e. interactive run or batch job),
+# then set OMP_NUM_THREADS to the value of SLURM_NTASKS.  Otherwise,
+# set OMP_NUM_THREADs to a default value of 1. (bmy, 9/2/15)
+if [[ -n "${SLURM_NTASKS+1}" ]]; then
+  export OMP_NUM_THREADS=$SLURM_NTASKS
+else
+  export OMP_NUM_THREADS=1
+fi
+
 # %%%%% Settings for OpenMPI parallelization %%%%%
 export OMPI_FC=$FC
 export OMPI_CC=$CC
