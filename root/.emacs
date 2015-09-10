@@ -97,6 +97,18 @@
 (add-to-list 'auto-mode-alist '("\\.bashrc_AS$" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.my_personal_settings$" . conf-unix-mode))
 
+;; Set syntax highlighting for diff mode (*.diff files)
+(defun update-diff-colors ()
+  "update the colors for diff faces"
+  (set-face-attribute 'diff-added nil
+                      :foreground "black" :background "DarkSeaGreen1")
+  (set-face-attribute 'diff-removed nil
+                      :foreground "black" :background "RosyBrown1")
+  (set-face-attribute 'diff-changed nil
+                      :foreground "black" :background "wheat1"))
+(eval-after-load "diff-mode"
+  '(update-diff-colors))
+
 ;;=============================================================================
 ;; FUNCTIONS and GLOBAL SETTINGS
 ;;=============================================================================
