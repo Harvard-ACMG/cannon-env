@@ -237,6 +237,9 @@ export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 # %%%%% Settings for Ghostview %%%%%
 export GS_DEVICE="x11"
 
+# %%%%% Settings for Git %%%%%
+source /etc/bash_completion.d/git           # enable tab-completion for git
+
 #==============================================================================
 # %%%%% Settings for colorization  %%%%%
 #==============================================================================
