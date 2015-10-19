@@ -79,11 +79,14 @@ fi
 
 # Load commonly-used modules 
 module purge                                               # Initialize
-module load idl/8.4                                        # Load IDL
-module load ncl/6.1.2                                      # Load NCL
 module load GEOS-Chem-Libraries/1.0                        # Load netCDF/HDF5
 module load intel/11.1                                     # Load ifort v11
 module load totalview/8.8.0-1                              # Load Totalview
+module load slurm/16.05.0-0pre1                            # Load SLURM
+module load idl/8.4                                        # Load IDL
+module load ncl/6.1.2                                      # Load NCL
+module load cdo/1.6.4                                      # Load CDO
+module load matlab/r2012b                                  # Load MATLAB
 
 # Display loaded modules if it's an interactive session
 if [[ $- = *i* ]] ; then
