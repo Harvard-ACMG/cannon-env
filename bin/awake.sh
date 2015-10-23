@@ -28,11 +28,12 @@
 # (every 10 mins for an 8-hour session = 48 iterations)
 COUNTER=48
  
-# Print out something to the screen every 10 mins. Then sleep for
-# 10 minutes and repeat until we hit the maximum # of iterations.
+# Sleep for 10 mins, then issue a command that does nothing (but which will 
+# provide some activity so that the interactive sessione doesn't time out).
+# Repeat until we hit the maximum number of iterations.
 while [[ $COUNTER -gt 0 ]]; do
   sleep 10m
-  echo "..."
+  cd .
   let COUNTER=COUNTER-1
 done
 
