@@ -19,7 +19,7 @@
 # !REMARKS:
 #
 # !REVISION HISTORY:
-#  06 Jan 2015 - R. Yantosca - Initial version
+#  Use the "gitk browser" to view the Git version history!
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -33,7 +33,7 @@ COUNTER=48
 # Repeat until we hit the maximum number of iterations.
 while [[ $COUNTER -gt 0 ]]; do
   sleep 10m
-  cd .
+  echo ""
   let COUNTER=COUNTER-1
 done
 
