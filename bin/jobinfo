@@ -1,0 +1,228 @@
+#!/usr/bin/perl -w
+
+#EOC
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: jobinfo
+#
+# !DESCRIPTION: Parses the SLURM command "sacct -l -j" (which returns 
+#  job status information) into a more readable format.
+#\\
+#\\
+# !USES:
+#
+ require 5.003;
+ use strict;
+ use English;
+ use Carp;
+#
+# !CALLING SEQUENCE:
+#  jobinfo JOBID 30  # Prints sacct output, w/ 30 chars for job name
+#  jobinfo JOBID     # Prints sacct output, w/ 20 chars (default) for job name
+#
+# !REMARKS:
+#  The "sacct -l -j JOBID" command returns the following output:
+#
+#    Line 1   : Column titles
+#    Line 2   : Separators (e.g. "------")
+#    Lines 3- : SLURM accounting data for job JOBID
+#
+#  NOTE: if the job was requeued, then there may be more than one line
+#  of accounting data, one per each job submission.
+#
+#  Also, if the job is currently not finished, there may not be any SLURM
+#  accounting data to report.  In this case, jobinfo will return a blank line.
+#
+# !REVISION HISTORY:
+#  27 Oct 2015 - R. Yantosca - Initial version
+#EOP
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: getJobInfo
+#
+# !DESCRIPTION: Calls "sacct -l -j" and parses the output into a more
+#  readable format.
+#\\
+#\\
+# !INTERFACE:
+#
+sub getJobInfo($$) {
+#
+# !INPUT PARAMETERS: 
+#
+  my ( $jobId, $nameWidth ) = @_;
+#
+# !REVISION HISTORY:
+#  27 Oct 2015 - R. Yantosca - Initial version
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+#
+# !LOCAL VARIABLES:
+#
+  # Strings
+  my $column   = "";
+  my $data     = "";
+  my $dataStr  = "";
+  my $header   = "";
+  my $output   = "";
+  my $tmpStr   = "";
+
+  # Scalars	 
+  my $hdrWidth = 0;
+  my $nCols    = 0;
+  my $nLines   = 0;
+
+  my $maxWidth = 0;
+  my $start    = 0;
+  my $width    = 0;
+
+  # Arrays
+  my @columns  = ();
+  my @colStart = ();
+  my @colWidth = ();
+  my @result   = ();
+  my @headers  = ();
+
+  #-------------------------------------------------------------------------
+  # (1) Get the output from the sacct command
+  #-------------------------------------------------------------------------
+
+  # Output from sacct
+  @result  = qx/sacct -l --format=jobname%$nameWidth -j $jobId/;
+
+  # Number of lines returned
+  $nLines  = scalar( @result );
+
+  #-------------------------------------------------------------------------
+  # (2) Find the maximum width of the column headers
+  #-------------------------------------------------------------------------
+
+  # Colunn headers
+  @headers = split( /\s+/, $result[0] );
+
+  # Maximum title width (we'll use this for string padding later)
+  foreach $header ( @headers ) {
+    $width = length( $header );
+    if ( $width > $hdrWidth ) { $hdrWidth = $width; }
+  }
+
+  #-------------------------------------------------------------------------
+  # (3) Use the separators to find the starting position and the width 
+  #     of each column.  This will let us parse the output properly.
+  #-------------------------------------------------------------------------
+
+  # Separators, as returned by looking at the 2nd line
+  @columns = split( /\s+/, $result[1] );
+
+  # Number of columns = number of separators
+  $nCols   = scalar( @columns );
+
+  # Loop thorugh each column 
+  foreach $column ( @columns ) {
+
+    # Width of the column, and its ending location
+    $width    = length( $column );
+
+    # Find the maximum column width (for padding spaces below)
+    if ( $width > $maxWidth ) { $maxWidth = $width; }
+
+    # Starting and ending location of each column position of the column
+    @colStart = ( @colStart, $start );
+    @colWidth = ( @colWidth, $width );
+
+    # Increment the starting position by leaving a space
+    $start    = $start + $width + 1
+  }
+ 
+  #-------------------------------------------------------------------------
+  # (4) Parse the output of sacct into strings for display
+  #-------------------------------------------------------------------------
+
+  # First loop over the # of columns
+  for ( my $i = 0; $i < $nCols;  $i++ ) {
+
+    # Initialize
+    $dataStr = "";
+
+    # The first line ($result[0]) are the column headers
+    # Get the header for this column (pad to the maximum header width)
+    $header = substr( $result[0], $colStart[$i], $colWidth[$i] );
+    $header =~ s/\s+//g;
+    $header .= " " x ( $hdrWidth - length( $header ) );
+    
+    # The 2nd line ($result[1]) were the separators, we skip those
+    # The accounting data for the job(s) are in lines 3 and following
+    for ( my $j = 2; $j < $nLines; $j++ ) {
+
+      # Pad the data value in this column to the maximum column width,
+      # or if there is no data value, then create a blank string.
+      if ( length( $result[$j] ) > 0 ) {
+	$data     =  substr( $result[$j], $colStart[$i], $colWidth[$i] );
+	$data     =~ s/\s+//g;
+	$data    .=  " " x ( $maxWidth + 1 - length( $data ) );
+	$dataStr .= "$data ";
+      } else {
+        $dataStr .=  " " x ( $maxWidth + 1 );
+      }
+    }
+
+    # Create a string for display.  
+    # Skip if all jobs have no data for this column.
+    $tmpStr = $dataStr;
+    $tmpStr =~ s/\s+//g;
+    if ( length( $tmpStr ) > 0 ) { $output .= "$header : $dataStr\n"; }
+  }
+
+  #-------------------------------------------------------------------------
+  # (4) Display results!
+  #------------------------------------------------------------------------- 
+  print "$output\n";
+
+  # Return error status
+  return( $? );
+}
+#EOC
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: main
+#
+# !DESCRIPTION: Gets the # of arguments and calls &getJobinfo.
+#\\
+#\\
+# !INTERFACE:
+#
+sub main() {
+#
+# !REVISION HISTORY:
+#  27 Oct 2015 - R. Yantosca - Initial version
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+  # Pass the job ID (and optional column width) to the &getJobInfo routine.
+  # If column-width is not specified, use a default value of 20.
+  if    ( scalar( @ARGV ) == 2 ) { &getJobInfo( @ARGV     );       }
+  elsif ( scalar( @ARGV ) == 1 ) { &getJobInfo( @ARGV, 20 );       }
+  else                           { print "USAGE: jobinfo JOBID\n"; }
+
+  # Return error status
+  return ( $? );
+}
+
+#------------------------------------------------------------------------------
+
+# Run main program
+main();
+
+# Return with error status
+exit( $? );
