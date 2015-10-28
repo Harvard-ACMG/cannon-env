@@ -18,6 +18,7 @@
  use strict;
  use English;
  use Carp;
+ use Scalar::Util qw(looks_like_number);
 #
 # !CALLING SEQUENCE:
 #  jobinfo JOBID 30  # Prints sacct output, w/ 30 chars for job name
@@ -39,6 +40,131 @@
 # !REVISION HISTORY:
 #  27 Oct 2015 - R. Yantosca - Initial version
 #EOP
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: round
+#
+# !DESCRIPTION: Rounds a number to any place.
+#\\
+#\\
+# !INTERFACE:
+#
+sub round($$) {
+#
+# !INPUT PARAMETERS: 
+#
+  my( $num, $prec )= @_;   # Number and precision
+#
+# !CALLING SEQUENCE:
+#  $result = &round( $num, 10.0 )   # Rounds to nearest 10
+#  $result = &round( $num, 1.0  )   # Rounds to nearest 1
+#  $result = &round( $num, 0.1  )   # Rounds to nearest 0.1
+#  $result = &round( $num, 0.01 )   # Rounds to nearest 0.01, etc.
+#
+# !REMARKS:
+#  Taken from http://www.perlmonks.org/?node_id=30195
+#
+# !REVISION HISTORY:
+#  27 Oct 2015 - R. Yantosca - Initial version
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+  return int( $num/$prec + 0.5 - ($num<0) ) * $prec;
+}
+#EOC
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: convertToGb
+#
+# !DESCRIPTION: Converts kilobytes and megabytes to gigabytes.
+#\\
+#\\
+# !INTERFACE:
+#
+sub convertToGb($) {
+#
+# !INPUT PARAMETERS: 
+#
+  my ( $data ) = @_;   # Data value from sacct
+#
+# !REMARKS:
+#  Looks for strings ending in "Mc" (MB/cpu), "M", or "K", and uses that
+#  to convert units to Gigabytes.
+#
+# !REVISION HISTORY:
+#  27 Oct 2015 - R. Yantosca - Initial version
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+#
+# !LOCAL VARIABLES:
+#
+  # Strings
+  my $len        = length( $data            );
+  my $lastChar   = substr( $data, $len-1, 1 );
+  my $last2Chars = substr( $data, $len-2, 2 );
+  my $numStr     = "";
+
+  # Scalars
+  my $numVal     = 0;
+
+  # Convert MB/cpu -> GB/cpu
+  if ( $last2Chars =~ m/Mc/ ) {
+    $numStr = substr( $data, 0, $len-2 );
+    if ( looks_like_number( $numStr ) ) {
+      $numVal = $numStr;
+      $numVal = $numVal / 1000.0;
+      $numVal = &round( $numVal, 0.0001 );
+      $numStr = "$numVal GB/cpu";
+      return( $numStr );
+    }
+  }
+
+  # Convert MB -> GB
+  if ( $lastChar =~ m/M/ ) {
+    $numStr = substr( $data, 0, $len-1 );
+    if ( looks_like_number( $numStr ) ) {
+      $numVal = $numStr;
+      $numVal = $numVal / 1000.0;
+      $numVal = &round( $numVal, 0.001 );
+      $numStr = "$numVal GB";
+      return( $numStr );
+    }
+  }
+
+  # Convert KB -> GB
+  if ( $lastChar =~ m/K/ ) {
+    $numStr = substr( $data, 0, $len-1 );
+    if ( looks_like_number( $numStr ) ) {
+      $numVal = $numStr;
+      $numVal = $numVal / 1000000.0;
+      $numVal = &round( $numVal, 0.0001 );
+      $numStr = "$numVal GB";
+      return( $numStr );
+    }
+  }
+
+  # If the last character is already G, then add a space
+  if ( $lastChar =~ m/G/ ) {
+    $numStr = substr( $data, 0, $len-1 );
+    if ( looks_like_number( $numStr ) ) {
+      $numStr = "$numStr GB";
+      return( $numStr );
+    }
+  }
+
+
+  # Otherwise, return the original data value
+  return( $data );
+}
+#EOC
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
 #------------------------------------------------------------------------------
@@ -99,6 +225,12 @@ sub getJobInfo($$) {
 
   # Number of lines returned
   $nLines  = scalar( @result );
+
+  # Exit if there is no data yet
+  if ( $nLines < 3 ) { 
+    print "jobinfo: Could not find data for job $jobId!\n";
+    exit(0);
+  }
 
   #-------------------------------------------------------------------------
   # (2) Find the maximum width of the column headers
@@ -163,9 +295,17 @@ sub getJobInfo($$) {
 
       # Pad the data value in this column to the maximum column width,
       # or if there is no data value, then create a blank string.
+      #
+      # If the data value doesn't correspond to the Job ID, Job Name
+      # or a node name, then convert the units to gigabytes (if necessary).
       if ( length( $result[$j] ) > 0 ) {
 	$data     =  substr( $result[$j], $colStart[$i], $colWidth[$i] );
 	$data     =~ s/\s+//g;
+
+	if ( !( $header =~ m/Job/ ) && !( $header =~ m/Node/ ) )  { 
+	  $data = &convertToGb( $data ); 
+        }
+
 	$data    .=  " " x ( $maxWidth + 1 - length( $data ) );
 	$dataStr .= "$data ";
       } else {
