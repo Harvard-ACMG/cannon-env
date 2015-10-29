@@ -41,9 +41,7 @@
 #  (3) Instead of -t 2880 you can also use --time=2880
 #
 # !REVISION HISTORY: 
-#  05 Dec 2014 - R. Yantosca - Initial version, based on Lu Hu's script
-#  16 Jul 2015 - M. Sulprizio- Now use jacob partition by default 
-#  12 Aug 2015 - M. Sulprizio- Now set OMP_NUM_THREADS to $SLURM_NTASKS
+#  Use the "gitk" browser to view the Git version history!
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -54,9 +52,7 @@
 #SBATCH -t 720                              # Runtime in minutes (minimum: 10)
 #SBATCH -p jacob                            # Partition to submit to (see above)
 #SBATCH --mem-per-cpu=1000                  # Memory per cpu in MB. 
-#SBATCH -o geoschem.out                     # File where stdout will be written
-#SBATCH -e geoschem.err                     # File where stderr will be written
-#SBATCH --mail-type=END                     # Type of email notification
+#SBATCH --mail-type=ALL                     # Type of email notification
 #SBATCH --mail-user=<YOUR_EMAIL_ADDRESS>    # Your email address
 
 # Set the proper # of threads for OpenMP
