@@ -1,0 +1,117 @@
+#!/bin/bash
+
+#EOC
+#------------------------------------------------------------------------------
+#                  GEOS-Chem Global Chemical Transport Model                  !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !IROUTINE: copy_env
+#
+# !DESCRIPTION: Script to distribute startup files from the env repository
+#  to the appropriate location in your home directory.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  copy_env
+#
+# !REMARKS:
+#
+# !REVISION HISTORY:
+#  Use the "gitk browser" to view the Git version history!
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+#-----------------------------------------------------------
+# Copy contents of env/bash
+#-----------------------------------------------------------
+if [ -d ~/bash ]; then
+  # Copy contents of env/bash to your bash directory
+  cp -v ~/env/bash/* ~/bash/
+else
+  # Copy entire env/bash directory to your home directory
+  cp -rv ~/env/bash ~
+fi
+
+#-----------------------------------------------------------
+# Copy contents of env/bin
+#-----------------------------------------------------------
+if [ -d ~/bin ]; then
+  # Copy contents of env/bin to your bin directory
+  cp -v ~/env/bin/* ~/bin/
+else
+  # Copy entire env/bin directory to your home directory
+  cp -rv ~/env/bin ~
+fi
+
+#-----------------------------------------------------------
+# Copy contents of env/IDL
+#-----------------------------------------------------------
+if [ -d ~/IDL ]; then
+  # Copy contents of env/IDL to your IDL directory
+  cp -v ~/env/IDL/* ~/IDL/
+else
+  # Create IDL directory and copy 
+  cp -rv ~/env/IDL ~
+fi
+
+#-----------------------------------------------------------
+# Copy contents of env/root
+#-----------------------------------------------------------
+cp -v ~/env/root/.bash_profile ~
+cp -v ~/env/root/.login ~
+if [[ $HOSTNAME == *'.rc.fas.harvard.edu' ]]; then
+  cp -v ~/env/root/.bashrc_OD ~/.bashrc
+else
+if [[ $HOSTNAME == *'.as.harvard.edu' ]]; then
+  cp -v ~/env/root/.bashrc_AS ~/.bashrc
+fi
+fi
+
+# Only copy the following files if they do not exist.
+# If the files already exist, you will need to manually bring in changes
+# to avoid removing your personal settings.
+if [ ! -f ~/.my_personal_settings ]; then
+  cp -v ~/env/root/.my_personal_settings ~
+else
+  echo "~/env/root/.my_perosnal_settings was not copied. Update this file manually."
+fi
+if [ ! -f ~/.emacs ]; then
+  cp -v ~/env/root/.emacs ~
+else
+  echo "~/env/root/.emacs was not copied. Update this file manually."
+fi
+if [ ! -f ~/.Xdefaults ]; then
+  cp -v ~/env/root/.Xdefaults ~
+else
+  echo "~/env/root/.Xdefaults was not copied. Update this file manually."
+fi
+
+#-----------------------------------------------------------
+# Copy contents of env/.ssh (AS only)
+#-----------------------------------------------------------
+if [[ $HOSTNAME == *'.as.harvard.edu' ]]; then
+  if [ -d ~/.ssh ]; then
+
+      if [ ! -f ~/.ssh/config ]; then
+	# Copy config file to your .ssh directory
+        cp -v ~/env/.ssh/config ~/.ssh/
+
+        # Make readable-writable-executable by owner only
+        chmod 700 ~/.ssh/config
+      else
+        echo "~/env/.ssh/config was not copied. Update this file manually."
+      fi
+  else
+    # Create IDL directory and copy 
+    cp -rv ~/env/.ssh ~
+
+    # Make readable-writable-executable by owner only
+    chmod 700 ~/.ssh
+    chmod 700 ~/.ssh/config
+  fi
+fi
+
+# Exit normally
+exit 0
