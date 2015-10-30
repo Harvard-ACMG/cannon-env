@@ -38,4 +38,4 @@ while [[ $COUNTER -gt 0 ]]; do
 done
 
 # Exit normally
-exit(0)
+exit 0
