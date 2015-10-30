@@ -39,6 +39,7 @@
 #
 # !REVISION HISTORY:
 #  27 Oct 2015 - R. Yantosca - Initial version
+#  30 Oct 2015 - R. Yantosca - Add more display options
 #EOP
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
@@ -92,7 +93,8 @@ sub convertToGb($) {
 #
 # !INPUT PARAMETERS: 
 #
-  my ( $data ) = @_;   # Data value from sacct
+  # $data : One of the fields w/ info from the SLURM job
+  my ( $data ) = @_;
 #
 # !REMARKS:
 #  Looks for strings ending in "Mc" (MB/cpu), "M", or "K", and uses that
@@ -160,7 +162,6 @@ sub convertToGb($) {
     }
   }
 
-
   # Otherwise, return the original data value
   return( $data );
 }
@@ -187,6 +188,8 @@ sub getJobInfo($$) {
 # !REVISION HISTORY:
 #  27 Oct 2015 - R. Yantosca - Initial version
 #  30 Oct 2015 - M. Sulprizio- Add submit, start, and end time to sacct command
+#  30 Oct 2015 - R. Yantosca - Print out total requested memory as the last
+#                              line (Number of CPUs * memory per CPU)
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -194,40 +197,42 @@ sub getJobInfo($$) {
 # !LOCAL VARIABLES:
 #
   # Strings
-  my $column   = "";
-  my $data     = "";
-  my $dataStr  = "";
-  my $header   = "";
-  my $output   = "";
-  my $tmpStr   = "";
-  my $YMD      = "";
-  my $HMS      = "";
+  my $column    = "";
+  my $data      = "";
+  my $dataStr   = "";
+  my $header    = "";
+  my $output    = "";
+  my $tmpStr    = "";
+  my $YMD       = "";
+  my $HMS       = "";
 
   # Scalars	 
-  my $hdrWidth = 0;
-  my $nCols    = 0;
-  my $nLines   = 0;
-
-  my $maxWidth = 0;
-  my $start    = 0;
-  my $width    = 0;
+  my $hdrWidth  = 0;
+  my $nCols     = 0;
+  my $nCpus     = 0;
+  my $nLines    = 0;
+  my $maxWidth  = 0;
+  my $memPerCpu = 0;
+  my $tmpVal    = 0;
+  my $start     = 0;
+  my $width     = 0;
 
   # Arrays
-  my @columns  = ();
-  my @colStart = ();
-  my @colWidth = ();
-  my @result   = ();
-  my @headers  = ();
+  my @columns   = ();
+  my @colStart  = ();
+  my @colWidth  = ();
+  my @result    = ();
+  my @headers   = ();
 
   #-------------------------------------------------------------------------
   # (1) Get the output from the sacct command
   #-------------------------------------------------------------------------
 
   # Output from sacct
-  @result  = qx/sacct -l --format=jobname%$nameWidth,submit,start,end -j $jobId/;
+  @result = qx/sacct -l --format=jobname%$nameWidth,submit,start,end -j $jobId/;
 
   # Number of lines returned
-  $nLines  = scalar( @result );
+  $nLines = scalar( @result );
 
   # Exit if there is no data yet
   if ( $nLines < 3 ) { 
@@ -287,48 +292,87 @@ sub getJobInfo($$) {
     $dataStr = "";
 
     # The first line ($result[0]) are the column headers
-    # Get the header for this column (pad to the maximum header width)
     $header = substr( $result[0], $colStart[$i], $colWidth[$i] );
     $header =~ s/\s+//g;
+
+    # Pad to the maximum header width
     $header .= " " x ( $hdrWidth - length( $header ) );
     
-    # The 2nd line ($result[1]) were the separators, we skip those
-    # The accounting data for the job(s) are in lines 3 and following
+    # Loop over the number of lines of output (accounting data starts
+    # at the 3rd line).  Get the data values from each column and 
+    # prepare them for top-to-bottom output display.
     for ( my $j = 2; $j < $nLines; $j++ ) {
 
-      # Pad the data value in this column to the maximum column width,
-      # or if there is no data value, then create a blank string.
-      #
-      # If the data value doesn't correspond to the Job ID, Job Name
-      # or a node name, then convert the units to gigabytes (if necessary).
+      # Skip if the column has no data
       if ( length( $result[$j] ) > 0 ) {
-	$data     =  substr( $result[$j], $colStart[$i], $colWidth[$i] );
-	$data     =~ s/\s+//g;
 
-	if ( !( $header =~ m/Job/ ) && !( $header =~ m/Node/ ) )  { 
+	# Get the data value from each column in this line
+	$data =  substr( $result[$j], $colStart[$i], $colWidth[$i] );
+	$data =~ s/\s+//g;
+
+	# Convert memory units to GB (if necessary)
+	if ( !( $header =~ m/Job/    ) && 
+             !( $header =~ m/Node/   ) &&
+             !( $header =~ m/Task/   ) &&
+             !( $header =~ m/Start/  ) && 
+             !( $header =~ m/Submit/ ) &&
+             !( $header =~ m/End/    )    ) {
 	  $data = &convertToGb( $data ); 
         }
 
-	if ( ( $header =~ m/Start/ ) || ( $header =~ m/Submit/ ) ||
-             ( $header =~ m/End/   ) ) {
-	  $YMD  = substr( $data,  0, 10 );
-	  $HMS  = substr( $data, 11, 18 );
-	  $data = "$YMD $HMS";
+	# Extract the start, submit, and end times
+	# (Skip formatting if the time value is "Unknown")
+	if ( ( $header =~ m/Start/  ) || 
+             ( $header =~ m/Submit/ ) ||
+             ( $header =~ m/End/    )    ) {
+	  if ( !( $data =~ m/Unknown/ ) ) {
+	    $YMD  = substr( $data,  0, 10 );
+	    $HMS  = substr( $data, 11, 18 );
+	    $data = "$YMD $HMS";
+	  }
 	}
 
+	# Save the # of CPUs for use below
+	if ( $header =~ m/AllocCPUS/ ) { $nCpus  = $data; } 
+
+	# Save the memory per CPU for use below
+	if ( $header =~ m/ReqMem/ ) { 
+	  $tmpStr    =  $data; 
+	  $tmpStr    =~ s/GB\/cpu//g;
+	  $memPerCpu =  $tmpStr;
+        }
+      	
+	# Pad the string to the column width
 	$data    .=  " " x ( $maxWidth + 1 - length( $data ) );
 	$dataStr .= "$data ";
+
       } else {
+
+	# If there is no data value, create a blank string
         $dataStr .=  " " x ( $maxWidth + 1 );
+
       }
     }
 
-    # Create a string for display.  
+    # Append header and data values to a string for display.
     # Skip if all jobs have no data for this column.
     $tmpStr = $dataStr;
     $tmpStr =~ s/\s+//g;
-    if ( length( $tmpStr ) > 0 ) { $output .= "$header : $dataStr\n"; }
+    if ( length( $tmpStr ) > 0 ) { 
+      $output .= "$header : $dataStr\n";  
+    }
   }
+        
+  # Append TotalReqMem = AllocCPUS * ReqMem as the last entry.
+  $tmpVal  = $memPerCpu * $nCpus;
+  $tmpVal  = &round( $tmpVal, 0.0001 );
+  $tmpStr  = "$tmpVal GB";
+  $output .= "TotalReqMem" . " "x( $hdrWidth - 11) . " : ";
+  for ( my $j = 2; $j < $nLines; $j++ ) { 
+    $output .= $tmpStr . " "x( $maxWidth - length( $tmpStr ) );
+    $output .= "  ";
+  }
+  $output .= "\n";
 
   #-------------------------------------------------------------------------
   # (4) Display results!
