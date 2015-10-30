@@ -186,6 +186,7 @@ sub getJobInfo($$) {
 #
 # !REVISION HISTORY:
 #  27 Oct 2015 - R. Yantosca - Initial version
+#  30 Oct 2015 - M. Sulprizio- Add submit, start, and end time to sacct command
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -199,6 +200,8 @@ sub getJobInfo($$) {
   my $header   = "";
   my $output   = "";
   my $tmpStr   = "";
+  my $YMD      = "";
+  my $HMS      = "";
 
   # Scalars	 
   my $hdrWidth = 0;
@@ -221,7 +224,7 @@ sub getJobInfo($$) {
   #-------------------------------------------------------------------------
 
   # Output from sacct
-  @result  = qx/sacct -l --format=jobname%$nameWidth -j $jobId/;
+  @result  = qx/sacct -l --format=jobname%$nameWidth,submit,start,end -j $jobId/;
 
   # Number of lines returned
   $nLines  = scalar( @result );
@@ -305,6 +308,13 @@ sub getJobInfo($$) {
 	if ( !( $header =~ m/Job/ ) && !( $header =~ m/Node/ ) )  { 
 	  $data = &convertToGb( $data ); 
         }
+
+	if ( ( $header =~ m/Start/ ) || ( $header =~ m/Submit/ ) ||
+             ( $header =~ m/End/   ) ) {
+	  $YMD  = substr( $data,  0, 10 );
+	  $HMS  = substr( $data, 11, 18 );
+	  $data = "$YMD $HMS";
+	}
 
 	$data    .=  " " x ( $maxWidth + 1 - length( $data ) );
 	$dataStr .= "$data ";
