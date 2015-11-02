@@ -190,6 +190,7 @@ sub getJobInfo($$) {
 #  30 Oct 2015 - M. Sulprizio- Add submit, start, and end time to sacct command
 #  30 Oct 2015 - R. Yantosca - Print out total requested memory as the last
 #                              line (Number of CPUs * memory per CPU)
+#  02 Nov 2015 - R. Yantosca - Bug fix: CPUFreq fields should be GHz, not GB
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -316,8 +317,13 @@ sub getJobInfo($$) {
              !( $header =~ m/Task/   ) &&
              !( $header =~ m/Start/  ) && 
              !( $header =~ m/Submit/ ) &&
-             !( $header =~ m/End/    )    ) {
+             !( $header =~ m/End/    ) ) {
 	  $data = &convertToGb( $data ); 
+        }
+
+	# If the data value is CPU frequency, units should be GHz
+	if ( $header =~ m/CPUFreq/ ) {
+	  $data =~ s/GB/GHz/g;
         }
 
 	# Extract the start, submit, and end times
