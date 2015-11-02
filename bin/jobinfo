@@ -230,7 +230,7 @@ sub getJobInfo($$) {
   #-------------------------------------------------------------------------
 
   # Output from sacct
-  @result = qx/sacct -l --format=jobname%$nameWidth,submit,start,end -j $jobId/;
+  @result = qx/sacct -l --format=jobname%$nameWidth,submit,start,end,usercpu,totalcpu -j $jobId/;
 
   # Number of lines returned
   $nLines = scalar( @result );

@@ -194,6 +194,7 @@ sub getJobStats($$) {
 #
 # !REVISION HISTORY:
 #  30 Oct 2015 - M. Sulprizio- Initial version based on scale script from Bob Y.
+#  02 Nov 2015 - R. Yantosca - Now use TotalCPU for the CPU time
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -287,7 +288,7 @@ sub getJobStats($$) {
     }
 
     # Look for CPU time
-    if ( $line =~ m/AveCPU / ) {
+    if ( $line =~ m/TotalCPU / ) {
       @temp = split( " ", $line );
       $cpuTime = $temp[2];
     }
