@@ -12,7 +12,7 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  interactive CPUS MEMORY-PER-CPU [TIME-IN-MINUTES] [PARTITION]
+#  interactive CPUS MEMORY-PER-NODE [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
 #  Executes the srun command to start an interactive SLURM session.
@@ -23,6 +23,7 @@
 #  28 Oct 2014 - R. Yantosca - Initial version
 #  10 Jul 2015 - R. Yantosca - Now print the input arguments to stdout
 #  01 Sep 2015 - R. Yantosca - Now pass the partition as the 4th argument
+#  10 Nov 2015 - R. Yantosca - Now use --mem instead of --mem-per-cpu
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -51,9 +52,10 @@ fi
 # Print information
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 echo "%%% Starting an Odyssey interactive session!"
+echo "%%%"
 echo "%%% Number of CPUs      : $cpus"
 echo "%%% Number of Nodes     : 1"
-echo "%%% Memory per CPU      : $mem MB"
+echo "%%% Memory per node     : $mem MB"
 echo "%%% Requested time      : $time minutes"
 echo "%%% Requested partition : $part"
 echo "%%%"
@@ -62,6 +64,6 @@ echo "%%% to the same number of CPUs that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --x11=first -n $cpus -N 1 --mem-per-cpu=$mem -t $time -p $part /bin/bash
+srun --pty --x11=first -n $cpus -N 1 --mem=$mem -t $time -p $part /bin/bash
 
 #EOC
