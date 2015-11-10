@@ -20,6 +20,10 @@
  use Carp;
  use Scalar::Util qw(looks_like_number);
 #
+# !PUBLIC DATA MEMBERS:
+#
+ our $PER_CPU = 0;
+#
 # !CALLING SEQUENCE:
 #  jobinfo JOBID 30  # Prints sacct output, w/ 30 chars for job name
 #  jobinfo JOBID     # Prints sacct output, w/ 20 chars (default) for job name
@@ -102,6 +106,7 @@ sub convertToGb($) {
 #
 # !REVISION HISTORY:
 #  27 Oct 2015 - R. Yantosca - Initial version
+#  10 Nov 2015 - R. Yantosca - Now correclty report memory per node
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -121,10 +126,24 @@ sub convertToGb($) {
   if ( $last2Chars =~ m/Mc/ ) {
     $numStr = substr( $data, 0, $len-2 );
     if ( looks_like_number( $numStr ) ) {
-      $numVal = $numStr;
-      $numVal = $numVal / 1000.0;
-      $numVal = &round( $numVal, 0.0001 );
-      $numStr = "$numVal GB/cpu";
+      $numVal  = $numStr;
+      $numVal  = $numVal / 1000.0;
+      $numVal  = &round( $numVal, 0.0001 );
+      $numStr  = "$numVal GB/cpu";
+      $PER_CPU = 1;
+      return( $numStr );
+    }
+  }
+
+  # Convert MB/node -> GB/node
+  if ( $last2Chars =~ m/Mn/ ) {
+    $numStr = substr( $data, 0, $len-2 );
+    if ( looks_like_number( $numStr ) ) {
+      $numVal  = $numStr;
+      $numVal  = $numVal / 1000.0;
+      $numVal  = &round( $numVal, 0.0001 );
+      $numStr  = "$numVal GB/node";
+      $PER_CPU = 0;
       return( $numStr );
     }
   }
@@ -133,10 +152,10 @@ sub convertToGb($) {
   if ( $lastChar =~ m/M/ ) {
     $numStr = substr( $data, 0, $len-1 );
     if ( looks_like_number( $numStr ) ) {
-      $numVal = $numStr;
-      $numVal = $numVal / 1000.0;
-      $numVal = &round( $numVal, 0.001 );
-      $numStr = "$numVal GB";
+      $numVal  = $numStr;
+      $numVal  = $numVal / 1000.0;
+      $numVal  = &round( $numVal, 0.001 );
+      $numStr  = "$numVal GB";
       return( $numStr );
     }
   }
@@ -145,10 +164,10 @@ sub convertToGb($) {
   if ( $lastChar =~ m/K/ ) {
     $numStr = substr( $data, 0, $len-1 );
     if ( looks_like_number( $numStr ) ) {
-      $numVal = $numStr;
-      $numVal = $numVal / 1000000.0;
-      $numVal = &round( $numVal, 0.0001 );
-      $numStr = "$numVal GB";
+      $numVal  = $numStr;
+      $numVal  = $numVal / 1000000.0;
+      $numVal  = &round( $numVal, 0.0001 );
+      $numStr  = "$numVal GB";
       return( $numStr );
     }
   }
@@ -157,7 +176,7 @@ sub convertToGb($) {
   if ( $lastChar =~ m/G/ ) {
     $numStr = substr( $data, 0, $len-1 );
     if ( looks_like_number( $numStr ) ) {
-      $numStr = "$numStr GB";
+      $numStr  = "$numStr GB";
       return( $numStr );
     }
   }
@@ -211,9 +230,10 @@ sub getJobInfo($$) {
   my $hdrWidth  = 0;
   my $nCols     = 0;
   my $nCpus     = 0;
+  my $nNodes    = 0;
   my $nLines    = 0;
   my $maxWidth  = 0;
-  my $memPerCpu = 0;
+  my $reqMem    = 0;
   my $tmpVal    = 0;
   my $start     = 0;
   my $width     = 0;
@@ -338,14 +358,16 @@ sub getJobInfo($$) {
 	  }
 	}
 
-	# Save the # of CPUs for use below
+	# Save the # of CPUs and nodes for use below
 	if ( $header =~ m/AllocCPUS/ ) { $nCpus  = $data; } 
+	if ( $header =~ m/NTasks/    ) { $nNodes = $data; }
 
-	# Save the memory per CPU for use below
+	# Save the requested memory for use below
 	if ( $header =~ m/ReqMem/ ) { 
-	  $tmpStr    =  $data; 
-	  $tmpStr    =~ s/GB\/cpu//g;
-	  $memPerCpu =  $tmpStr;
+	  $tmpStr =  $data; 
+	  $tmpStr =~ s/GB\/cpu//g;
+	  $tmpStr =~ s/GB\/node//g;
+	  $reqMem =  $tmpStr;
         }
       	
 	# Pad the string to the column width
@@ -369,8 +391,11 @@ sub getJobInfo($$) {
     }
   }
         
-  # Append TotalReqMem = AllocCPUS * ReqMem as the last entry.
-  $tmpVal  = $memPerCpu * $nCpus;
+  # Compute the total memory used across all CPUs and nodes
+  if ( $PER_CPU > 0 ) { $tmpVal = $reqMem * $nNodes * $nCpus; }
+  else                { $tmpVal = $reqMem * $nNodes;          }
+
+  # Display the total amount of memory requested 
   $tmpVal  = &round( $tmpVal, 0.0001 );
   $tmpStr  = "$tmpVal GB";
   $output .= "TotalReqMem" . " "x( $hdrWidth - 11) . " : ";
