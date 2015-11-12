@@ -75,7 +75,7 @@ fi
 if [ ! -f ~/.my_personal_settings ]; then
   cp -v ~/env/root/.my_personal_settings ~
 else
-  echo "~/env/root/.my_perosnal_settings was not copied. Update this file manually."
+  echo "~/env/root/.my_personal_settings was not copied. Update this file manually."
 fi
 if [ ! -f ~/.emacs ]; then
   cp -v ~/env/root/.emacs ~
