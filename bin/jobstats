@@ -22,6 +22,7 @@
 # !REVISION HISTORY: 
 #  30 Oct 2015 - M. Sulprizio- Initial version
 #  10 Nov 2015 - R. Yantosca - Now also print the % of ideal performance
+#  18 Nov 2015 - R. Yantosca - Added more error checks
 #EOP
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
@@ -206,14 +207,15 @@ sub getJobStats($$) {
 #
 
   # Arrays
-  my @log      = ();
-  my @temp     = ();
+  my @log       = ();
+  my @temp      = ();
 
   # Numeric scalars
-  my $allocCPU =  0;
-  my $numCPU   =  0;
-  my $numWall  =  0;
-  my $scaling  =  0;
+  my $allocCPU  = 0;
+  my $numCPU    = 0;
+  my $numWall   = 0;
+  my $scaling   = 0;
+  my $percent   = 0;
 
   # String scalars
   my $line      = "";
@@ -227,7 +229,6 @@ sub getJobStats($$) {
   my $endTime   = "";
   my $cpuTime   = "";
   my $wallTime  = "";
-  my $percent   = "";
 
   # Get the statistics for the given JobID from the jobinfo script
   @log = qx( jobinfo $ARGV[0] );
@@ -311,15 +312,21 @@ sub getJobStats($$) {
 
   }
 
-  # Compute CPU time / wall time
+  # Compute CPU and wall times to seconds
   $numCPU  = &convertToSec( $cpuTime );
   $numWall = &convertToSec( $wallTime );
-  $scaling = $numCPU / $numWall;
-  $scaling = &round( $scaling, 0.0001 );
 
-  # Compute percentage of ideal performance
-  $percent = ( $scaling / $allocCPU ) * 100.0;
-  $percent = &round( $percent, 0.01 );
+  # Skip if the wall time is zero (i.e. if job hasn't finished)
+  if ( $numWall > 0 ) { 
+
+    # Compute the ratio CPU Time to Wall Time
+    $scaling = $numCPU / $numWall;
+    $scaling = &round( $scaling, 0.0001 );
+
+    # Compute percentage of ideal performance
+    $percent = ( $scaling / $allocCPU ) * 100.0;
+    $percent = &round( $percent, 0.01 );
+  }				
 
   # Print info
   print  "SLURM JobID #         : $jobId\n";
