@@ -197,6 +197,7 @@ sub getJobStats($$) {
 #  30 Oct 2015 - M. Sulprizio- Initial version based on scale script from Bob Y.
 #  02 Nov 2015 - R. Yantosca - Now use TotalCPU for the CPU time
 #  10 Nov 2015 - R. Yantosca - Also add the % of ideal performance
+#  18 Nov 2015 - R. Yantosca - Add extra error checks to avoid perl warnings
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -271,25 +272,29 @@ sub getJobStats($$) {
     # Look for memory usage
     if ( $line =~ m/MaxRSS / ) {
       @temp = split( " ", $line );
-      $memory = "$temp[2] $temp[3]";
+      if ( $temp[2] =~ m/Unknown/ ) { $memory = "$temp[2]";          }
+      else                          { $memory = "$temp[2] $temp[3]"; }
     }
 
     # Look for time submitted
     if ( $line =~ m/Submit/ ) {
       @temp = split( " ", $line );
-      $subTime = "$temp[2] $temp[3]";
+      if ( $temp[2] =~ m/Unknown/ ) { $subTime = "$temp[2]";          }
+      else                          { $subTime = "$temp[2] $temp[3]"; }
     }
 
     # Look for run start time
     if ( $line =~ m/Start/ ) {
       @temp = split( " ", $line );
-      $begTime = "$temp[2] $temp[3]";
+      if ( $temp[2] =~ m/Unknown/ ) { $begTime = "$temp[2]";          }
+      else                          { $begTime = "$temp[2] $temp[3]"; }
     }
 
     # Look for run finish time
     if ( $line =~ m/End/ ) {
       @temp = split( " ", $line );
-      $endTime = "$temp[2] $temp[3]";
+      if ( $temp[2] =~ m/Unknown/ ) { $endTime = "$temp[2]";          }
+      else                          { $endTime = "$temp[2] $temp[3]"; }
     }
 
     # Look for CPU time
