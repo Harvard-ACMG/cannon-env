@@ -210,6 +210,8 @@ sub getJobInfo($$) {
 #  30 Oct 2015 - R. Yantosca - Print out total requested memory as the last
 #                              line (Number of CPUs * memory per CPU)
 #  02 Nov 2015 - R. Yantosca - Bug fix: CPUFreq fields should be GHz, not GB
+#  18 Nov 2015 - R. Yantosca - Bug fix: Make sure that $nCpus and $nNodes are
+#                              converted from string values; else set to 0.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -358,9 +360,17 @@ sub getJobInfo($$) {
 	  }
 	}
 
-	# Save the # of CPUs and nodes for use below
-	if ( $header =~ m/AllocCPUS/ ) { $nCpus  = $data; } 
-	if ( $header =~ m/NTasks/    ) { $nNodes = $data; }
+	# Save the # of CPUs for use below
+	if ( $header =~ m/AllocCPUS/ ) { 
+	  if ( looks_like_number( $data ) ) { $nCpus = $data;  }
+	  else                              { $nCpus = 0;      }
+        } 
+
+	# Get the # of nodes for use below
+	if ( $header =~ m/NTasks/    ) { 
+	  if ( looks_like_number( $data ) ) { $nNodes = $data; }
+	  else                              { $nNodes = 0;     }
+        }
 
 	# Save the requested memory for use below
 	if ( $header =~ m/ReqMem/ ) { 
@@ -392,18 +402,28 @@ sub getJobInfo($$) {
   }
         
   # Compute the total memory used across all CPUs and nodes
-  if ( $PER_CPU > 0 ) { $tmpVal = $reqMem * $nNodes * $nCpus; }
-  else                { $tmpVal = $reqMem * $nNodes;          }
+  # Skip if sacct has not returned the # of CPUs or nodes (i.e. if running)
+  if ( $nNodes * $nCpus > 0 ) { 
 
-  # Display the total amount of memory requested 
-  $tmpVal  = &round( $tmpVal, 0.0001 );
-  $tmpStr  = "$tmpVal GB";
-  $output .= "TotalReqMem" . " "x( $hdrWidth - 11) . " : ";
-  for ( my $j = 2; $j < $nLines; $j++ ) { 
-    $output .= $tmpStr . " "x( $maxWidth - length( $tmpStr ) );
-    $output .= "  ";
+    # Initialize
+    $tmpVal = 0;
+    
+    # Total memory across all CPUs and nodes
+    if ( $PER_CPU > 0 ) { $tmpVal = $reqMem * $nNodes * $nCpus; }
+    else                { $tmpVal = $reqMem * $nNodes;          }
+
+    # Format for display
+    $tmpVal  = &round( $tmpVal, 0.0001 );
+    $tmpStr  = "$tmpVal GB";
+    $output .= "TotalReqMem" . " "x( $hdrWidth - 11) . " : ";
+    for ( my $j = 2; $j < $nLines; $j++ ) { 
+      $output .= $tmpStr . " "x( $maxWidth - length( $tmpStr ) );
+      $output .= "  ";
+    }
+
+    # Add a newline at the end
+    $output .= "\n";
   }
-  $output .= "\n";
 
   #-------------------------------------------------------------------------
   # (4) Display results!
