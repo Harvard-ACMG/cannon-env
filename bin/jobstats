@@ -82,6 +82,8 @@ sub convertToSec($) {
 #
 # !REVISION HISTORY:
 #  30 Oct 2015 - M. Sulprizio- Initial version
+#  19 Nov 2015 - R. Yantosca - Bug fix: Use proper indices when the time
+#                              string only has minutes:seconds
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -156,8 +158,8 @@ sub convertToSec($) {
     } elsif ( $nTime == 2 ) {
 
       # Split up string into minutes, and seconds
-      $min      = $temp2[1];
-      $sec      = $temp2[2];
+     $min      = $temp2[0];
+     $sec      = $temp2[1];
 
       # Convert to numbers
       $numMin   = $min;
