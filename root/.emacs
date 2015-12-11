@@ -608,7 +608,7 @@
 
       ;; Pad some operators with spaces (or not)
       (setq idlwave-do-actions         t
-	    idlwave-surround-by-blank  t)
+            idlwave-surround-by-blank  t)
 
       ;; Indent ";" comments with the code but not ";;", ";;;", ";;;;" etc.
       (setq idlwave-code-comment       ";[^;]"  )
@@ -675,6 +675,24 @@
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for FORTRAN MODE
+;;
+;; NOTE: For Emacs 24.4 and higher!!! (Bob Yantosca, 11 Dec 2015)
+;; ===========================================================================
+;; Turn off the "electric-indent-mode if it supported in this Emacs version.
+;; This feature was introduced in Emacs 24.  When typing multiple comment 
+;; lines (esp. in Fortran mode), electric-indent would align each new comment 
+;; line to column 0 instead of at the previous indent level.  This meant that
+;; you would have had to manually indent comments by typing spaces.
+;;
+;; With electric-indent-mode turned off, after hitting return, the cursor
+;; will return to column 0.  You can then hit TAB to move the cursor to the
+;; previous indent level and then type your comment or code.
+;;
+;; The default indentation behavior for Fortran mode was changed in Emacs 24.
+;; Fortran-90 mode is unaffected.  Therefore, we turn off the electric-indent
+;; mode only if we are in Fortran mode.
+;; 
+;; See this web post for more information: http://emacs.stackexchange.com/questions/5939/how-to-disable-auto-indentation-of-new-lines
 ;;-----------------------------------------------------------------------------
 
 (add-hook 'fortran-mode-hook
@@ -684,6 +702,9 @@
 	      ;; use abbreviations (e.g.: ";s" for "stop")
 	      abbrev-mode 1
 	      )
+
+             ; Turn off automatic indentation for Fortran mode only
+             (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 	     )))
 	      
 ;; Make sure we have F90 mode loaded
