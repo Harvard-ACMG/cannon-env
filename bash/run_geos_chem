@@ -4,6 +4,7 @@
 #SBATCH -N 1
 #SBATCH -t 0-12:00
 #SBATCH -p jacob
+#SBATCH --constraint=intel
 #SBATCH --mem=8000
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=<YOUR_EMAIL_ADDRESS>
@@ -34,6 +35,7 @@
 #  -N 1                : Put all 8 CPUs on the same node.
 #  -t 0-12:00          : Ask for 12 hours of CPU time (format = DD-HH:MM)
 #  -p jacob            : Run job in the "jacob" queue.
+#  --constraint=intel  : Only run on nodes with Intel CPUs
 #  --mem=8000          : Ask for 8 GB of total memory for the job.
 #  --mail-type=ALL     : Get notifications when the job starts, ends, or fails.
 #  --mail-user=___     : Email address where notifications will get sent
