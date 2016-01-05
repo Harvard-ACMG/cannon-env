@@ -561,7 +561,7 @@ sub analyzeVar($) {
 
   # %%%%% Check the long_name attribute
   $value = $longName{$var};
-  if ( $value =~ m// ) {
+  if ( length( $value ) == 0 ) {
     $msg  = qq/$sep $var:long_name (or $var:standard_name) does not exist\n"/;
     @BAD  = ( @BAD,  $msg );
   } else {
