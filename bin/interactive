@@ -18,9 +18,7 @@
 #  for traditional GEOS-Chem usage.
 #
 # !REVISION HISTORY: 
-#  28 Oct 2014 - R. Yantosca - Initial version
-#  10 Jul 2015 - R. Yantosca - Now print the input arguments to stdout
-#  01 Sep 2015 - R. Yantosca - Now start pass the partition as the 5th arg
+#  Use the gitk browser to view the Git version history.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -71,6 +69,6 @@ echo "%%% to the same number of CPUs that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --x11=first -n $cpus -N $nodes --mem-per-cpu=$mem -p $part /bin/bash
+srun --pty --x11=first -n $cpus -N $nodes --mem-per-cpu=$mem -p $part -t $time /bin/bash
 
 #EOC
