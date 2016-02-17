@@ -372,7 +372,7 @@ sub analyzeLev($) {
       $msg  = qq/$sep $var:units =$value\n/;
       @GOOD = ( @GOOD, $msg );
     } else {
-      $msg  = qq/$sep $var:units should be dimensionless (e.g. "sigma_level", "1"\n/;
+      $msg  = qq/$sep $var:units should be dimensionless (e.g. "sigma_level", "1")\n/;
       @BAD  = ( @BAD,  $msg );
     }
   } else {
@@ -800,6 +800,7 @@ sub analyzeResults() {
 # !REVISION HISTORY:
 #  06 Jan 2015 - R. Yantosca - Initial version
 #  06 Jan 2016 - R. Yantosca - Now test for upper/lower case index var names
+#  17 Feb 2016 - R. Yantosca - Fixed typo: [ instead of ] in regexp for lat
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -818,7 +819,7 @@ sub analyzeResults() {
   foreach $var ( @vars ) {
     if    ( $var =~ m/[Tt][Ii][Mm][Ee]/ ) { &analyzeTime( $var ); }
     elsif ( $var =~ m/[Ll][Ee][Vv]/     ) { &analyzeLev ( $var ); }
-    elsif ( $var =~ m/[Ll[[Aa][Tt]/     ) { &analyzeLat ( $var ); }
+    elsif ( $var =~ m/[Ll][Aa][Tt]/     ) { &analyzeLat ( $var ); }
     elsif ( $var =~ m/[Ll][Oo][Nn]/     ) { &analyzeLon ( $var ); }
     else                                  { &analyzeVar ( $var ); }
   }
