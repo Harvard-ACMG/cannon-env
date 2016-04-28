@@ -24,6 +24,7 @@
 #  10 Jul 2015 - R. Yantosca - Now print the input arguments to stdout
 #  01 Sep 2015 - R. Yantosca - Now pass the partition as the 4th argument
 #  10 Nov 2015 - R. Yantosca - Now use --mem instead of --mem-per-cpu
+#  28 Apr 2016 - R. Yantosca - Now use srun -c $ncpus to allow multithreading
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -64,6 +65,6 @@ echo "%%% to the same number of CPUs that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --x11=first -n $cpus -N 1 --mem=$mem -t $time -p $part /bin/bash
+srun --pty --x11=first -c $cpus -N 1 --mem=$mem -t $time -p $part /bin/bash
 
 #EOC
