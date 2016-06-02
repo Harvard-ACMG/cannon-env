@@ -1,0 +1,80 @@
+#!/bin/bash
+
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: interactive_gchp
+#
+# !DESCRIPTION: Shell script to request an interactive session on Odyssey,
+#  geared for GCHP jobs (i.e. multiple nodes possible and CPUs evenly
+#  distributed amongst nodes). Requested time (minutes) and partition 
+#  are optional arguments. The defaults are 60 minutes on the 
+#  jacob partition.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  interactive_gchp NODES CPUS MEMORY-PER-CPU [TIME-IN-MINUTES] [PARTITION]
+#
+# !REMARKS:
+#  Executes the srun command to start an interactive SLURM session.
+#
+# !REVISION HISTORY: 
+#  01 Jun 2016 - E. Lundgren - Initial version (based on interactive_openmp)
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+# Process the input arguments
+if [[ $# == 5 ]]; then
+   nodes=$1    
+   cpus=$2
+   mem=$3
+   time=$4
+   part=$5
+elif [[ $# == 4 ]]; then
+   nodes=$1    
+   cpus=$2
+   mem=$3
+   time=$4
+   part=jacob
+elif [[ $# == 3 ]]; then
+   nodes=$1
+   cpus=$2
+   mem=$3
+   time=60
+   part=jacob
+else
+   echo "Usage: interactive_gchp NODES CPUS MEM-PER-CPU [TIME-IN-MINUTES] [PARTITION]"
+   exit 1
+fi
+
+# Print information
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+echo "%%% Starting an Odyssey interactive session!"
+echo "%%%"
+echo "%%% Number of nodes     : $nodes"
+echo "%%% Number of CPUs      : $cpus"
+echo "%%% Memory per CPU      : $mem MB"
+echo "%%% Requested time      : $time minutes"
+echo "%%% Requested partition : $part"
+echo "%%%"
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+
+# Calculate remainder of # CPUs divided by # nodes
+remainder=$(($cpus%$nodes))
+
+# Start the interactive session
+if [[ $nodes == 1 ]]; then
+   srun -p $part --pty --x11=first --mem-per-cpu=$mem -N $nodes -n $cpus -t $time -p $part /bin/bash
+else
+   if [[ $remainder > 0 ]]; then
+       echo "FAILURE: Number of CPUs must be divisible by number of nodes. Try again."
+   else    
+     cpus_per_node=$(($cpus/$nodes))
+     srun -p $part --pty --x11=first -m plane=$cpus_per_node --mem-per-cpu=$mem -N $nodes -n $cpus -t $time -p $part /bin/bash
+   fi
+fi
+
+#EOC
