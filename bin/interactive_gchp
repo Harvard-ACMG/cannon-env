@@ -15,7 +15,7 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  interactive_gchp NODES CPUS MEMORY-PER-CPU [TIME-IN-MINUTES] [PARTITION]
+#  interactive_gchp NODES CPUS MEMORY-IN-MB [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
 #  Executes the srun command to start an interactive SLURM session.
@@ -46,7 +46,7 @@ elif [[ $# == 3 ]]; then
    time=60
    part=jacob
 else
-   echo "Usage: interactive_gchp NODES CPUS MEM-PER-CPU [TIME-IN-MINUTES] [PARTITION]"
+   echo "Usage: interactive_gchp NODES CPUS MEMORY-IN-MB [TIME-IN-MINUTES] [PARTITION]"
    exit 1
 fi
 
@@ -56,7 +56,7 @@ echo "%%% Starting an Odyssey interactive session!"
 echo "%%%"
 echo "%%% Number of nodes     : $nodes"
 echo "%%% Number of CPUs      : $cpus"
-echo "%%% Memory per CPU      : $mem MB"
+echo "%%% Memory              : $mem MB"
 echo "%%% Requested time      : $time minutes"
 echo "%%% Requested partition : $part"
 echo "%%%"
@@ -67,13 +67,13 @@ remainder=$(($cpus%$nodes))
 
 # Start the interactive session
 if [[ $nodes == 1 ]]; then
-   srun -p $part --pty --x11=first --mem-per-cpu=$mem -N $nodes -n $cpus -t $time -p $part /bin/bash
+   srun -p $part --pty --x11=first --mem=$mem -N $nodes -n $cpus -t $time -p $part /bin/bash
 else
    if [[ $remainder > 0 ]]; then
        echo "FAILURE: Number of CPUs must be divisible by number of nodes. Try again."
    else    
      cpus_per_node=$(($cpus/$nodes))
-     srun -p $part --pty --x11=first -m plane=$cpus_per_node --mem-per-cpu=$mem -N $nodes -n $cpus -t $time -p $part /bin/bash
+     srun -p $part --pty --x11=first -m plane=$cpus_per_node --mem=$mem -N $nodes -n $cpus -t $time -p $part /bin/bash
    fi
 fi
 
