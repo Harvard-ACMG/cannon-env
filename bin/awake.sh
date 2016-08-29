@@ -25,8 +25,8 @@
 #BOC
 
 # Maximum number of iterations
-# (every 10 mins for an 8-hour session = 48 iterations)
-COUNTER=48
+# (every 10 mins for an 10-hour session = 60 iterations)
+COUNTER=60
  
 # Sleep for 10 mins, then issue a command that does nothing (but which will 
 # provide some activity so that the interactive sessione doesn't time out).
