@@ -15,7 +15,7 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  interactive_gchp NODES CPUS MEM-PER_CPU [TIME-IN-MINUTES] [PARTITION]
+#  interactive_gchp NODES CPUS MEM-PER-CPU [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
 #  Executes the srun command to start an interactive SLURM session.
@@ -47,7 +47,7 @@ elif [[ $# == 3 ]]; then
    time=60
    part=jacob
 else
-   echo "Usage: interactive_gchp NODES CPUS MEMORY-IN-MB [TIME-IN-MINUTES] [PARTITION]"
+   echo "Usage: interactive_gchp NODES CPUS MEM-PER-CPU [TIME-IN-MINUTES] [PARTITION]"
    exit 1
 fi
 

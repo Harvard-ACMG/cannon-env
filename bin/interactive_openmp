@@ -12,7 +12,7 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  interactive CPUS MEMORY-PER-NODE [TIME-IN-MINUTES] [PARTITION]
+#  interactive CPUS MEM-PER-NODE [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
 #  Executes the srun command to start an interactive SLURM session.
@@ -46,7 +46,7 @@ elif [[ $# == 2 ]] ; then
    mem=$2
    time=60
 else
-   echo "Usage: interactive_openmp CPUS MEM-PER-CPU [TIME-IN-MINUTES]"
+   echo "Usage: interactive_openmp CPUS MEM-PER-NODE [TIME-IN-MINUTES] [PARTITION]"
    exit 1
 fi
 
