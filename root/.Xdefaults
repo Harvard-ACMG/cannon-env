@@ -30,7 +30,7 @@ XTerm*CursorColor:     FireBrick
 XTerm*TermType:        xterm
 XTerm*Geometry:        90x26+0+0
 XTerm*Font:            10x20
-XTerm*SaveLines:       500
+XTerm*SaveLines:       2500
 XTerm*ScrollBar:       true
 XTerm*TitleBar:        true
 XTerm*TextUnderIcon:   true
