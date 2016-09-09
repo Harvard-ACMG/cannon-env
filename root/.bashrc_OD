@@ -81,6 +81,9 @@ ulimit -f unlimited                # Max out filesize
 ulimit -d unlimited                # Max out datasize
 ulimit -s unlimited                # Max out stacksize
 ulimit -c unlimited                # Max out coredumpsize
+unset GC_F_BIN
+unset GC_F_INCLUDE
+unset GC_F_LIB
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
@@ -121,7 +124,7 @@ if [[ $loadThisCompiler == "ifort15" ]]; then
   #module load nco/4.3.6-fasrc01                            # Load nco
 
   # Options for TAU profiler
-  export TAU_OPTIONS="-optVerbose -optPreProcess -optContinueBeforeOMP"
+  export TAU_OPTIONS="-optRevert -optVerbose -optPreProcess -optContinueBeforeOMP"
 
 elif [[ $loadThisCompiler == "ifort13" ]]; then
 
@@ -143,6 +146,14 @@ elif [[ $loadThisCompiler == "pgi" ]]; then
   #------------------------------------------------------
   unset LM_LICENSE_FILE 
   module load pgi/14.10-fasrc01 openmpi/1.10.0-fasrc01 netcdf/4.1.3-fasrc05
+
+elif [[ $loadThisCompiler == "gfortran" ]]; then
+
+  #-----------------------------------------------------
+  # %%%%% GEOS-CHEM WITH GNU FORTRAN COMPILER %%%%% 
+  #-----------------------------------------------------
+  module load gcc/4.8.2-fasrc01      openmpi/1.10.1-fasrc01
+  module load netcdf/4.3.3.1-fasrc02 netcdf-fortran/4.4.2-fasrc01
 
 else
 
@@ -208,6 +219,14 @@ fi
 
 # netCDF bin path
 export GC_BIN="$NETCDF_HOME/bin"
+
+# If the netCDF-Fortran library is loaded separately
+# then also define the GC_F_* environment variables
+if [[ "x$NETCDF_FORTRAN_HOME" != x ]]; then
+ export GC_F_BIN="$NETCDF_FORTRAN_HOME/bin"
+ export GC_F_INCLUDE="$NETCDF_FORTRAN_INCLUDE"
+ export GC_F_LIB="$NETCDF_FORTRAN_LIB"
+fi
 
 # Set flags for backwards compatibility w/ other code packages
 export BIN_NETCDF=$GC_BIN
@@ -292,6 +311,7 @@ alias  load_15="export LOAD_COMPILER=ifort15; sb; unset LOAD_COMPILER"
 alias  load_13="export LOAD_COMPILER=ifort13; sb; unset LOAD_COMPILER"
 alias  load_11="export LOAD_COMPILER=ifort11; sb; unset LOAD_COMPILER"
 alias  load_pg="export LOAD_COMPILER=pgi; sb; unset LOAD_COMPILER"
+alias  load_gf="export LOAD_COMPILER=gfortran; sb; unset LOAD_COMPILER"
 
 # %%%%% Aliases for general Unix commands %%%%
 alias  disk="du -h -s -c"
