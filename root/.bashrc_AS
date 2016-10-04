@@ -149,7 +149,10 @@ export F77=$FC
 
 # %%%%% Settings for OpenMP parallelization %%%%%
 export OMP_NUM_THREADS=4               # NOTE: Set this manually on Odyssey!
-export KMP_STACKSIZE=500000000          # NOTE: Set 100x larger than in csh!
+
+# Max out the stack memory for OpenMP
+# OMP_STACKSIZE works with all compilers; KMP_STACKSIZE works only w/ Intel
+export OMP_STACKSIZE=500m
 
 # %%%%% Settings for OpenMPI parallelization %%%%%
 export OMPI_FC=$FC

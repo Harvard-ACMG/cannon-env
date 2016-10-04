@@ -262,13 +262,15 @@ export OMPI_CC=$CC
 export OMPI_CXX=$CXX
 
 # %%%%% Settings for OpenMP parallelization %%%%%
-export KMP_STACKSIZE=500m
+
+# Max out the stack memory for OpenMP
+# OMP_STACKSIZE works with all compilers; KMP_STACKSIZE works only w/ Intel
 export OMP_STACKSIZE=500m
 
 # If we are in a SLURM environment (i.e. interactive run or batch job),
 # then set OMP_NUM_THREADS to the value of SLURM_CPUS_PER_TASK.  Otherwise,
 # set OMP_NUM_THREADs to a default value of 1. (bmy, 9/2/15)
-if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
+if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then]
   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 else
   export OMP_NUM_THREADS=1
