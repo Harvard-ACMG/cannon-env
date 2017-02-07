@@ -204,6 +204,8 @@ sub getJobStats($$) {
 #  18 Nov 2015 - R. Yantosca - Add extra error checks to avoid perl warnings
 #  17 Dec 2015 - R. Yantosca - Add a check to properly report the MaxRSS value 
 #                              if sacct returns 5 substrings instead of 4
+#  07 Feb 2017 - R. Yantosca - Updated to search for statistics from the proper
+#                              computational queue (via updated jobinfo script)
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -216,13 +218,17 @@ sub getJobStats($$) {
   my @temp      = ();
 
   # Numeric scalars
-  my $allocCPU  = 0;
-  my $numCPU    = 0;
-  my $numWall   = 0;
-  my $scaling   = 0;
-  my $percent   = 0;
+  my $allocCPU  =  0;
+  my $ind       = -1;
+  my $indBatch  = -1;
+  my $indTime   = -1;
+  my $indName   =  2;
+  my $numCPU    =  0;
+  my $numWall   =  0;
+  my $scaling   =  0;
+  my $percent   =  0;
 
-  # String scalars
+  # Strings
   my $line      = "";
   my $jobName   = "";
   my $partition = "";
@@ -234,6 +240,7 @@ sub getJobStats($$) {
   my $endTime   = "";
   my $cpuTime   = "";
   my $wallTime  = "";
+  my $word      = "";
 
   # Get the statistics for the given JobID from the jobinfo script
   @log = qx( jobinfo $ARGV[0] );
@@ -253,80 +260,79 @@ sub getJobStats($$) {
     # Look for JobName
     if ( $line =~ m/JobName/ ) {
       @temp = split( " ", $line );
-      $jobName = $temp[2];
+      
+      # Look for the "batch" or "time" columns.
+      for ( my $i = 0; $i < scalar( @temp ); $i++ ) {
+	if ( $temp[$i] eq "batch" ) { $indBatch = $i; }
+	if ( $temp[$i] eq "time"  ) { $indTime  = $i; }
+      }
+       
+      # Pick the column from which to get data
+      # Search priority: "time", "batch", then job name column
+      if    ( $indBatch > 0 && $indTime > 0 ) { $ind = $indTime;  }
+      elsif ( $indBatch > 0                 ) { $ind = $indBatch; }
+      else                                    { $ind = $indName;  }
+
+      $jobName = $temp[$indName];
     }
 
      # Look for Partition
     if ( $line =~ m/Partition/ ) {
       @temp = split( " ", $line );
-      $partition = $temp[2];
+      $partition = $temp[$indName];
     }
 
     # Look for Node
     if ( $line =~ m/MaxVMSizeNode/ ) {
       @temp = split( " ", $line );
-      $node = $temp[2];
+      $node = $temp[$ind];
     }
 
     # Look for number of CPUs
     if ( $line =~ m/AllocCPU/ ) {
       @temp     = split( " ", $line );
-      $ncpu     = $temp[2];
+      $ncpu     = $temp[$ind];
       $allocCPU = $ncpu;
     }
 
     # Look for memory usage
     if ( $line =~ m/MaxRSS / ) {
-      @temp = split( " ", $line );
-
-      if ( scalar( @temp ) == 5 ) {
-
-	# Special handling: If sacct returns a memory value for the
-	# the first queue (i.e. where the job was submitted), then
-	# skip it.  This happens if @temp has 5 substrings.
-	if ( $temp[3] =~ m/Unknown/ ) { $memory = "$temp[3]";          }
-	else                          { $memory = "$temp[3] $temp[4]"; }
-
-      } else {  
-
-	# Otherwise the normal situation is when @temp has 4 substrings.
-	if ( $temp[2] =~ m/Unknown/ ) { $memory = "$temp[2]";          }
-	else                          { $memory = "$temp[2] $temp[3]"; }
-
-      }
+      @temp   =  split( " ", $line );
+      $memory =  $temp[$ind];
+      $memory =~ s/GB/ GB/g;
     }
 
     # Look for time submitted
     if ( $line =~ m/Submit/ ) {
-      @temp = split( " ", $line );
-      if ( $temp[2] =~ m/Unknown/ ) { $subTime = "$temp[2]";          }
-      else                          { $subTime = "$temp[2] $temp[3]"; }
+      @temp    =  split( " ", $line );
+      $subTime =  $temp[$indName];
+      $subTime =~ s/\|/ /g;
     }
 
     # Look for run start time
     if ( $line =~ m/Start/ ) {
-      @temp = split( " ", $line );
-      if ( $temp[2] =~ m/Unknown/ ) { $begTime = "$temp[2]";          }
-      else                          { $begTime = "$temp[2] $temp[3]"; }
+      @temp    =  split( " ", $line );
+      $begTime =  $temp[$indName];
+      $begTime =~ s/\|/ /g;
     }
 
     # Look for run finish time
     if ( $line =~ m/End/ ) {
-      @temp = split( " ", $line );
-      if ( $temp[2] =~ m/Unknown/ ) { $endTime = "$temp[2]";          }
-      else                          { $endTime = "$temp[2] $temp[3]"; }
+      @temp    =  split( " ", $line );
+      $endTime =  $temp[$indName];
+      $endTime =~ s/\|/ /g;
     }
 
     # Look for CPU time
     if ( $line =~ m/TotalCPU / ) {
-      @temp = split( " ", $line );
-      $cpuTime = $temp[2];
+      @temp    =  split( " ", $line );
+      $cpuTime =  $temp[$indName];
     }
 
     # Look for wall clock time
     if ( $line =~ m/Elapsed/ ) {
-      @temp = split( " ", $line );
-      $wallTime = $temp[2];
+      @temp     = split( " ", $line );
+      $wallTime = $temp[$indName];
     }
 
   }

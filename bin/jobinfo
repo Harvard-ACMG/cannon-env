@@ -129,7 +129,7 @@ sub convertToGb($) {
       $numVal  = $numStr;
       $numVal  = $numVal / 1000.0;
       $numVal  = &round( $numVal, 0.0001 );
-      $numStr  = "$numVal GB/cpu";
+      $numStr  = "$numVal"."GB/cpu";
       $PER_CPU = 1;
       return( $numStr );
     }
@@ -142,7 +142,7 @@ sub convertToGb($) {
       $numVal  = $numStr;
       $numVal  = $numVal / 1000.0;
       $numVal  = &round( $numVal, 0.0001 );
-      $numStr  = "$numVal GB/node";
+      $numStr  = "$numVal"."GB/node";
       $PER_CPU = 0;
       return( $numStr );
     }
@@ -155,7 +155,7 @@ sub convertToGb($) {
       $numVal  = $numStr;
       $numVal  = $numVal / 1000.0;
       $numVal  = &round( $numVal, 0.001 );
-      $numStr  = "$numVal GB";
+      $numStr  = "$numVal"."GB";
       return( $numStr );
     }
   }
@@ -167,7 +167,7 @@ sub convertToGb($) {
       $numVal  = $numStr;
       $numVal  = $numVal / 1000000.0;
       $numVal  = &round( $numVal, 0.0001 );
-      $numStr  = "$numVal GB";
+      $numStr  = "$numVal"."GB";
       return( $numStr );
     }
   }
@@ -176,7 +176,7 @@ sub convertToGb($) {
   if ( $lastChar =~ m/G/ ) {
     $numStr = substr( $data, 0, $len-1 );
     if ( looks_like_number( $numStr ) ) {
-      $numStr  = "$numStr GB";
+      $numStr  = "$numStr"."GB";
       return( $numStr );
     }
   }
@@ -210,8 +210,7 @@ sub getJobInfo($$) {
 #  30 Oct 2015 - R. Yantosca - Print out total requested memory as the last
 #                              line (Number of CPUs * memory per CPU)
 #  02 Nov 2015 - R. Yantosca - Bug fix: CPUFreq fields should be GHz, not GB
-#  18 Nov 2015 - R. Yantosca - Bug fix: Make sure that $nCpus and $nNodes are
-#                              converted from string values; else set to 0.
+#  07 Feb 2017 - R. Yantosca - Display "-" instead of "" for blank fields
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -238,6 +237,7 @@ sub getJobInfo($$) {
   my $reqMem    = 0;
   my $tmpVal    = 0;
   my $start     = 0;
+  my $prtTotMem = 0;
   my $width     = 0;
 
   # Arrays
@@ -333,6 +333,10 @@ sub getJobInfo($$) {
 	$data =  substr( $result[$j], $colStart[$i], $colWidth[$i] );
 	$data =~ s/\s+//g;
 
+	# Add a "-" to the output for blank spaces, which will facilitate 
+	# parsing the output with the jobstats script (bmy, 2/7/17)
+	if ( length( $data ) == 0 ) { $data = "-"; }
+
 	# Convert memory units to GB (if necessary)
 	if ( !( $header =~ m/Job/    ) && 
              !( $header =~ m/Node/   ) &&
@@ -356,7 +360,7 @@ sub getJobInfo($$) {
 	  if ( !( $data =~ m/Unknown/ ) ) {
 	    $YMD  = substr( $data,  0, 10 );
 	    $HMS  = substr( $data, 11, 18 );
-	    $data = "$YMD $HMS";
+	    $data = "$YMD|$HMS";
 	  }
 	}
 
@@ -414,7 +418,7 @@ sub getJobInfo($$) {
 
     # Format for display
     $tmpVal  = &round( $tmpVal, 0.0001 );
-    $tmpStr  = "$tmpVal GB";
+    $tmpStr  = "$tmpVal"."GB";
     $output .= "TotalReqMem" . " "x( $hdrWidth - 11) . " : ";
     for ( my $j = 2; $j < $nLines; $j++ ) { 
       $output .= $tmpStr . " "x( $maxWidth - length( $tmpStr ) );
