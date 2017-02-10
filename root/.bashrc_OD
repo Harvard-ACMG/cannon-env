@@ -85,6 +85,9 @@ ulimit -c unlimited                # Max out coredumpsize
 unset GC_F_BIN
 unset GC_F_INCLUDE
 unset GC_F_LIB
+unset NETCDF_HOME
+unset NETCDF_LIB
+unset NETCDF_BIN
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
@@ -111,7 +114,7 @@ module purge                                               # Initialize
 module load git                                            # Load Git
 module load perl                                           # Load Perl
 module load IDL                                            # Load IDL
-module load ncl                                            # Load NCL v6.1.2
+#module load ncl                                            # Load NCL v6.1.2
 
 if [[ $loadThisCompiler == "ifort15" ]]; then
 
@@ -148,13 +151,21 @@ elif [[ $loadThisCompiler == "pgi" ]]; then
   unset LM_LICENSE_FILE 
   module load pgi/14.10-fasrc01 openmpi/1.10.0-fasrc02 netcdf/4.1.3-fasrc05
 
-elif [[ $loadThisCompiler == "gfortran" ]]; then
+elif [[ $loadThisCompiler == "gfortran6" ]]; then
 
   #-----------------------------------------------------
   # %%%%% GEOS-CHEM WITH GNU FORTRAN COMPILER %%%%% 
+  # %%%%% VERSION 6.2.0 -- RECENT VERSION     %%%%%
   #-----------------------------------------------------
+  module load gcc/6.2.0-fasrc01      openmpi/1.10.4-fasrc01 
+  module load netcdf/4.4.0-fasrc04   netcdf-fortran/4.4.3-fasrc03
 
-  # These commands load GNU Fortran 4.8.2
+elif [[ $loadThisCompiler == "gfortran4" ]]; then
+
+  #-----------------------------------------------------
+  # %%%%% GEOS-CHEM WITH GNU FORTRAN COMPILER %%%%% 
+  # %%%%% VERSION 4.8.2 -- OLDER VERSION      %%%%%
+  #-----------------------------------------------------
   module load gcc/4.8.2-fasrc01      openmpi/1.10.1-fasrc01
   module load netcdf/4.3.3.1-fasrc02 netcdf-fortran/4.4.2-fasrc01
 
@@ -204,6 +215,11 @@ export ARCH=`uname -s`
 # If the netCDF home directory hasn't been set, do it manually here
 if [[ "x$NETCDF_HOME" == x ]]; then
  export NETCDF_HOME=`nc-config --prefix`
+fi
+
+# If the $NETCDF_BIN variable is blank, set it to "$NETCDF_HOME/bin"
+if [[ "x$NETCDF_BIN" == x ]]; then
+ export NETCDF_BIN="$NETCDF_HOME/bin"
 fi
 
 # If the $NETCDF_LIB variable is blank, set it to "$NETCDF_HOME/lib"
@@ -266,7 +282,7 @@ export OMPI_CXX=$CXX
 # Max out the stack memory for OpenMP
 # OMP_STACKSIZE works with all compilers; KMP_STACKSIZE works only w/ Intel
 export OMP_STACKSIZE=500m
-
+ 
 # If we are in a SLURM environment (i.e. interactive run or batch job),
 # then set OMP_NUM_THREADS to the value of SLURM_CPUS_PER_TASK.  Otherwise,
 # set OMP_NUM_THREADs to a default value of 1. (bmy, 9/2/15)
@@ -317,7 +333,9 @@ alias  load_15="export LOAD_COMPILER=ifort15; sb; unset LOAD_COMPILER"
 alias  load_13="export LOAD_COMPILER=ifort13; sb; unset LOAD_COMPILER"
 alias  load_11="export LOAD_COMPILER=ifort11; sb; unset LOAD_COMPILER"
 alias  load_pg="export LOAD_COMPILER=pgi; sb; unset LOAD_COMPILER"
-alias  load_gf="export LOAD_COMPILER=gfortran; sb; unset LOAD_COMPILER"
+alias  load_gf6="export LOAD_COMPILER=gfortran6; sb; unset LOAD_COMPILER"
+alias  load_gf4="export LOAD_COMPILER=gfortran4; sb; unset LOAD_COMPILER"
+
 
 # %%%%% Aliases for general Unix commands %%%%
 alias  disk="du -h -s -c"
