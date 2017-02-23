@@ -5,11 +5,8 @@
 #SBATCH -t 0-12:00
 #SBATCH -p jacob
 #SBATCH --constraint=intel
-#SBATCH --mem=8000
+#SBATCH --mem=6000
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=<YOUR_EMAIL_ADDRESS>
-#SBATCH -o v10-01.log.%j
-#SBATCH -e v10-01.err.%j
 
 #------------------------------------------------------------------------------
 #                  GEOS-Chem Global Chemical Transport Model                  !
@@ -39,8 +36,8 @@
 #  --mem=8000          : Ask for 8 GB of total memory for the job.
 #  --mail-type=ALL     : Get notifications when the job starts, ends, or fails.
 #  --mail-user=___     : Email address where notifications will get sent
-#  -o v10-01.stdout.%j : Send stdout to this log file.
-#  -e v10-01.stdout.%j : Send stderr to this log file.
+#  -o stdout.%j        : Send stdout to this log file. 
+#  -e stdout.%j        : Send stderr to this log file.
 #
 #  Alternative options for SBATCH tags:
 #  (1) Instead of -c 8       you can also use --cpus-per-task=8
@@ -57,9 +54,10 @@
 # 
 #  Notes about stdout and stderr logs:
 #  (1) If you omit -o, SLURM will send stdout to slurm-JOBID.out
-#  (2) If you omit -e, SLURM will send stderr to slurm-JOBID.err
+#  (2) If you omit -e, SLURM will send stderr to slurm-JOBID.out
 #  (3) Recommended: Use %j to have SLURM append the JOBID to the
 #      stdout or stderr log file!  This is useful for debugging.
+#  (4) If you omit --mail-user, SLURM will send email to the submitting user.
 #
 #  The available options for email notification (--mail-user) are:
 #  (1) BEGIN : When the job starts
