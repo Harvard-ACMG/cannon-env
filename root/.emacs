@@ -324,6 +324,9 @@
 ;;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; keep that one for idlwave?
 
+;; Put vertical scroll bar on the left (bmy, 5/30/17)
+(set-scroll-bar-mode 'left)  
+
 ;; change default Ediff splitting to horizontal
 ;;(setq ediff-split-window-function 'split-window-horizontally)
 
@@ -608,7 +611,7 @@
 
       ;; Pad some operators with spaces (or not)
       (setq idlwave-do-actions         t
-            idlwave-surround-by-blank  t)
+	    idlwave-surround-by-blank  t)
 
       ;; Indent ";" comments with the code but not ";;", ";;;", ";;;;" etc.
       (setq idlwave-code-comment       ";[^;]"  )
