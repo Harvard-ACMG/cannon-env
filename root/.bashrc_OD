@@ -23,21 +23,28 @@
 #  You can copy this file to ~/.bashrc in your root directory and edit
 #  as you wish.
 #
+#  This .bashrc file uses several functions in the .my_module_settings.sh
+#  script to simplify (and standardize) how software modules and corresponding
+#  environment variables are defined.
+# 
 #  To load a new set of modules for a different compiler version, you can
 #  issue the folloiwng commands,
 #
-#    export LOAD_COMPILER=ifort15; . ~/.bashrc; unset LOAD_COMPILER
-#    export LOAD_COMPILER=ifort13; . ~/.bashrc; unset LOAD_COMPILER
-#    export LOAD_COMPILER=ifort11; . ~/.bashrc; unset LOAD_COMPILER
-#    export LOAD_COMPILER=pgi;     . ~/.bashrc; unset LOAD_COMPILER
+#    export MY_COMPILER=gfortran63; . ~/.bashrc; unset MY_COMPILER
+#    export MY_COMPILER=gfortran62; . ~/.bashrc; unset MY_COMPILER
+#    export MY_COMPILER=gfortran52  . ~/.bashrc; unset MY_COMPILER
+#    export MY_COMPILER=gfortran48; . ~/.bashrc; unset MY_COMPILER
+#    export MY_COMPILER=ifort15;    . ~/.bashrc; unset MY_COMPILER
+#    export MY_COMPILER=ifort11;    . ~/.bashrc; unset MY_COMPILER
 #
 #  or use the following aliases defined in this file:
 #
-#    load_15      # load ifort 15
-#    load_13      # load ifort 13
-#    load_11      # load ifort 11 (default compiler when you log in)
-#    load_pg      # load PGI
-#    load_gf      # load GNU Fortran
+#    load_gf63    # Load gfortran 6.3.0 
+#    load_gf63    # Load gfortran 6.2.0 
+#    load_gf52    # Load gfortran 5.2.0  (default, same as we use for GCHP)
+#    load_gf48    # Load gfortran 4.8.2
+#    load_if15    # Load ifort 15
+#    load_if11    # Load ifort 11        (Jacob-group proprietary licenses)
 #
 #  ALSO NOTE: If you want to use the totalview debugger, you have to type:
 #
@@ -82,180 +89,35 @@ ulimit -f unlimited                # Max out filesize
 ulimit -d unlimited                # Max out datasize
 ulimit -s unlimited                # Max out stacksize
 ulimit -c unlimited                # Max out coredumpsize
-unset GC_F_BIN
-unset GC_F_INCLUDE
-unset GC_F_LIB
-unset NETCDF_HOME
-unset NETCDF_LIB
-unset NETCDF_BIN
 
 #==============================================================================
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 
-# Pick the compiler version to load, based on the LOAD_COMPILER env var
-# If LOAD_COMPILER is not set, then load the Jacob-group libraries 
-if [[ -n "${LOAD_COMPILER+1}" ]]; then
-  loadThisCompiler=$LOAD_COMPILER
-else
-  loadThisCompiler="ifort11" 
+# Pick gfortran 5.2 as the default compiler version, which will allow
+# us to test GC-Classic with the same compiler as we use for GCHP
+if [[ x$MY_COMPILER == "x" ]]; then
+  export MY_COMPILER="gfortran52"
 fi
 
-# Echo info if it's an interactive session
-if [[ $- = *i* ]] ; then
-  echo "Loading modules for compiler $loadThisCompiler, please wait ..."
-fi
+# Call various functions from the .my_module_settings.sh script to
+# load the various packages and compilers via the "module" command
+source $HOME/.my_module_settings.sh
+SetupMyEnvironment
+unset MY_COMPILER
 
-# Activate Lmod and load commonly-used modules 
-export LMOD_COLORIZE=yes                                   # Colorize
-source new-modules.sh                                      # Turn on Lmod
-export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH"  # Jacob grp path
-module purge                                               # Initialize
-module load git                                            # Load Git
-module load perl                                           # Load Perl
-module load IDL                                            # Load IDL
-#module load ncl                                            # Load NCL v6.1.2
-
-if [[ $loadThisCompiler == "ifort15" ]]; then
-
-  #-----------------------------------------------------
-  # %%%%% FOR GEOS-CHEM with IFORT 15 %%%%%
-  #-----------------------------------------------------
-  module load intel/15.0.0-fasrc01 openmpi/1.8.3-fasrc02   # ifort v15 & MPI
-  module load netcdf/4.1.3-fasrc04                         # Load netCDF
-  module load tau/2.24.1-fasrc01                           # Load TAU
-  #module load ncview/2.1.5-fasrc01                         # Load ncview
-  #module load nco/4.3.6-fasrc01                            # Load nco
-
-  # Options for TAU profiler
-  export TAU_OPTIONS="-optRevert -optVerbose -optPreProcess -optContinueBeforeOMP"
-
-elif [[ $loadThisCompiler == "ifort13" ]]; then
-
-  #-----------------------------------------------------
-  # %%%%% FOR GEOS-CHEM with IFORT 13 %%%%%
-  #-----------------------------------------------------
-  module load intel/13.0.079-fasrc01 openmpi/1.8.1-fasrc05 netcdf/4.1.3-fasrc06 
-
-elif [[ $loadThisCompiler == "pgi" ]]; then
-
-  #-----------------------------------------------------
-  # %%%%% FOR GEOS-CHEM with PGI COMPILER %%%%%
-  #
-  # NOTE: A license file is automatically set when 
-  # loading IDL upon startup but must be unset prior to
-  # compiling with PGI. To subsequently use IDL, type:
-  #    export LM_LICENSE_FILE=27001@rlic1
-  # after you are done compiling.
-  #------------------------------------------------------
-  unset LM_LICENSE_FILE 
-  module load pgi/14.10-fasrc01 openmpi/1.10.0-fasrc02 netcdf/4.1.3-fasrc05
-
-elif [[ $loadThisCompiler == "gfortran6" ]]; then
-
-  #-----------------------------------------------------
-  # %%%%% GEOS-CHEM WITH GNU FORTRAN COMPILER %%%%% 
-  # %%%%% VERSION 6.2.0 -- RECENT VERSION     %%%%%
-  #-----------------------------------------------------
-  module load gcc/6.2.0-fasrc02      openmpi/1.10.4-fasrc01 
-  module load netcdf/4.4.0-fasrc04   netcdf-fortran/4.4.3-fasrc03
-
-elif [[ $loadThisCompiler == "gfortran4" ]]; then
-
-  #-----------------------------------------------------
-  # %%%%% GEOS-CHEM WITH GNU FORTRAN COMPILER %%%%% 
-  # %%%%% VERSION 4.8.2 -- OLDER VERSION      %%%%%
-  #-----------------------------------------------------
-  module load gcc/4.8.2-fasrc01      openmpi/1.10.1-fasrc01
-  module load netcdf/4.3.3.1-fasrc02 netcdf-fortran/4.4.2-fasrc01
-
-else
-
-  #-----------------------------------------------------
-  # %%%%% GEOS-CHEM WITH JACOB-GROUP LIBRARIES %%%%% 
-  #
-  # This is the default setting.  This will load the
-  # same netCDF, IFORT compiler (v11), and Totalview 
-  # versions that are used on the AS cluster. 
-  #-----------------------------------------------------
-  module load intel/11.1 GEOS-Chem-Libraries
-
-  # Manually point to GEOS-Chem-Libraries build
-  export NETCDF_HOME=/n/seasasfs01/opt/odyssey/GEOS-Chem-Libraries/ifort/nc4
-  export NETCDF_INCLUDE=${NETCDF_HOME}/include
-  export NETCDF_LIB=${NETCDF_HOME}/lib
-  export NETCDF_BIN=${NETCDF_HOME}/bin
-  export PATH="$NETCDF_BIN:$PATH"
-
-  # GEOS-Chem-Libraries does not set the compiler variables
-  # so we must do that manually here (bmy, 1/27/16)
-  export FC=ifort
-  export CC=icc
-  export CXX=icpc
-
-fi
-
-# Display loaded modules if it's an interactive session
-if [[ $- = *i* ]] ; then
-  module list
-fi
-
-# Undefine temporary variables
-unset loadThisCompiler
+# Aliases to load different compiler versions
+alias load_gf63="export MY_COMPILER=gfortran63; sb; unset MY_COMPILER"
+alias load_gf62="export MY_COMPILER=gfortran62; sb; unset MY_COMPILER"
+alias load_gf52="export MY_COMPILER=gfortran52; sb; unset MY_COMPILER"
+alias load_gf48="export MY_COMPILER=gfortran48; sb; unset MY_COMPILER"
+alias load_if15="export MY_COMPILER=ifort15; sb; unset MY_COMPILER"
+alias load_if11="export MY_COMPILER=ifort11; sb; unset MY_COMPILER"
 
 #==============================================================================
-# %%%%% Settings for data paths %%%%%
-#==============================================================================
-
-# %%%%% Settings for GIGCsa %%%%%
-export ARCH=`uname -s`
-
-# %%%%% Settings for netCDF, HDF, etc. libraries %%%%%
-
-# If the netCDF home directory hasn't been set, do it manually here
-if [[ "x$NETCDF_HOME" == x ]]; then
- export NETCDF_HOME=`nc-config --prefix`
-fi
-
-# If the $NETCDF_BIN variable is blank, set it to "$NETCDF_HOME/bin"
-if [[ "x$NETCDF_BIN" == x ]]; then
- export NETCDF_BIN="$NETCDF_HOME/bin"
-fi
-
-# If the $NETCDF_LIB variable is blank, set it to "$NETCDF_HOME/lib"
-if [[ "x$NETCDF_LIB" == x ]]; then 
- export GC_LIB="$NETCDF_HOME/lib"
-else
- export GC_LIB="$NETCDF_LIB"
-fi
-
-# If the $NETCDF_INCLUDE variable is blank, set it to "$NETCDF_HOME/include"
-if [[ "x$NETCDF_INCLUDE" == x ]]; then
- export GC_INCLUDE="$NETCDF_HOME/include"
-else
- export GC_INCLUDE="$NETCDF_INCLUDE"         
-fi
-
-# netCDF bin path
-export GC_BIN="$NETCDF_HOME/bin"
-
-# If the netCDF-Fortran library is loaded separately
-# then also define the GC_F_* environment variables
-if [[ "x$NETCDF_FORTRAN_HOME" != x ]]; then
- export GC_F_BIN="$NETCDF_FORTRAN_HOME/bin"
- export GC_F_INCLUDE="$NETCDF_FORTRAN_INCLUDE"
- export GC_F_LIB="$NETCDF_FORTRAN_LIB"
-fi
-
-# Set flags for backwards compatibility w/ other code packages
-export BIN_NETCDF=$GC_BIN
-export INC_NETCDF=$GC_INCLUDE
-export LIB_NETCDF=$GC_LIB
-export BIN_HDF5=$GC_BIN
-export INC_HDF5=$GC_INCLUDE
-export LIB_HDF5=$GC_LIB
-
 # %%%%% Settings for met field & emissions directories %%%%%
+#==============================================================================
+
 dataDir="/n/seasasfs01/gcgrid/data"
 dataDirReadOnly="/n/seasasfs01/gcgrid/data"
 export DATA_ROOT="$dataDirReadOnly/ExtData"
@@ -269,23 +131,13 @@ export EXTDATA_RW="$dataDir/ExtData"
 # %%%%% Settings for programming languages and applications %%%%%
 #==============================================================================
 
-# %%%%% Settings for compilers %%%%%
-export COMPILER=$FC
-export F90=$FC
-export F77=$FC
-export OMPI_FC=$FC
-export OMPI_CC=$CC
-export OMPI_CXX=$CXX
-
 # %%%%% Settings for OpenMP parallelization %%%%%
 
 # Max out the stack memory for OpenMP
-# OMP_STACKSIZE works with all compilers; KMP_STACKSIZE works only w/ Intel
 export OMP_STACKSIZE=500m
  
-# If we are in a SLURM environment (i.e. interactive run or batch job),
-# then set OMP_NUM_THREADS to the value of SLURM_CPUS_PER_TASK.  Otherwise,
-# set OMP_NUM_THREADs to a default value of 1. (bmy, 9/2/15)
+# Define number of CPUs for OpenMP to use
+# If we are not in a SLURM session, set to 1
 if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 else
@@ -327,15 +179,6 @@ mail=$MAIL
 
 # %%%%% Alias to pull env directory updates %%%%%
 alias  getenv="cd ~/env; git pull origin master"
-
-# %%%%% Aliases to load different compiler versions %%%%%
-alias  load_15="export LOAD_COMPILER=ifort15; sb; unset LOAD_COMPILER"
-alias  load_13="export LOAD_COMPILER=ifort13; sb; unset LOAD_COMPILER"
-alias  load_11="export LOAD_COMPILER=ifort11; sb; unset LOAD_COMPILER"
-alias  load_pg="export LOAD_COMPILER=pgi; sb; unset LOAD_COMPILER"
-alias  load_gf6="export LOAD_COMPILER=gfortran6; sb; unset LOAD_COMPILER"
-alias  load_gf4="export LOAD_COMPILER=gfortran4; sb; unset LOAD_COMPILER"
-
 
 # %%%%% Aliases for general Unix commands %%%%
 alias  disk="du -h -s -c"
