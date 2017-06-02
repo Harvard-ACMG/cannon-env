@@ -49,7 +49,7 @@ function SetupMyEnvironment() {
   # Load a specific compiler version
   LoadCompilers $MY_COMPILER
 
-  # Define  
+  # Define environment variables for netCDF library & include paths
   DefineNetcdfVars
 
   # Display loaded modules if it's an interactive session
@@ -89,7 +89,11 @@ function LoadBasePackages() {
 #=============================================================================
 # LoadCompilers: Loads a particular compiler + MPI + netCDF combination
 #
-# NOTE: You can look up the module combinations on the RC Portal page.
+# NOTES: 
+# (1) You can look up the module combinations on the RC Portal page.
+#       https://portal.rc.fas.harvard.edu/apps/modules
+# (2) Except for gfortran 5.2.0 (which uses the same MPI and netCDF as GCHP),
+#      all gfortran versions rely on OpenMPI, which is open-source.
 #=============================================================================
 function LoadCompilers() {
 
@@ -110,19 +114,15 @@ function LoadCompilers() {
     
   # gfortran 6.3.0
   if [[ x$1 == "xgfortran63" ]]; then
-     module load gcc/6.3.0-fasrc01       mvapich2/2.2-fasrc01
-     module load netcdf/4.1.3-fasrc09
-#----------------------------------------------------------------------------
-# NOTE: This results in a package error, waiting on RC to fix (bmy, 6/1/17)
-#    module load netcdf-fortran/4.4.3-fasrc02
-#----------------------------------------------------------------------------
+    module load gcc/6.3.0-fasrc01       openmpi/2.1.0-fasrc01 
+    module load netcdf/4.1.3-fasrc09
 
   # gfortran 6.2.0
   elif [[ x$1 == "xgfortran62" ]]; then
     module load gcc/6.2.0-fasrc02       openmpi/1.10.4-fasrc01 
     module load netcdf/4.4.0-fasrc04    netcdf-fortran/4.4.3-fasrc03
 
-  # gfortran 5.2.0
+  # gfortran 5.2.0 (same config as for GCHP)
   elif [[ x$1 == "xgfortran52" ]]; then
     module load gcc/5.2.0-fasrc01       mvapich2/2.2a-fasrc01
     module load netcdf/4.3.3.1-fasrc02  netcdf-fortran/4.4.2-fasrc01
