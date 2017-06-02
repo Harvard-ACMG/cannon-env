@@ -92,8 +92,7 @@ function LoadBasePackages() {
 # NOTES: 
 # (1) You can look up the module combinations on the RC Portal page.
 #       https://portal.rc.fas.harvard.edu/apps/modules
-# (2) Except for gfortran 5.2.0 (which uses the same MPI and netCDF as GCHP),
-#      all gfortran versions rely on OpenMPI, which is open-source.
+# (2) Use mvapich2 as the MPI version for all netcdf modules.
 #=============================================================================
 function LoadCompilers() {
 
@@ -114,13 +113,13 @@ function LoadCompilers() {
     
   # gfortran 6.3.0
   if [[ x$1 == "xgfortran63" ]]; then
-    module load gcc/6.3.0-fasrc01       openmpi/2.1.0-fasrc01 
+    module load gcc/6.3.0-fasrc01       mvapich2/2.2-fasrc01
     module load netcdf/4.1.3-fasrc09
 
   # gfortran 6.2.0
   elif [[ x$1 == "xgfortran62" ]]; then
-    module load gcc/6.2.0-fasrc02       openmpi/1.10.4-fasrc01 
-    module load netcdf/4.4.0-fasrc04    netcdf-fortran/4.4.3-fasrc03
+    module load gcc/6.2.0-fasrc01       mvapich2/2.2-fasrc01 
+    module load netcdf/4.4.0-fasrc04    netcdf-fortran/4.4.3-fasrc02
 
   # gfortran 5.2.0 (same config as for GCHP)
   elif [[ x$1 == "xgfortran52" ]]; then
@@ -128,8 +127,8 @@ function LoadCompilers() {
     module load netcdf/4.3.3.1-fasrc02  netcdf-fortran/4.4.2-fasrc01
 
   # gfortran 4.8.2
-  elif [[ x$1 == "xgfortran4" ]]; then
-    module load gcc/4.8.2-fasrc01       openmpi/1.8.3-fasrc02
+  elif [[ x$1 == "xgfortran48" ]]; then
+    module load gcc/4.8.2-fasrc01       mvapich2/2.0-fasrc03
     module load netcdf/4.3.2-fasrc03    netcdf-fortran/4.4.0-fasrc02
     module load tau/2.24.1-fasrc01
 
