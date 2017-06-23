@@ -117,14 +117,10 @@ alias load_if11="export MY_COMPILER=ifort11; sb; unset MY_COMPILER"
 # %%%%% Settings for met field & emissions directories %%%%%
 #==============================================================================
 
-dataDir="/n/seasasfs01/gcgrid/data"
-dataDirReadOnly="/n/seasasfs01/gcgrid/data"
-export DATA_ROOT="$dataDirReadOnly/ExtData"
-export DATA_ROOT_RW="$dataDir/ExtData"
-export HEMCO_DATA_ROOT="$dataDirReadOnly/ExtData/HEMCO"
-export HEMCO_DATA_ROOT_RW="$dataDir/ExtData/HEMCO"
-export EXTDATA="$dataDirReadOnly/ExtData"
-export EXTDATA_RW="$dataDir/ExtData"
+dataDir="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/gcgrid/data"
+export DATA_ROOT="$dataDir/ExtData"
+export HEMCO_DATA_ROOT="$dataDir/ExtData/HEMCO"
+export EXTDATA="$dataDir/ExtData"
 
 #==============================================================================
 # %%%%% Settings for programming languages and applications %%%%%

@@ -64,7 +64,7 @@ function SetupMyEnvironment() {
 function InitModules() {
   export LMOD_COLORIZE=yes
   source new-modules.sh
-  export MODULEPATH="/n/seasasfs01/modulefiles:$MODULEPATH"
+  export MODULEPATH="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/modulefiles:$MODULEPATH"
   module purge
 }
 
@@ -134,7 +134,7 @@ function LoadCompilers() {
 
   # ifort 15
   elif [[ x$1 == "xifort15" ]]; then
-    module load intel/15.0.0-fasrc01    mvapich2/2.2-fasrc01 
+    module load intel/15.0.0-fasrc01    mvapich2/2.2-fasrc01
     module load netcdf/4.1.3-fasrc09    tau/2.24.1-fasrc01
 
   # ifort 11 (Jacob-group licenses)
