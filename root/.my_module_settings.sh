@@ -134,8 +134,8 @@ function LoadCompilers() {
 
   # ifort 15
   elif [[ x$1 == "xifort15" ]]; then
-    module load intel/15.0.0-fasrc01    mvapich2/2.2-fasrc01
-    module load netcdf/4.1.3-fasrc09    tau/2.24.1-fasrc01
+    module load intel/15.0.0-fasrc01    mvapich2/2.0-fasrc03 
+    module load netcdf/4.1.3-fasrc03    tau/2.24.1-fasrc01
 
   # ifort 11 (Jacob-group licenses)
   else
