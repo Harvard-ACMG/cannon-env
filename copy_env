@@ -76,16 +76,25 @@ if [ ! -f ~/.my_personal_settings ]; then
   cp -v ~/env/root/.my_personal_settings ~
 else
   echo "~/env/root/.my_personal_settings was not copied. Update this file manually."
+  echo "If your are getting set up on Odyssey for the first time type:"
+  echo "  cp -v ~env/root/.my_personal_settings ~"
+  echo " "
 fi
 if [ ! -f ~/.emacs ]; then
   cp -v ~/env/root/.emacs ~
 else
   echo "~/env/root/.emacs was not copied. Update this file manually."
+  echo "If your are getting set up on Odyssey for the first time type:"
+  echo "  cp -v ~env/root/.emacs ~"
+  echo " "
 fi
 if [ ! -f ~/.Xdefaults ]; then
   cp -v ~/env/root/.Xdefaults ~
 else
   echo "~/env/root/.Xdefaults was not copied. Update this file manually."
+  echo "If your are getting set up on Odyssey for the first time type:"
+  echo "  cp -v ~env/root/.Xdefaults ~"
+  echo " "
 fi
 
 #-----------------------------------------------------------
