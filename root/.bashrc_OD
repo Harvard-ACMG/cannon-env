@@ -94,9 +94,9 @@ ulimit -c unlimited                # Max out coredumpsize
 # %%%%% Settings for loading software modules %%%%%
 #==============================================================================
 
-# Pick gfortran 6.3 as the default compiler version
+# Pick ifort 11 as the default compiler version
 if [[ x$MY_COMPILER == "x" ]]; then
-  export MY_COMPILER="gfortran63"
+  export MY_COMPILER="ifort11"
 fi
 
 # Call various functions from the .my_module_settings.sh script to
