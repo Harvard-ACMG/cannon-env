@@ -7,6 +7,7 @@
 #SBATCH --constraint=intel
 #SBATCH --mem=6000
 #SBATCH --mail-type=ALL
+#SBATCH --no-requeue
 
 #------------------------------------------------------------------------------
 #                  GEOS-Chem Global Chemical Transport Model                  !
@@ -38,6 +39,9 @@
 #  --mail-user=___     : Email address where notifications will get sent
 #  -o stdout.%j        : Send stdout to this log file. 
 #  -e stdout.%j        : Send stderr to this log file.
+#  --no-requeue        : SLURM will not attempt to resubmit this job if a node
+#                         fails and then reboots.  It is better to start the
+#                         GEOS-Chem job again from the last restart file.
 #
 #  Alternative options for SBATCH tags:
 #  (1) Instead of -c 8       you can also use --cpus-per-task=8
