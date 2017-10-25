@@ -532,6 +532,8 @@
 				("\\.FM$"  . fortran-mode)
 				("\\.COM$" . fortran-mode)
 				("\\.tex$" . latex-mode)
+				("\\.mp$"  . fundamental-mode)
+				("\\.sp$"  . fundamental-mode)
 				("\\.c$"   . c-mode))auto-mode-alist))
 
 ;; Link *.pro to IDLWAVE on EMACS or to the IDL mode on XEMACS
