@@ -57,6 +57,17 @@ else
 fi
 
 #-----------------------------------------------------------
+# Copy contents of env/init
+#-----------------------------------------------------------
+if [ -d ~/init ]; then
+  # Copy contents of env/init to your init directory
+  cp -v ~/env/init/* ~/init/
+else
+  # Create init directory and copy 
+  cp -rv ~/env/init ~
+fi
+
+#-----------------------------------------------------------
 # Copy contents of env/root
 #-----------------------------------------------------------
 cp -v ~/env/root/.bash_profile ~
@@ -78,14 +89,6 @@ else
   echo "~/env/root/.my_personal_settings was not copied. Update this file manually."
   echo "If your are getting set up on Odyssey for the first time type:"
   echo "  cp -v ~env/root/.my_personal_settings ~"
-  echo " "
-fi
-if [ ! -f ~/.my_module_settings ]; then
-  cp -v ~/env/root/.my_module_settings ~
-else
-  echo "~/env/root/.my_module_settings was not copied. Update this file manually."
-  echo "If your are getting set up on Odyssey for the first time type:"
-  echo "  cp -v ~env/root/.my_module_settings ~"
   echo " "
 fi
 if [ ! -f ~/.emacs ]; then

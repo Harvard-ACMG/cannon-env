@@ -14,43 +14,25 @@
 #  source ~/.bashrc
 #
 # !REMARKS:
-#  We have included settings that are common to all GEOS-Chem users on the 
-#  Odyssey cluster (rc.fas.harvard.edu), including frequently used libraries 
-#  and paths and aliases for common Unix commands. You can define additional 
-#  aliases that are only applicable to your own environment in the file 
-#  .my_personal_settings.
+#  We have removed the module load commands from this .bashrc.  Here you 
+#  will only find some basic settings and aliases that are needed for
+#  you to run GEOS-Chem.  
+#
+#  This .bashrc will also source your startup file ~/.my_personal/settings 
+#  to load your own personal preferences for your Unix environment.
+#
+#  After the .bashrc loads, you can issue one of the following aliased
+#  commands, which will source a file that will load modules and 
+#  the personal settings in your ~/.my_personal_settings.sh file.
+#
+#    load_gf63: Loads GNU Fortran v6.3.0
+#    load_gf52: Loads GNU Fortran v4.2.0
+#    load_gf48: Loads GNU Fortran v4.8.2
+#    load_if15: Loads Intel Fortran 15
+#    load_if11: Loads Intel Fortran 11
 #
 #  You can copy this file to ~/.bashrc in your root directory and edit
 #  as you wish.
-#
-#  This .bashrc file uses several functions in the .my_module_settings.sh
-#  script to simplify (and standardize) how software modules and corresponding
-#  environment variables are defined.
-# 
-#  To load a new set of modules for a different compiler version, you can
-#  issue the folloiwng commands,
-#
-#    export MY_COMPILER=gfortran63; . ~/.bashrc; unset MY_COMPILER
-#    export MY_COMPILER=gfortran62; . ~/.bashrc; unset MY_COMPILER
-#    export MY_COMPILER=gfortran52  . ~/.bashrc; unset MY_COMPILER
-#    export MY_COMPILER=gfortran48; . ~/.bashrc; unset MY_COMPILER
-#    export MY_COMPILER=ifort15;    . ~/.bashrc; unset MY_COMPILER
-#    export MY_COMPILER=ifort11;    . ~/.bashrc; unset MY_COMPILER
-#
-#  or use the following aliases defined in this file:
-#
-#    load_gf63    # Load gfortran 6.3.0 
-#    load_gf63    # Load gfortran 6.2.0 
-#    load_gf52    # Load gfortran 5.2.0  (default, same as we use for GCHP)
-#    load_gf48    # Load gfortran 4.8.2
-#    load_if15    # Load ifort 15
-#    load_if11    # Load ifort 11        (Jacob-group proprietary licenses)
-#
-#  ALSO NOTE: If you want to use the totalview debugger, you have to type:
-#
-#    module load totalview
-# 
-#  in your Unix session.
 #
 # !REVISION HISTORY:
 #  Change directory to ~/env and type 'gitk' at the prompt to browse
@@ -60,199 +42,149 @@
 #BOC
 
 #==============================================================================
-# %%%%% General system startup settings %%%%%
-#==============================================================================
-
 # %%%%% Source systemwide global definitions from /etc/bashrc %%%%%
-if [[ -f /etc/bashrc ]] ; then
+#==============================================================================
+if [[ -f /etc/bashrc ]]; then
  . /etc/bashrc
 fi
 
-# %%%%% Set Unix prompt to be "[USER@HOST CWD]$" %%%%%
-# Use green for Odyssey to contrast with red on AS
-# NOTE: You may override this setting by adding your own definition of 
-# PS1 in .my_personal_settings.
-PS1="\[\e[1;32m\][\u@\h \W]$\[\e[0m\] "
-
-# %%%%% Startup settings %%%%%
-umask 022                          # Make files readable by everyone by default
-set autolist                       # Turn on list completion
-set correct                        #
-set color                          # 
-set colorcat                       # 
-set filesc                         #
-set emacs                          # Use an emacs-style editing interface
-set history                        # Turn on history of commands
-set ignoreeof                      # Prevent EOF from terminating the shell
-ulimit -t unlimited                # Max out cputime
-ulimit -f unlimited                # Max out filesize
-ulimit -d unlimited                # Max out datasize
-ulimit -s unlimited                # Max out stacksize
-ulimit -c unlimited                # Max out coredumpsize
-
 #==============================================================================
-# %%%%% Settings for loading software modules %%%%%
+# %%%%% Unix environment settings %%%%%
 #==============================================================================
-
-# Pick ifort 11 as the default compiler version
-if [[ x$MY_COMPILER == "x" ]]; then
-  export MY_COMPILER="ifort11"
-fi
-
-# Call various functions from the .my_module_settings.sh script to
-# load the various packages and compilers via the "module" command
-source $HOME/.my_module_settings.sh
-SetupMyEnvironment
-unset MY_COMPILER
-
-# Aliases to load different compiler versions
-alias load_gf63="export MY_COMPILER=gfortran63; sb; unset MY_COMPILER"
-alias load_gf62="export MY_COMPILER=gfortran62; sb; unset MY_COMPILER"
-alias load_gf52="export MY_COMPILER=gfortran52; sb; unset MY_COMPILER"
-alias load_gf48="export MY_COMPILER=gfortran48; sb; unset MY_COMPILER"
-alias load_if15="export MY_COMPILER=ifort15; sb; unset MY_COMPILER"
-alias load_if11="export MY_COMPILER=ifort11; sb; unset MY_COMPILER"
-
-#==============================================================================
-# %%%%% Settings for met field & emissions directories %%%%%
-#==============================================================================
-
-dataDir="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/gcgrid/data"
-export DATA_ROOT="$dataDir/ExtData"
-export HEMCO_DATA_ROOT="$dataDir/ExtData/HEMCO"
-export EXTDATA="$dataDir/ExtData"
-
-#==============================================================================
-# %%%%% Settings for programming languages and applications %%%%%
-#==============================================================================
-
-# %%%%% Settings for OpenMP parallelization %%%%%
-
-# Max out the stack memory for OpenMP
-export OMP_STACKSIZE=500m
- 
-# Define number of CPUs for OpenMP to use
-# If we are not in a SLURM session, set to 1
-if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
-  export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-else
-  export OMP_NUM_THREADS=1
-fi
-
-# %%%%% Settings for IDL %%%%%
-export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
-
-# %%%%% Settings for Python %%%%%
-export PYTHONSTTARTUP="$HOME/python/python_startup.py"
-
-# %%%%% Settings for Ghostview %%%%%
-export GS_DEVICE="x11"
-
-# %%%%% Settings for Git %%%%%
-source /etc/bash_completion.d/git           # enable tab-completion for git
+umask 022                             # Make files world-readable by default
+set autolist                          # Turn on list completion
+set correct                           #
+set color                             # 
+set colorcat                          # 
+set filesc                            #
+set emacs                             # Use an emacs-style editing interface
+set history                           # Turn on history of commands
+set ignoreeof                         # Prevent EOF from terminating the shell
+ulimit -t unlimited                   # Max out cputime
+ulimit -f unlimited                   # Max out filesize
+ulimit -d unlimited                   # Max out datasize
+ulimit -s unlimited                   # Max out stacksize
+ulimit -c unlimited                   # Max out coredumpsize
+export TERM=xterm                     # Default terminal
+export EDITOR=emacs                   # Default editor (emacs or vim)
+export VISUAL=emacs                   # Default editor (emacs or vim)
+export GIT_EDITOR=emacs               # Default Git editor (emacs or vim)
+export MAIL=/usr/spool/mail/$USER     # Default mail program
+mail=$MAIL
+PS1="\[\e[1;32m\][\h \W]$\[\e[0m\] "  # Override the default Unix prompt 
 
 #==============================================================================
 # %%%%% Settings for colorization  %%%%%
 #==============================================================================
-
 export GREP_COLOR=32
 export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;37:*.tgz=01;37:*.arj=01;37:*.taz=01;37:*.lzh=01;37:*.zip=01;37:*.z=01;37:*.Z=01;37:*.gz=01;37:*.bz2=01;37:*.deb=01;37:*.rpm=01;37:*.jar=01;37:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.flac=01;35:*.mp3=01;35:*.mpc=01;35:*.ogg=01;35:*.wav=01;35:'
 
 #==============================================================================
-# %%%%% Environment settings %%%%%%
-#==============================================================================
-export TERM=xterm                        # Default terminal
-export EDITOR=emacs                      # Default editor (emacs or vim)
-export VISUAL=emacs                      # Default editor (emacs or vim)
-export GIT_EDITOR=emacs                  # Default Git editor (emacs or vim)
-export MAIL=/usr/spool/mail/$USER        # Default mail program
-mail=$MAIL
-
-#==============================================================================
-# %%%%% Shortcut aliases (add your own to .my_personal_settings) %%%%%
+# %%%%% Startup settings for various software packages %%%%%
 #==============================================================================
 
-# %%%%% Alias to pull env directory updates %%%%%
-alias  getenv="cd ~/env; git pull origin master"
+# IDL
+export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
 
-# %%%%% Aliases for general Unix commands %%%%
-alias  disk="du -h -s -c"
-alias  g="grep -in --color=auto"
-alias  gf="gifview"
-alias  gt="grep -in --text"
-alias  gf="gifview -a"
-alias  gvs="gv --orientation=seascape"
-alias  m="less"
-alias  me="xterm &"
-alias  pan="$HOME/bin/panoply.sh &"
-alias  proc="ps -ef | grep $USER | sort"
-alias  pu="rm *~"
-alias  sb=". ~/.bash_profile"
-alias  ssh="ssh -X -A"
-alias  gsh="ssh -xT"
-alias  tf="tail --follow"
-alias  zap="kill -9"
+# Python
+export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 
-# %%%%% Aliases for directory listing %%%%%
-alias  ls="ls -CF --time-style=long-iso --color=auto"
-alias  l1="ls -1"
-alias  ll="ls -l"
-alias  llt="ls -lt"
-alias  lltm="ls -lt | less"
-alias  la="ls -a"
-alias  lla="ls -la"
-alias  llh="ls -lh"
+# Ghostview
+export GS_DEVICE="x11"
 
-# %%%%% Aliases for Git and GitHub %%%%%
-alias  gui="git gui &"
-alias  gk="gitk &"
-alias  gka="gitk --all &"
-alias  gl="git log"
-alias  glo="git log --oneline"
-alias  glp="git log --pretty=format:'%h : %s' --topo-order --graph"
+# TAU profiler
+export TAU_OPTIONS="-optRevert -optVerbose -optPreProcess -optContinueBeforeOMP"
 
-# %%%%% Aliases for IDL and GAMAP %%%%%
-alias  I="cd $HOME/IDL"
-alias  IG="cd $HOME/IDL/gamap2"
-alias  IS="cd $HOME/IDL/tests"
+# Emacs
+alias emacs="emacs -nl"
 
-# %%%%% Aliases for MET data %%%%%
-alias  XC="cd $dataDir/GEOS_0.5x0.666_CH"
-alias  XC5="cd $dataDir/GEOS_0.5x0.666_CH.d/GEOS_5"
-alias  XS="cd $dataDir/GEOS_0.25x0.3125_NA"
-alias  XNFP="cd $dataDir/GEOS_0.25x0.3125_NA.d/GEOS_FP"
-alias  XN="cd $dataDir/GEOS_0.5x0.666_NA"
-alias  XN5="cd $dataDir/GEOS_0.5x0.666_NA.d/GEOS_5"
-alias  X1="cd $dataDir/GEOS_1x1"
-alias  XNN="cd $dataDir/GEOS_NATIVE"
-alias  X2="cd $dataDir/GEOS_2x2.5"
-alias  X24="cd $dataDir/GEOS_2x2.5.d/GEOS_4_v4"
-alias  X25="cd $dataDir/GEOS_2x2.5.d/GEOS_5"
-alias  X2FP="cd $dataDir/GEOS_2x2.5.d/GEOS_FP"
-alias  X2M="cd $dataDir/GEOS_2x2.5.d/MERRA"
-alias  X2M2="cd $dataDir/GEOS_2x2.5.d/MERRA2"
-alias  X4="cd $dataDir/GEOS_4x5"
-alias  X44="cd $dataDir/GEOS_4x5/GEOS_4_v4"
-alias  X45="cd $dataDir/GEOS_4x5/GEOS_5"
-alias  X4FP="cd $dataDir/GEOS_4x5/GEOS_FP"
-alias  X4M="cd $dataDir/GEOS_4x5/MERRA"
-alias  X4M2="cd $dataDir/GEOS_4x5/MERRA2"
-unset dataDir
-unset dataDirReadOnly
+# KPP compiler
+export PATH="$PATH:~/KPP/kpp-2.2.3_01/bin/"
+export KPP_HOME="~/KPP/kpp-2.2.3_01"
 
 #==============================================================================
-# %%%%% Source a file with your own personal aliases and settings %%%%%
+# %%%%% Basic SLURM commands %%%%%
+#==============================================================================
+alias squeue="squeue --format='%.9i %.9P %.8j %.8u %.2t %.10M %.6D %.6C %R'"
+alias sq="squeue"
+alias qj="squeue -u $USER"
+alias qa="sacct -j"
+alias qdel="scancel"
+alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
+alias jinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p jacob"
+alias rinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p regal"
+alias sinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
+alias tinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p test"
+alias jcheck="lsload | grep -e 'jacob\|Hostname'"
+alias rcheck="lsload | grep -e 'regal\|Hostname'"
+alias myfs="sshare -u $USER -U"
+alias jacobfs="sshare -A jacob_lab -a"
+
+#==============================================================================
+# %%%%% Aliases for basic Unix commands %%%%%
 #==============================================================================
 
-if [[ -f $HOME/.my_personal_settings ]] ; then
- . $HOME/.my_personal_settings
+# General Unix commands
+alias disk="du -h -s -c"
+alias g="grep -in --color=auto"
+alias gt="grep -in --text"
+alias gf="gifview -a"
+alias m="less"
+alias me="xterm &"
+alias proc="ps -ef | grep $USER | sort"
+alias pu="rm *~"
+alias pua="rm .*~"
+alias sb=". ~/.bash_profile"
+alias ssh="ssh -X -A"
+alias gsh="ssh -xT"
+alias tf="tail --follow"
+alias zap="kill -9"
+alias cd="cd -P"
+alias ev="evince" # PDF viewer
+alias d="display" # image viewer
+alias c="clear"
+alias h="history"
+alias diff="colordiff"
+alias rm="rm -Iv"
+alias cp="cp -v"
+alias mv="mv -v"
+
+# Basic Git commands
+source /etc/bash_completion.d/git    # enable tab-completion 
+alias gui="git gui &"
+alias gk="gitk &"
+alias gka="gitk --all &"
+alias gpo="git pull origin"
+alias gl="git log"
+alias glo="git log --oneline"
+alias glp="git log --pretty=format:'%h : %s' --topo-order --graph"
+alias getenv="cd ~/env; git pull origin master"
+alias update_tags="git tag -l | xargs git tag -d && git fetch -t"
+
+# Directory listing commands
+alias ls="ls -CF --time-style=long-iso --color=auto"
+alias l1="ls -1"
+alias ll="ls -l"
+alias llt="ls -lt"
+alias lltm="ls -lt | less"
+alias la="ls -a"
+alias lla="ls -la"
+alias llh="ls -lh"
+
+#==============================================================================
+# %%%%% Aliases to load modules for different compilers %%%%%
+#==============================================================================
+alias load_gf63=". ~/init/init.gc-classic.gfortran63"
+alias load_gf52=". ~/init/init.gc-classic.gfortran52"
+alias load_gf48=". ~/init/init.gc-classic.gfortran48"
+alias load_if15=". ~/init/init.gc-classic.ifort15"
+alias load_if11=". ~/init/init.gc-classic.ifort11"
+
+#==============================================================================
+# %%%%% Load the user's personal settings and aliases %%%%%
+#==============================================================================
+if [[ -f ~/.my_personal_settings ]]; then
+  . ~/.my_personal_settings
 fi
-
-#==============================================================================
-# %%%%% Alter standard path settings for Odyssey %%%%%
-#==============================================================================
-
-# %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
-export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
 
 #EOC

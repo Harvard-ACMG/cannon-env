@@ -46,20 +46,25 @@ clean:
 #==============================================================================
 
 # Source files that use '#' as comment character
-SRC1 =                       \
-./intro.txt                  \
-../root/.bash_profile        \
-../root/.bashrc_AS           \
-../root/.bashrc_OD           \
-../root/.login               \
-../root/.cshrc               \
-../root/.Xdefaults           \
-../root/.my_personal_aliases \
-../bin/startup               \
-../bin/xt                    \
-../bash/run_geos_chem        \
-../bin/interactive           \
-../bin/interactive_openmp    
+SRC1 =                             \
+./intro.txt                        \
+../root/.bash_profile              \
+../root/.bashrc_AS                 \
+../root/.bashrc_OD                 \
+../root/.login                     \
+../root/.cshrc                     \
+../root/.Xdefaults                 \
+../root/.my_personal_settings      \
+../bash/run_geos_chem              \
+../bin/startup                     \
+../bin/xt                          \
+../bin/interactive                 \
+../bin/interactive_openmp          \
+../init/init.gc-classic.gfortran48 \
+../init/init.gc-classic.gfortran52 \
+../init/init.gc-classic.gfortran63 \
+../init/init.gc-classic.ifort11    \
+../init/init.gc-classic.ifort15
 
 # LaTeX etc. files
 TEX1 = SystemEnvFiles.tex
@@ -69,7 +74,7 @@ PS1  = SystemEnvFiles.ps
 
 doc:
 	rm -f $(TEX1)
-	protex -fS $(SRC1) > $(TEX1)
+	./protex -fS $(SRC1) > $(TEX1)
 	latex $(TEX1)
 	latex $(TEX1)
 	latex $(TEX1)

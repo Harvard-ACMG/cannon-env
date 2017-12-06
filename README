@@ -8,15 +8,17 @@ NOTE: Grab the latest updates to env with 'git fetch'
 Directory Listing:
 ===============================================================================
 
-root            -- copy these files to your root-level directory ( ~ )
+root            -- copy these files to your root-level directory ( ~      )
 
-bin             -- copy these files for your bin directory ( ~/bin )
+bin             -- copy these files for your bin directory       ( ~/bin  )
 
-bash            -- copy these files for your bash directory ( ~/bash )
+bash            -- copy these files for your bash directory      ( ~/bash )
 
-.ssh            -- copy these files for your .ssh directory ( ~/.ssh )
+.ssh            -- copy these files for your .ssh directory      ( ~/.ssh )
 
-IDL             -- copy these files for your IDL directory ( ~/IDL )
+IDL             -- copy these files for your IDL directory       ( ~/IDL  )
+
+init            -- copy these files for your init directory      ( ~/init )
 
 doc             -- contains files related to documentation
 
@@ -105,6 +107,25 @@ File Listing for IDL Directory:
 
 IDL/idl_startup.pro -- IDL startup settings.
  
+
+File Listing for init Directory:
+===============================================================================
+
+init.gc-classic.gfortran48 -- Loads modules and sets environment variables for
+                              the GNU Fortran v6.3.0 compiler.
+
+init.gc-classic.gfortran52 -- Loads modules and sets environment variables for
+                              the GNU Fortran v4.2.0 compiler.
+
+init.gc-classic.gfortran63 -- Loads modules and sets environment variables for
+                              the GNU Fortran v4.8.2 compiler.
+
+init.gc-classic.ifort11    -- Loads modules and sets environment variables for
+                              the Intel Fortran 15 compiler.
+
+init.gc-classic.ifort15    -- Loads modules and sets environment variables for
+                              the Intel Fortran 11 compiler. 
+
 
 File Listing for Doc Directory:
 ===============================================================================
