@@ -18,12 +18,12 @@
 #  will only find some basic settings and aliases that are needed for
 #  you to run GEOS-Chem.  
 #
-#  This .bashrc will also source your startup file ~/.my_personal.settings 
+#  This .bashrc will also source your startup file ~/.my_personal_settings 
 #  to load your own personal preferences for your Unix environment.
 #
 #  After the .bashrc loads, you can issue one of the following aliased
 #  commands, which will source a file that will load modules and 
-#  the personal settings in your ~/.my_personal_settings.sh file.
+#  the personal settings in your ~/.my_personal_settings file.
 #
 #    load_gf63: Loads GNU Fortran v6.3.0
 #    load_gf52: Loads GNU Fortran v4.2.0
@@ -160,7 +160,7 @@ alias gl="git log"
 alias glo="git log --oneline"
 alias glp="git log --pretty=format:'%h : %s' --topo-order --graph"
 alias getenv="cd ~/env; git pull origin master"
-alias update_tags="git tag -l | xargs git tag -]d && git fetch -t"
+alias update_tags="git tag -l | xargs git tag -d && git fetch -t"
 
 # Directory listing commands
 alias ls="ls -CF --time-style=long-iso --color=auto"
