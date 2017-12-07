@@ -18,7 +18,7 @@
 #  will only find some basic settings and aliases that are needed for
 #  you to run GEOS-Chem.  
 #
-#  This .bashrc will also source your startup file ~/.my_personal/settings 
+#  This .bashrc will also source your startup file ~/.my_personal.settings 
 #  to load your own personal preferences for your Unix environment.
 #
 #  After the .bashrc loads, you can issue one of the following aliased
@@ -28,8 +28,9 @@
 #    load_gf63: Loads GNU Fortran v6.3.0
 #    load_gf52: Loads GNU Fortran v4.2.0
 #    load_gf48: Loads GNU Fortran v4.8.2
-#    load_if15: Loads Intel Fortran 15
-#    load_if11: Loads Intel Fortran 11
+#    load_if17: Loads Intel Fortran 17.0.4
+#    load_if15: Loads Intel Fortran 15.0.0
+#    load_if11: Loads Intel Fortran 11.1.069
 #
 #  You can copy this file to ~/.bashrc in your root directory and edit
 #  as you wish.
@@ -159,7 +160,7 @@ alias gl="git log"
 alias glo="git log --oneline"
 alias glp="git log --pretty=format:'%h : %s' --topo-order --graph"
 alias getenv="cd ~/env; git pull origin master"
-alias update_tags="git tag -l | xargs git tag -d && git fetch -t"
+alias update_tags="git tag -l | xargs git tag -]d && git fetch -t"
 
 # Directory listing commands
 alias ls="ls -CF --time-style=long-iso --color=auto"
@@ -177,6 +178,7 @@ alias llh="ls -lh"
 alias load_gf63=". ~/init/init.gc-classic.gfortran63"
 alias load_gf52=". ~/init/init.gc-classic.gfortran52"
 alias load_gf48=". ~/init/init.gc-classic.gfortran48"
+alias load_if17=". ~/init/init.gc-classic.ifort17"
 alias load_if15=". ~/init/init.gc-classic.ifort15"
 alias load_if11=". ~/init/init.gc-classic.ifort11"
 

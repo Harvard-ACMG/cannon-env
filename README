@@ -1,5 +1,5 @@
 README -- describes contents of env directory: System Environment Files
-8 Aug 2015
+07 Dec 2017
 GEOS-Chem Support Team
 geos-chem-support@as.harvard.edu
 
@@ -8,133 +8,137 @@ NOTE: Grab the latest updates to env with 'git fetch'
 Directory Listing:
 ===============================================================================
 
-root            -- copy these files to your root-level directory ( ~      )
+root                        : Files for your root-level directory ( ~      )
 
-bin             -- copy these files for your bin directory       ( ~/bin  )
+bin                         : Files for your bin directory        ( ~/bin  )
 
-bash            -- copy these files for your bash directory      ( ~/bash )
+bash                        : Files for your bash directory       ( ~/bash )
 
-.ssh            -- copy these files for your .ssh directory      ( ~/.ssh )
+.ssh                        : Files for your .ssh directory       ( ~/.ssh )
 
-IDL             -- copy these files for your IDL directory       ( ~/IDL  )
+IDL                         : Files for your IDL directory        ( ~/IDL  )
 
-init            -- copy these files for your init directory      ( ~/init )
+init                        : Files for your init directory       ( ~/init )
 
-doc             -- contains files related to documentation
+doc                         : Contains files related to documentation
 
 
 File Listing for Root Directory:
 ===============================================================================
 
-root/.bash_profile  -- Login file for bash. This file is only executed the 
-                       first time you log into a machine. 
+root/.bash_profile         : Login file for bash. This file is only executed
+                             the first time you log into a machine.
 
-root/.bashrc_OD     -- bash environment file for Odyssey. Once copied to your
-                       root directory and renamed .bashrc, this file is executed 
-                       every time you start a new shell on a machine.
+root/.bashrc_OD            : bash environment file for Odyssey. Once copied 
+                             to your root directory and renamed .bashrc, 
+                             this file is executed every time you start a new 
+                             shell.
 
-root/.bashrc_AS     -- bash environment file for AS. Once copied to your
-                       root directory and renamed .bashrc, this file is executed 
-                       every time you start a new shell on a machine.
+root/.bashrc_AS            : bash environment file for AS. Once copied to your
+                             root directory and renamed .bashrc, this file is 
+                             executed every time you start a new shell
 
-root/.login         -- tcsh login file. This file is only executed the first 
-                       time you log into a machine. 
-                       *NOTE: Only copy this file if you use tcsh or C-shell
+root/.login                : tcsh login file. This file is only executed the 
+			     first time you log into a machine. 
+                             *NOTE: Only copy this file if you use csh or tcsh
 
-root/.cshrc         -- tcsh environment file. This file is executed every time 
-                       you start a new shell on a machine. 
-                       *NOTE: Only copy this file if you use tcsh or C-shell
+root/.cshrc                : tcsh environment file. This file is executed every
+                             time you start a new shell on a machine. 
+                            *NOTE: Only copy this file if you use csh or tcsh
 
-root/.emacs         -- Customization file for Emacs. 
+root/.emacs                : Customization file for Emacs. 
 
-root/.soft          -- Customization file for the SoftEnv program.  This allows
-                       you to set which versions of installed software programs
-                       to use.
+root/.soft                 : Customization file for the SoftEnv program.  This 
+                             allows you to set which versions of installed 
+                             software programs to use. 
+                             *NOTE: AS only, may be obsolete
 
-root/.Xdefaults     -- Sets specific setting (colors, window sizes, etc.) for
-                       X11 applications (such as xterm).
+root/.Xdefaults            : Sets specific setting (colors, window sizes, etc.)
+                             for X11 applications (such as xterm).
 
-root/.my_personal_settings -- file to store your customized settings, such as
-                              personal aliases and customizing your prompt.
+root/.my_personal_settings : File to store your customized settings, such as
+                             personal aliases and customizing your prompt.
 
 
 File Listing for Bin Directory:
 ===============================================================================
 
-bin/startup          -- File that you use at login time to pop open several 
-                        X-windows on various machines. It also starts an emacs 
-                        session. You change the machines for which windows
-                        will be opened. You may also comment out the section
-                        that opens the emacs editor if you do not prefer to use
-                        emacs. 
+bin/startup                : File that you use at login time to open several 
+                             X-windows on various machines. It also starts an
+                             emacs session. You change the machines for which 
+                             windows will be opened. You may also comment out 
+                             the section that opens the emacs editor if you do
+                             not prefer to use emacs. 
 
-bin/xt               -- Perl script which opens an Xwindow and performs an ssh
-                        command. This script is used by "startup. You can edit
-                        the font sizes and window colors manually.  
+bin/xt                     : Perl script which opens an Xwindow and performs an 
+                             ssh command. This script is used by "startup. You  
+                             can edit the font sizes and window colors manually.
 
-bin/interactive      -- Shell script to request an interactive session on 
-                        Odyssey. 
-                        *NOTE: Only copy this file on Odyssey.
+bin/interactive            : Script to request an Odyssey interactive session
+                            *NOTE: Only copy this file on Odyssey.
 
-bin/interactive_openmp -- Shell script to request an interactive session on
-                          Odyssey for OpenMP jobs. 
-                          *NOTE: Only copy this file on Odyssey.
+bin/interactive_openmp     : Script to request an interactive session on
+                             Odyssey for OpenMP jobs. 
+                             *NOTE: Only copy this file on Odyssey.
 
-bin/ncl.el           -- LISP program for colorizing words in Emacs when using 
-                        NCL (NCAR Command Language)
+bin/ncl.el                 : LISP program for colorizing words in Emacs when
+                             using NCL (NCAR Command Language)
 
 
 File Listing for Bash Directory:
 ===============================================================================
 
-bash/run_geos_chem  -- Example script for submitting a GEOS-Chem job to SLURM.
-                       *NOTE: Only copy this file on Odyssey.
+bash/run_geos_chem          : Script for submitting a GEOS-Chem job to SLURM.
+                              *NOTE: Only copy this file on Odyssey.
 
 File Listing for .ssh Directory:
 ===============================================================================
 
-.ssh/config         -- File to store your Odyssey username and hostname to 
-                       enable one-time connection setup to Odyssey from AS.
-                       This allows copying files between Odyssey and AS without
-                       entering your Odyssey password and verification code 
-                       every time. 
-                       *NOTE: Only copy this file on AS. Edit 'USERNAME' to be 
-                              your Odyssey username.
+.ssh/config                 : File to store your Odyssey username and hostname 
+                              to enable one-time connection setup to Odyssey 
+                              from AS. This allows copying files between 
+                              Odyssey and AS without entering your Odyssey
+                              password and verification code every time. 
+                              *NOTE: Only copy this file on AS. Edit 'USERNAME' 
+                               to be your Odyssey username.
 
 
 File Listing for IDL Directory:
 ===============================================================================
 
-IDL/idl_startup.pro -- IDL startup settings.
+IDL/idl_startup.pro         :  IDL startup settings.
  
 
 File Listing for init Directory:
 ===============================================================================
 
-init.gc-classic.gfortran48 -- Loads modules and sets environment variables for
-                              the GNU Fortran v6.3.0 compiler.
+init.gc-classic.gfortran48 : Loads modules and sets environment variables for
+                             the GNU Fortran v6.3.0 compiler.
 
-init.gc-classic.gfortran52 -- Loads modules and sets environment variables for
-                              the GNU Fortran v4.2.0 compiler.
+init.gc-classic.gfortran52 : Loads modules and sets environment variables for
+                             the GNU Fortran v4.2.0 compiler.
 
-init.gc-classic.gfortran63 -- Loads modules and sets environment variables for
-                              the GNU Fortran v4.8.2 compiler.
+init.gc-classic.gfortran63 : Loads modules and sets environment variables for
+                             the GNU Fortran v4.8.2 compiler.
 
-init.gc-classic.ifort11    -- Loads modules and sets environment variables for
-                              the Intel Fortran 15 compiler.
+init.gc-classic.ifort17    : Loads modules and sets environment variables for
+                             the Intel Fortran 17 compiler. 
 
-init.gc-classic.ifort15    -- Loads modules and sets environment variables for
-                              the Intel Fortran 11 compiler. 
+init.gc-classic.ifort15    : Loads modules and sets environment variables for
+                             the Intel Fortran 15 compiler. 
+
+init.gc-classic.ifort11    : Loads modules and sets environment variables for
+                             the Intel Fortran 11 compiler.
 
 
 File Listing for Doc Directory:
 ===============================================================================
 
-doc/Makefile	    -- Makefile to create the reference document for the env
-                       in *.pdf and *.ps formats.
+doc/Makefile	           : Makefile to create the reference document for 
+                             the env in *.pdf and *.ps formats.
 
-doc/intro.txt       -- Header file for creating *.pdf and *.ps reference 
-                       documents
+doc/intro.txt              ; Header file for creating *.pdf and *.ps reference 
+                             documents
 
      
 Making the Reference Documentation:
