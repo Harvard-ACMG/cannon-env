@@ -63,7 +63,7 @@ export MODULEPATH="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/modulefiles:$MODULEPATH"
 module purge
 module load git
 module load perl
-module load IDL
+module load IDL/8.4.1-fasrc01
 module load python/3.4.1-fasrc01
 module load intel/15.0.0-fasrc01 mvapich2/2.0-fasrc03 
 module load netcdf/4.1.3-fasrc03 tau/2.24.1-fasrc01
@@ -78,6 +78,7 @@ export F77=$FC
 #==============================================================================
 
 # Max out the stack memory for OpenMP
+# Asking for a huge number will just give you the max availble
 export OMP_STACKSIZE=500m
  
 # Define number of CPUs for OpenMP to use
