@@ -13,17 +13,23 @@
 #\\
 # !USES:
 #
-  require 5.003;                  # Need this version of Perl or newer
-  use strict;                     # Force strict syntax rules
+  require 5.003;               # Need this version of Perl or newer
+  use strict;                  # Force strict syntax rules
 #
 # !CALLING SEQUENCE:
-#  jobstats 55555                 # Returns select info for JobID # 55555
+#  jobstats 55555              # Returns select info for JobID # 55555
+#  jobstats 55555 16           # Same as above, but lets the script know
+#                              #  that 16 cores were used (as opposed to
+#                              #  the number of cores allocated for the job)
 #
 # !REVISION HISTORY: 
 #  30 Oct 2015 - M. Sulprizio- Initial version
 #  10 Nov 2015 - R. Yantosca - Now also print the % of ideal performance
 #  18 Nov 2015 - R. Yantosca - Added more error checks
 #  17 Dec 2015 - R. Yantosca - Fixed multiple reporting of memory
+#  21 Dec 2017 - R. Yantosca - Allow user to manually specify the number of
+#                              cores that were used for the job.  SLURM only
+#                              reports the numbe of cores allocated.
 #EOP
 #------------------------------------------------------------------------------
 #          Harvard University Atmospheric Chemistry Modeling Group            !
@@ -195,7 +201,7 @@ sub getJobStats($$) {
 #
 # !INPUT PARAMETERS: 
 #
-  my ( $jobId ) = @_;
+  my ( $jobId, $cores ) = @_;
 #
 # !REVISION HISTORY:
 #  30 Oct 2015 - M. Sulprizio- Initial version based on scale script from Bob Y.
@@ -219,6 +225,7 @@ sub getJobStats($$) {
 
   # Numeric scalars
   my $allocCPU  =  0;
+  my $usedCPU   =  0;
   my $ind       = -1;
   my $indBatch  = -1;
   my $indTime   = -1;
@@ -338,7 +345,7 @@ sub getJobStats($$) {
   }
 
   # Compute CPU and wall times to seconds
-  $numCPU  = &convertToSec( $cpuTime );
+  $numCPU  = &convertToSec( $cpuTime  );
   $numWall = &convertToSec( $wallTime );
 
   # Skip if the wall time is zero (i.e. if job hasn't finished)
@@ -349,7 +356,13 @@ sub getJobStats($$) {
     $scaling = &round( $scaling, 0.0001 );
 
     # Compute percentage of ideal performance
-    $percent = ( $scaling / $allocCPU ) * 100.0;
+    # NOTE: Allow the user to manually specify the number of cores used
+    # because SLURM will only report the total number of cores requested,
+    # which will skew the "percent ideal" statistic. (bmy, 12/21/17)
+    if   ( $cores > 0 ) { $usedCPU = $cores;    }
+    else                { $usedCPU = $allocCPU; }
+
+    $percent = ( $scaling /$usedCPU ) * 100.0;
     $percent = &round( $percent, 0.01 );
   }				
 
@@ -391,10 +404,10 @@ sub main() {
 #------------------------------------------------------------------------------
 #BOC
 
-  # Pass the job ID (and optional column width) to the &getJobInfo routine.
-  # If column-width is not specified, use a default value of 20.
-  if    ( scalar( @ARGV ) == 1 ) { &getJobStats( @ARGV     );       }
-  else                           { print "USAGE: jobstats JOBID\n"; }
+  # Pass the job ID (and optional # of cores used)  &getJobInfo routine.
+  if    ( scalar( @ARGV ) == 2 ) { &getJobStats( @ARGV           ); }
+  elsif ( scalar( @ARGV ) == 1 ) { &getJobStats( $ARGV[0], -1    ); }
+  else                           { print "USAGE: jobstats JOBID [CORES]\n"; }
 
   # Return error status
   return ( $? );
