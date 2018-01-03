@@ -64,7 +64,6 @@ module purge
 module load git
 module load perl
 module load IDL/8.4.1-fasrc01
-module load python/3.4.1-fasrc01
 module load intel/11.1 GEOS-Chem-Libraries
 module list
 
