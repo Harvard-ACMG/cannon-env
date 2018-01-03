@@ -15,7 +15,7 @@
 # !REMARKS:
 #  The .bashrc file contains settings that are common to all users of 
 #  GEOS-Chem.  But here you can add settings that would only be applicable
-#  to your own environment.
+#  to your own environment. A few examples and recommendations are provided.
 #
 # !REVISION HISTORY: 
 #  Change directory to ~/env and type 'gitk' at the prompt to browse
@@ -25,5 +25,55 @@
 #BOC
 
 # %%%%% Add your settings and aliases here %%%%%
+
+
+########################################################################
+# Here are a few recommendations and examples:
+
+# Run awake script to prevent Odyssey interactive sessions from crashing
+# due to inactivity
+#~/bin/awake.sh &
+
+# GEOS-Chem python virtual environment
+# Activate with 'source activate gcpy'. Deactivate with 'source deactivate gcpy'
+# when done. Libraries may impact other libraries on Odyssey so we recommend
+# using gcpy in a dedicated terminal. See /n/jacob_lab/Lab/python/README for
+# more information.
+#export PATH=$PATH:/n/jacob_lab/Lab/python/miniconda/bin
+
+# Enable python to access the GCPy python library (download from Bitbucket)
+#export PYTHONPATH=$PYTHONPATH:{yourpath}/GCPy
+
+# Have fun with terminal aesthetics! This is just one possibility...
+#pid=$$
+#case $TERM in
+# xterm*)
+#    PS1="\[\033]0;\u@\h - $pid \007\]\[\e[1;32m\]OD \w $\[\e[0m\] "
+#    ;;
+#  *)
+#    PS1="\[\e[1;32m\]\h \w $\[\e[0m\] "
+#    ;;
+#esac
+
+# Make your neighbor happy by turning off terminal beeps
+#set bell-style visible
+
+# Check on your SLURM jobs
+#alias sq="squeue --format='%.8i %.9P %.30j %.9u %.2t %.10M %.6D %.6C %R'"
+
+# Check on the jacob and shared partitions
+#alias jacob_status="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p jacob"
+#alias jacob_nodes="lsload | grep -e 'jacob\|Hostname'"
+#alias jacob_users="sq -p jacob --exact-partition-names"
+#alias shared_status="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
+#alias shared_nodes="lsload | grep -e 'shared\|Hostname'"
+
+# Check your fairshare
+#alias fairshare="sshare -u {username} -U"
+
+# Make git commands easier with aliases
+#alias update_tags="git tag -l | xargs git tag -d && git fetch -t"
+
+######################################################################
 
 #EOC
