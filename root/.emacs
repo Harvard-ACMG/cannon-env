@@ -90,6 +90,7 @@
  '(font-lock-type-face ((t (:foreground "brown"))))
  '(font-lock-other-type-face ((t (:foreground "blue"))))
  '(font-lock-variable-name-face ((t (:foreground "blue")))))
+ '(sh-heredoc ((((class color) (background light)) (:foreground "green4")))))
 
 ;; Enable syntax highlighting for .bashrc_OD and .bashrc_AS templates
 ;; and other startup files
