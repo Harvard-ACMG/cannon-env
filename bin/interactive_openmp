@@ -8,11 +8,11 @@
 # !MODULE: interactive_openmp
 #
 # !DESCRIPTION: Shell script to request an interactive session on Odyssey,
-#  geared for OpenMP jobs (i.e. all CPUs on the same node).
+#  geared for OpenMP jobs (i.e. all Cores on the same node).
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  interactive CPUS MEM-PER-NODE [TIME-IN-MINUTES] [PARTITION]
+#  interactive CORES MEM-PER-NODE [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
 #  Executes the srun command to start an interactive SLURM session.
@@ -20,11 +20,7 @@
 #  If TIME-IN-MINUTES is omitted, then the job will run for 60 minutes.
 #
 # !REVISION HISTORY: 
-#  28 Oct 2014 - R. Yantosca - Initial version
-#  10 Jul 2015 - R. Yantosca - Now print the input arguments to stdout
-#  01 Sep 2015 - R. Yantosca - Now pass the partition as the 4th argument
-#  10 Nov 2015 - R. Yantosca - Now use --mem instead of --mem-per-cpu
-#  28 Apr 2016 - R. Yantosca - Now use srun -c $ncpus to allow multithreading
+#  Use the gitk browser to view the Git version history.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -32,21 +28,22 @@
 # Process the input arguments.  Use defaults if the
 # user supplies less than 3 argumetnts. (bmy, 7/10/15)
 if [[ $# == 4 ]]; then
-   cpus=$1
+   cores=$1
    mem=$2
    time=$3
    part=$4
 elif [[ $# == 3 ]]; then
-   cpus=$1
+   cores=$1
    mem=$2
    time=$3
-   part=jacob
+   part=test
 elif [[ $# == 2 ]] ; then
-   cpus=$1
+   cores=$1
    mem=$2
    time=60
+   part=test
 else
-   echo "Usage: interactive_openmp CPUS MEM-PER-NODE [TIME-IN-MINUTES] [PARTITION]"
+   echo "Usage: interactive_openmp CORES MEM-PER-NODE [TIME-IN-MINUTES] [PARTITION]"
    exit 1
 fi
 
@@ -54,17 +51,17 @@ fi
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 echo "%%% Starting an Odyssey interactive session!"
 echo "%%%"
-echo "%%% Number of CPUs      : $cpus"
+echo "%%% Number of Cores     : $cores"
 echo "%%% Number of Nodes     : 1"
 echo "%%% Memory per node     : $mem MB"
 echo "%%% Requested time      : $time minutes"
 echo "%%% Requested partition : $part"
 echo "%%%"
 echo "%%% Reminder: Make sure \$OMP_NUM_THREADS in your shell is set"
-echo "%%% to the same number of CPUs that you requested!"
+echo "%%% to the same number of cores that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --x11=first -c $cpus -N 1 --mem=$mem -t $time -p $part /bin/bash
+srun --pty --x11=first -c $cores -N 1 --mem=$mem -t $time -p $part /bin/bash
 
 #EOC
