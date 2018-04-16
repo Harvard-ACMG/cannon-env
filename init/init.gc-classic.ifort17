@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: init.gc-classic.ifort15
+# !MODULE: init.gc-classic.ifort17
 #
 # !DESCRIPTION: Bash script that loads the proper modules and sets 
 #  environment variables for Intel Fortran Compiler 15
@@ -54,12 +54,11 @@ unset OMP_NUM_THREADS
 unset OMP_STACKSIZE
 
 #==============================================================================
-# %%%%% Load modules for Intel Fortran 15 %%%%%
+# %%%%% Load modules for Intel Fortran 17 %%%%%
 #==============================================================================
 echo "Loading modules for compiler ifort17 ..."
 export LMOD_COLORIZE=yes
 source new-modules.sh
-export MODULEPATH="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/modulefiles:$MODULEPATH"
 module purge
 module load git
 module load perl

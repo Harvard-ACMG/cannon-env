@@ -59,7 +59,6 @@ unset OMP_STACKSIZE
 echo "Loading modules for compiler gfortran71 ..."
 export LMOD_COLORIZE=yes
 source new-modules.sh
-export MODULEPATH="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/modulefiles:$MODULEPATH"
 module purge
 module load git
 module load perl
