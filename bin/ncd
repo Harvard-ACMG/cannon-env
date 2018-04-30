@@ -30,7 +30,7 @@ if ( $#argv != 1 ) then
 endif
 
 # Use the version of ncdump in the currently-loaded netCDF module
-$NETCDF_HOME/bin/ncdump -ct $1 | less
+$NETCDF_HOME/bin/ncdump -cts $1 | less
 
 # Exit normally
 exit(0)
