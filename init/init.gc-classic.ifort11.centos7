@@ -1,0 +1,153 @@
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: init.gc-classic.ifort11
+#
+# !DESCRIPTION: Bash script that loads the proper modules and sets 
+#  environment variables for Intel Fortran Compiler 11
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  source ~/init/init.gc-classic.ifort11
+#
+# !REMARKS:
+#
+# !REVISION HISTORY:
+#  Change directory to ~/env and type 'gitk' at the prompt to browse
+#  revision history.
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+#==============================================================================
+# %%%%% Clear existing environment variables %%%%%
+#==============================================================================
+unset PYTHON_HOME
+unset PERL_HOME
+unset IDL_HOME
+unset EMACS_HOME
+unset CC
+unset CXX
+unset FC
+unset F77
+unset F90
+unset NETCDF_BIN
+unset NETCDF_HOME
+unset NETCDF_INCLUDE
+unset NETCDF_LIB
+unset NETCDF_FORTRAN_BIN
+unset NETCDF_FORTRAN_HOME
+unset NETCDF_FORTRAN_INCLUDE
+unset NETCDF_FORTRAN_LIB
+unset GC_BIN
+unset GC_INCLUDE
+unset GC_LIB
+unset GC_F_BIN
+unset GC_F_INCLUDE
+unset GC_F_LIB
+unset BIN_NETCDF
+unset INC_NETCDF
+unset LIB_NETCDF
+unset OMP_NUM_THREADS
+unset OMP_STACKSIZE
+
+#==============================================================================
+# %%%%% Load modules for Intel Fortran 11 %%%%%
+#==============================================================================
+echo "Loading modules for compiler ifort11 ..."
+export LMOD_COLORIZE=yes
+export MODULEPATH="/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/modulefiles:$MODULEPATH"
+module purge
+module load git
+module load perl
+module load IDL/8.4.1-fasrc01
+module load intel/11.1
+module load GEOS-Chem-Libraries
+module load totalview/8.8.0.1-fasrc01
+module list
+
+# Manually point to GEOS-Chem-Libraries build
+export NETCDF_HOME=/n/seasasfs01/opt/odyssey/GEOS-Chem-Libraries/ifort/nc4
+export NETCDF_INCLUDE=${NETCDF_HOME}/include
+export NETCDF_LIB=${NETCDF_HOME}/lib
+export NETCDF_BIN=${NETCDF_HOME}/bin
+export PATH="$NETCDF_BIN:$PATH"
+
+# GEOS-Chem-Libraries does not set the compiler variables
+# so we must do that manually here (bmy, 1/27/16)
+export FC=ifort
+export CC=icc
+export CXX=icpc
+
+# Define F90 and F77 environment variables (may be needed by some software)
+export F90=$FC
+export F77=$FC
+
+#==============================================================================
+# %%%%% Settings for OpenMP parallelization %%%%%
+#==============================================================================
+
+# Max out the stack memory for OpenMP
+# Asking for a huge number will just give you the max availble
+export OMP_STACKSIZE=500m
+ 
+# Define number of CPUs for OpenMP to use
+# If we are not in a SLURM session, set to 1
+if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
+  export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+else
+  export OMP_NUM_THREADS=1
+fi
+
+#==============================================================================
+# %%%%% Define relevant environment variables %%%%%
+#==============================================================================
+
+# Machine architecture
+export ARCH=`uname -s`
+
+# NETCDF_HOME
+if [[ "x$NETCDF_HOME" == x ]]; then
+  export NETCDF_HOME=`nc-config --prefix`
+  fi
+
+# NETCDF_BIN
+if [[ "x$NETCDF_BIN" == x ]]; then
+  export NETCDF_BIN="$NETCDF_HOME/bin"
+fi
+
+# GC_LIB (deprecated)
+if [[ "x$NETCDF_LIB" == x ]]; then 
+  export GC_LIB="$NETCDF_HOME/lib"
+else
+  export GC_LIB="$NETCDF_LIB"
+fi
+
+# GC_INCLUDE (deprecated)
+if [[ "x$NETCDF_INCLUDE" == x ]]; then
+  export GC_INCLUDE="$NETCDF_HOME/include"
+else
+  export GC_INCLUDE="$NETCDF_INCLUDE"         
+fi
+
+# GC_BIN (deprecated)
+export GC_BIN="$NETCDF_HOME/bin"
+
+# If the netCDF-Fortran library is loaded separately
+# then also define the GC_F_* environment variables (deprecated)
+if [[ "x$NETCDF_FORTRAN_HOME" != x ]]; then
+  export NETCDF_FORTRAN_BIN="$NETCDF_FORTRAN_HOME/bin"
+  export GC_F_BIN="$NETCDF_FORTRAN_HOME/bin"
+  export GC_F_INCLUDE="$NETCDF_FORTRAN_INCLUDE"
+  export GC_F_LIB="$NETCDF_FORTRAN_LIB"
+fi
+
+# Set flags for backwards compatibility w/ other code packages
+export BIN_NETCDF=$GC_BIN
+export INC_NETCDF=$GC_INCLUDE
+export LIB_NETCDF=$GC_LIB    
+
+# %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
+export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
