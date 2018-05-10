@@ -52,6 +52,8 @@ unset INC_NETCDF
 unset LIB_NETCDF
 unset OMP_NUM_THREADS
 unset OMP_STACKSIZE
+unset TAU_OPTIONS
+unset TAU_MAKEFILE
 
 #==============================================================================
 # %%%%% Load modules for GNU Fortran 7.1 %%%%%
@@ -63,16 +65,20 @@ module load git
 module load perl
 module load IDL/8.4.1-fasrc01
 module load gcc/7.1.0-fasrc01
-#----------------------------------------
+#--------------------------------------------
 # Uncomment for mvapich2 MPI
 #module load mvapich2/2.3b-fasrc02
-#----------------------------------------
+#--------------------------------------------
 # Uncomment for OpenMPI (default)
 module load openmpi/2.1.0-fasrc02
-#----------------------------------------
+#--------------------------------------------
 module load netcdf/4.5.0-fasrc01
 module load netcdf-fortran/4.4.4-fasrc06
-module load tau/2.27-fasrc01
+#--------------------------------------------
+# NOTE: There appears to be some issues
+# in TAU 2.27. Fix this later (bmy, 5/10/18)
+#module load tau/2.27-fasrc01
+#---------------------------------------------
 module list
 
 # Define F90 and F77 environment variables (may be needed by some software)
@@ -142,3 +148,9 @@ fi
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
 export LIB_NETCDF=$GC_LIB    
+
+# Comment out TAU-specific environment variables for now (bmy, 5/10/18)
+## TAU profiler (note: TAU only works for GNU Fortran)
+#$export TAU_OPTIONS="-optRevert -optVerbose -optPreProcess -optContinueBeforeOMP  -optPdtGnuFortranParser"
+#export TAU_MAKEFILE="$TAU_HOME/x86_64/lib/Makefile.tau-ompt-mpi-pdt-openmp"
+

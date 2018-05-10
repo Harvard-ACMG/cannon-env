@@ -52,6 +52,8 @@ unset INC_NETCDF
 unset LIB_NETCDF
 unset OMP_NUM_THREADS
 unset OMP_STACKSIZE
+unset TAU_OPTIONS
+unset TAU_MAKEFILE
 
 #==============================================================================
 # %%%%% Load modules for Intel Fortran 11 %%%%%
