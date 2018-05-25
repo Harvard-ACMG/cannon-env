@@ -41,9 +41,14 @@
 ;; FONTS - customize to look best on your system!
 ;;=============================================================================
 
-;; Lucida Typewriter 14pt bold
+;; %%%%% NOTE: USE THIS FONT WITH MOBAXTERM (bmy, 5/25/18) %%%%%
 (set-face-font 
- 'default "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1" )
+ 'default "-*-DejaVuSansMono-Bold-R-*-*-*-120-*-*-*-*-iso8859-1" )
+
+;; %%%%% NOTE: USE THIS FONT WITH PUTTY AND XTERM (bmy, 5/25/18 %%%%%
+;; Lucida Typewriter 14pt bold
+;;(set-face-font 
+;; 'default "-*-Lucidatypewriter-Bold-R-*-*-*-140-*-*-*-*-iso8859-1" )
 
 ;; Example of normal instead of bold 
 ;; Lucida Typewriter 14pt normal
@@ -74,22 +79,23 @@
 
 ;; "COLORIZATION" COLORS FOR CODE
 (custom-set-faces
-  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(dired-face-symlink ((t (:foreground "white" :background "darkOrchid"))))
+ '(font-lock-builtin-face ((t (:foreground "red2"))))
  '(font-lock-comment-face ((t (:foreground "#6920ac"))))
  '(font-lock-doc-face ((t (:foreground "green4"))))
- '(font-lock-string-face ((t (:foreground "green4"))))
  '(font-lock-doc-string-face ((t (:foreground "green4"))))
  '(font-lock-function-name-face ((t (:foreground "red2"))))
- '(font-lock-builtin-face ((t (:foreground "red2"))))
  '(font-lock-keyword-face ((t (:foreground "orange3"))))
+ '(font-lock-other-type-face ((t (:foreground "blue"))))
  '(font-lock-preprocessor-face ((t (:foreground "red2"))))
  '(font-lock-reference-face ((t (:foreground "red2"))))
  '(font-lock-string-face ((t (:foreground "green4"))))
  '(font-lock-type-face ((t (:foreground "brown"))))
- '(font-lock-other-type-face ((t (:foreground "blue"))))
- '(font-lock-variable-name-face ((t (:foreground "blue")))))
+ '(font-lock-variable-name-face ((t (:foreground "blue"))))
  '(sh-heredoc ((((class color) (background light)) (:foreground "green4")))))
 
 ;; Enable syntax highlighting for .bashrc_OD and .bashrc_AS templates
@@ -337,8 +343,10 @@
 ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
 ;; Your init file should contain only one such instance.
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(auto-compression-mode t nil (jka-compr))
  '(case-fold-search t)
  '(current-language-environment "ASCII")
@@ -1170,14 +1178,14 @@
 ;;=============================================================================
 
 ;; %%%%% Open one window, 80 columns x 60 lines, centered on screen %%%%%
-(set-frame-height (selected-frame) 60)    ; 60 lines 
-(set-frame-width  (selected-frame) 80)    ; 80 columns
-(set-frame-position (selected-frame) 550 30)
+;;(set-frame-height (selected-frame) 72)    ; 72 lines 
+;;(set-frame-width  (selected-frame) 81)    ; 80 columns
+;;(set-frame-position (selected-frame) 550 30)
 
 ;; %%%%% Open two windows side by side, 164 columns x 72 lines
-;;(set-frame-height (selected-frame) 72)      ; 72 lines 
-;;(set-frame-width  (selected-frame) 164)     ; 164 columns
-;;(split-window-horizontally)                 ; Use two vertical windows
+(set-frame-height (selected-frame) 72)      ; 72 lines 
+(set-frame-width  (selected-frame) 164)     ; 164 columns
+(split-window-horizontally)                 ; Use two vertical windows
 ;;(other-window 1)                            ; Start in the right window
 
 ;; %%%%% Open two windows on top of each other, 80 columns x 72 lines %%%%%
