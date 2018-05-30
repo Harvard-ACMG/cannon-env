@@ -95,7 +95,7 @@ alias emacs="emacs -nl"
 
 # KPP compiler
 export PATH="$PATH:~/KPP/kpp-2.2.3_01/bin/"
-export KPP_HOME="~/KPP/kpp-2.2.3_01"
+export KPP_HOME="$HOME/KPP/kpp-2.2.3_01"
 
 #==============================================================================
 # %%%%% Basic SLURM commands %%%%%
