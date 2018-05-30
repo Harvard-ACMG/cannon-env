@@ -64,6 +64,7 @@ module purge
 module load git
 module load perl
 module load IDL/8.4.1-fasrc01
+module load flex/2.6.4-fasrc01
 module load gcc/7.1.0-fasrc01
 #--------------------------------------------
 # Uncomment for mvapich2 MPI

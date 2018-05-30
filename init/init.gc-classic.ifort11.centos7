@@ -65,6 +65,7 @@ module purge
 module load git
 module load perl
 module load IDL/8.4.1-fasrc01
+module load flex/2.6.4-fasrc01
 module load intel/11.1
 module load GEOS-Chem-Libraries
 module load totalview/8.8.0.1-fasrc01
