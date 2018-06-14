@@ -400,9 +400,9 @@
 ;;(global-set-key [kp-enter]       "\M-u")               ; Uppercase
 ;;(global-set-key [kp-subtract]    'goto-line)   
 ;;-----------------------------------------------------------------------------
-(global-set-key (kbd "<Scroll_Lock>") "\M-l")           ; Lowercase
-(global-set-key (kbd "<kp-enter>")    "\M-u")           ; Uppercase
-(global-set-key (kbd "<pause>")       'goto-line)       ; Go to a line
+(global-set-key (kbd "<S-pause>")  "\M-l")           ; Lowercase
+(global-set-key (kbd "<pause>")    "\M-u")           ; Uppercase
+(global-set-key (kbd "<kp-enter>") 'goto-line)       ; Go to specific line
 
 ; Search & replace
 (global-set-key [f6]             'find-file)
