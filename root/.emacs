@@ -79,10 +79,10 @@
 
 ;; "COLORIZATION" COLORS FOR CODE
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(dired-face-symlink ((t (:foreground "white" :background "darkOrchid"))))
  '(font-lock-builtin-face ((t (:foreground "red2"))))
  '(font-lock-comment-face ((t (:foreground "#6920ac"))))
@@ -321,16 +321,6 @@
 ;; NOTE: not for newbies!
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; flash instead of beep
-;;COMMENT OUT FOR NOW
-;;(setq visible-bell 1)
-
-;; get rid of ALL the bars
-;;COMMENT OUT FOR NOW
-;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-;;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; keep that one for idlwave?
-
 ;; Put vertical scroll bar on the left (bmy, 5/30/17)
 (set-scroll-bar-mode 'left)  
 
@@ -340,19 +330,19 @@
 ;; change default Ediff splitting to horizontal
 (setq ediff-split-window-function 'split-window-vertically)
 
-;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-;; Your init file should contain only one such instance.
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(auto-compression-mode t nil (jka-compr))
  '(case-fold-search t)
+ '(column-number-mode t)
  '(current-language-environment "ASCII")
+ '(display-time-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(query-user-mail-address nil)
- '(transient-mark-mode t)
+ '(tool-bar-mode nil)
  '(user-mail-address "yantosca@seas.harvard.edu"))
 
 ;;=============================================================================
@@ -364,12 +354,6 @@
  ;; for symlinks to refer to the last version
  backup-by-copying t
 
- ;; where to backup (default is same directory as file being backuped)
-; backup-directory-alist
-; '( ;("~/Code.current/." . "~/.emacs.d/auto-save-list/gc_current/") 
-;    ;("~/esmf/misc/gridv1/." . "~/.emacs.d/auto-save-list/esmf_proj/") )
-;    ("." . "~/.emacs.d/auto-save-list/") )
- 
  ;; delete excess backups silently
  delete-old-versions t
 
@@ -395,7 +379,7 @@
 ;;    (global-set-key [mouse-5] 'scroll-up))
 ;;  )
 
-;; Use this for EMACS 23; scroll by 3 lines at a time (bmy, 6/5/12)
+;; Use this for EMACS 23 or higher; scroll by 3 lines at a time (bmy, 6/5/12)
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 3) ((control) . nil))) 
 (setq mouse-wheel-progressive-speed nil)
 
@@ -409,9 +393,16 @@
 (global-set-key [f3]             'string-rectangle)      
 (global-set-key [f4]             'delete-rectangle)      
 (global-set-key [f5]             'macrotimestamp)      ; Timestamp for ProTeX
-(global-set-key [kp-add]         "\M-l")               ; Lowercase
-(global-set-key [kp-enter]       "\M-u")               ; Uppercase
-(global-set-key [kp-subtract]    'goto-line)   
+;;-----------------------------------------------------------------------------
+;; %%% NOTE: For some reason this Emacs 24 on Odyssey has can't recognize
+;; %%% these key bindings.  Redefine these for the time being. (bmy, 6/14/18)
+;;(global-set-key [kp-add]         "\M-l")               ; Lowercase
+;;(global-set-key [kp-enter]       "\M-u")               ; Uppercase
+;;(global-set-key [kp-subtract]    'goto-line)   
+;;-----------------------------------------------------------------------------
+(global-set-key (kbd "<Scroll_Lock>") "\M-l")           ; Lowercase
+(global-set-key (kbd "<kp-enter>")    "\M-u")           ; Uppercase
+(global-set-key (kbd "<pause>")       'goto-line)       ; Go to a line
 
 ; Search & replace
 (global-set-key [f6]             'find-file)
@@ -438,10 +429,6 @@
 (global-set-key [(shift f1)]     'ediff-files)
 (global-set-key [(shift f2)]     'ediff-buffers)
 (global-set-key [(shift f3)]     'fullcleanediff)
-
-;(global-set-key [(shift f4)]     'cvs-update)
-;(global-set-key [(shift f5)]     'smerge-keep-mine) 
-;(global-set-key [(shift f6)]     'smerge-keep-other)
 
 ;;=============================================================================
 ;; FUNCTION KEY BINDINGS -- Philippe's preferences
@@ -951,45 +938,6 @@
   -3 "ENDIF")
 
 ;;
-;; %%% ESMF abbreviations #1 %%%
-;;
-(define-abbrev f90-mode-abbrev-table "`ii"   ""  'f90-intent-in)
-(define-abbrev f90-mode-abbrev-table "`io"   ""  'f90-intent-out)
-(define-abbrev f90-mode-abbrev-table "`iio"  ""  'f90-intent-inout)
-(define-abbrev f90-mode-abbrev-table "`i4"   ""  'f90-esmf-type-integer4)
-(define-abbrev f90-mode-abbrev-table "`r4"   ""  'f90-esmf-type-real4)
-(define-abbrev f90-mode-abbrev-table "`r8"   ""  'f90-esmf-type-real8)
-(define-abbrev f90-mode-abbrev-table "`ch"   ""  'f90-esmf-type-character)
-
-(define-skeleton f90-intent-in
-  "Insert an INTENT(IN) template" nil
-  > "INTENT(IN) ")
-
-(define-skeleton f90-intent-out
-  "Insert an INTENT(OUT) template" nil
-  > "INTENT(OUT) ")
-
-(define-skeleton f90-intent-inout
-  "Insert an INTENT(INOUT) template" nil
-  > "INTENT(INOUT) ")
-
-(define-skeleton f90-esmf-type-integer4
-  "Insert an ESMF INTEGER*4 template" nil
-  > "INTEGER(ESMF_KIND_I4) :: ")
-
-(define-skeleton f90-esmf-type-real4
-  "Insert an ESMF REAL*4 template" nil
-  > "REAL(ESMF_KIND_R4) :: ")
-
-(define-skeleton f90-esmf-type-real8
-  "Insert an ESMF REAL*8 template" nil
-  > "REAL(ESMF_KIND_R8) :: ")
-
-(define-skeleton f90-esmf-type-character
-  "Insert a ESMF CHARACTER template" nil
-  > "CHARACTER(LEN=ESMF_MAXSTR) :: ")
-
-;;
 ;; %%% ProTex header abbreviations %%%
 ;;
 (define-abbrev f90-mode-abbrev-table "`pi"   ""  'f90-protex-italic)
@@ -1183,7 +1131,8 @@
 ;;(set-frame-position (selected-frame) 550 30)
 
 ;; %%%%% Open two windows side by side, 164 columns x 72 lines
-(set-frame-height (selected-frame) 72)      ; 72 lines 
+;;(set-frame-height (selected-frame) 72)      ; 72 lines, for XMing
+(set-frame-height (selected-frame) 58)      ; 56 lines, for MobaXterm
 (set-frame-width  (selected-frame) 164)     ; 164 columns
 (split-window-horizontally)                 ; Use two vertical windows
 ;;(other-window 1)                            ; Start in the right window
