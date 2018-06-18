@@ -3,10 +3,10 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: init.gc-classic.gfortran71
+# !MODULE: init.gc-classic.ifort15
 #
 # !DESCRIPTION: Bash script that loads the proper modules and sets 
-#  environment variables for GNU Fortran 7.1.
+#  environment variables for ifort 15.0.0.
 #\\
 #\\
 # !CALLING SEQUENCE:
@@ -58,14 +58,14 @@ unset TAU_MAKEFILE
 #==============================================================================
 # %%%%% Load modules for GNU Fortran 7.1 %%%%%
 #==============================================================================
-echo "Loading modules for compiler gfortran71 ..."
+echo "Loading modules for compiler ifort15 ..."
 export LMOD_COLORIZE=yes
 module purge
 module load git
 module load perl
 module load IDL/8.4.1-fasrc01
 module load flex/2.6.4-fasrc01
-module load gcc/7.1.0-fasrc01
+module load intel/15.0.0-fasrc01
 #--------------------------------------------
 # Uncomment for mvapich2 MPI
 #module load mvapich2/2.3b-fasrc02

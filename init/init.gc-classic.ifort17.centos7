@@ -10,7 +10,7 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/init/init.gc-classic.ifort15
+#  source ~/init/init.gc-classic.ifort17.centos7
 #
 # !REMARKS:
 #
@@ -73,8 +73,8 @@ module load intel/17.0.4-fasrc01
 # Uncomment for OpenMPI (default)
 module load openmpi/2.1.0-fasrc02
 #-------------------------------------------
-module load netcdf/4.5.0-fasrc01
-module load netcdf-fortran/4.4.4-fasrc06
+module load netcdf/4.3.2-fasrc05
+module load netcdf-fortran/4.4.0-fasrc03
 module load totalview/8.8.0.1-fasrc01
 module list
 
