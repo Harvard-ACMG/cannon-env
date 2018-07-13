@@ -69,6 +69,7 @@ module load flex/2.6.4-fasrc01
 module load intel/11.1
 module load GEOS-Chem-Libraries
 module load totalview/8.8.0.1-fasrc01
+module load emacs/26.1-fasrc01  # Load version with tool bar icons
 module list
 
 # Manually point to GEOS-Chem-Libraries build
