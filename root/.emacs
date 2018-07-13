@@ -342,7 +342,6 @@
  '(display-time-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(query-user-mail-address nil)
- '(tool-bar-mode nil)
  '(user-mail-address "yantosca@seas.harvard.edu"))
 
 ;;=============================================================================
@@ -400,6 +399,7 @@
 ;;(global-set-key [kp-enter]       "\M-u")               ; Uppercase
 ;;(global-set-key [kp-subtract]    'goto-line)   
 ;;-----------------------------------------------------------------------------
+;; Use these settings for emacs/26.1-fasrc01 (bmy, 7/13/18)
 (global-set-key (kbd "<S-pause>")  "\M-l")           ; Lowercase
 (global-set-key (kbd "<pause>")    "\M-u")           ; Uppercase
 (global-set-key (kbd "<kp-enter>") 'goto-line)       ; Go to specific line
@@ -1132,7 +1132,7 @@
 
 ;; %%%%% Open two windows side by side, 164 columns x 72 lines
 ;;(set-frame-height (selected-frame) 72)      ; 72 lines, for XMing
-(set-frame-height (selected-frame) 58)      ; 56 lines, for MobaXterm
+(set-frame-height (selected-frame) 56)      ; 56 lines, for MobaXterm
 (set-frame-width  (selected-frame) 164)     ; 164 columns
 (split-window-horizontally)                 ; Use two vertical windows
 ;;(other-window 1)                            ; Start in the right window
