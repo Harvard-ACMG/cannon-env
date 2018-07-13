@@ -68,6 +68,12 @@ module load IDL/8.4.1-fasrc01
 module load flex/2.6.4-fasrc01
 module load intel/11.1
 module load GEOS-Chem-Libraries
+#--------------------------------------------
+# NOTE: There appears to be some issues
+# loading nco with GEOS-Chem-Libraries
+#module load nco
+#--------------------------------------------
+module load cdo
 module load totalview/8.8.0.1-fasrc01
 module load emacs/26.1-fasrc01  # Load version with tool bar icons
 module list
