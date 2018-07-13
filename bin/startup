@@ -36,6 +36,7 @@
 #  16 Oct 2014 - R. Yantosca - Simplify, remove delays
 #  05 Aug 2015 - R. Yantosca - The user can now specify the # of xterms to
 #                              open via the command line (default=4)
+#  13 Jul 2018 - R. Yantosca - Now load the Odyssey emacs module
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -53,6 +54,9 @@ for i in `seq 1 $N_TERMINALS`; do
 done
 
 # Open an EMACS editor
+# NOTE: Make sure to load the emacs module, which currently has a properly-
+# functioning build of emacs.  The default version is broken. (bmy, 7/13/18)
+module load emacs
 emacs &
 
 # Exit normally
