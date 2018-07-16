@@ -3,14 +3,14 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: init.gc-classic.gfortran71
+# !MODULE: init.gc-classic.gfortran71.centos7
 #
 # !DESCRIPTION: Bash script that loads the proper modules and sets 
-#  environment variables for GNU Fortran 7.1.
+#  environment variables for GNU Fortran 7.1 and CentOS7.
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/init/init.gc-classic.gfortran63
+#  source ~/init/init.gc-classic.gfortran71.centos7
 #
 # !REMARKS:
 #

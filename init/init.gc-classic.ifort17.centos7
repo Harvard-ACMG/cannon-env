@@ -3,10 +3,10 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: init.gc-classic.ifort17
+# !MODULE: init.gc-classic.ifort17.centos7
 #
 # !DESCRIPTION: Bash script that loads the proper modules and sets 
-#  environment variables for Intel Fortran Compiler 15
+#  environment variables for Intel Fortran Compiler 17 and CentOS7.
 #\\
 #\\
 # !CALLING SEQUENCE:

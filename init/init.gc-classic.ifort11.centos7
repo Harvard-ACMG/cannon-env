@@ -3,14 +3,14 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: init.gc-classic.ifort11
+# !MODULE: init.gc-classic.ifort11.centos7
 #
 # !DESCRIPTION: Bash script that loads the proper modules and sets 
-#  environment variables for Intel Fortran Compiler 11
+#  environment variables for Intel Fortran Compiler 11 and CentOS7.
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/init/init.gc-classic.ifort11
+#  source ~/init/init.gc-classic.ifort11.centos7
 #
 # !REMARKS:
 #
