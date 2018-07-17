@@ -876,6 +876,9 @@
 	     ;; use abbreviations (e.g.: "`pr" for "print")	     
 	     (setq  abbrev-mode 1)
 	     
+             ; Turn off automatic indentation for Fortran mode only
+             (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
+
 	     )))
 
 ;; Make sure we have F90 mode loaded
