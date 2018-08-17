@@ -25,9 +25,8 @@
 #  commands, which will source a file that will load modules and 
 #  the personal settings in your ~/.my_personal_settings file.
 #
-#    load_gf63: Loads GNU Fortran v6.3.0
-#    load_gf52: Loads GNU Fortran v4.2.0
-#    load_gf48: Loads GNU Fortran v4.8.2
+#    load_gf82: Loads GNU Fortran 8.2.0
+#    load_gf71: Loads GNU Fortran v7.1.0
 #    load_if17: Loads Intel Fortran 17.0.4
 #    load_if15: Loads Intel Fortran 15.0.0
 #    load_if11: Loads Intel Fortran 11.1.069
@@ -78,7 +77,7 @@ PS1="\[\e[1;32m\][\h \W]$\[\e[0m\] "  # Override the default Unix prompt
 # %%%%% Settings for colorization  %%%%%
 #==============================================================================
 export GREP_COLOR=32
-export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=}40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;37:*.tgz=01;37:*.arj=01;37:*.taz=01;37:*.lzh=01;37:*.zip=01;37:*.z=01;37:*.Z=01;37:*.gz=01;37:*.bz2=01;37:*.deb=01;37:*.rpm=01;37:*.jar=01;37:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.flac=01;35:*.mp3=01;35:*.mpc=01;35:*.ogg=01;35:*.wav=01;35:'
+export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;37:*.tgz=01;37:*.arj=01;37:*.taz=01;37:*.lzh=01;37:*.zip=01;37:*.z=01;37:*.Z=01;37:*.gz=01;37:*.bz2=01;37:*.deb=01;37:*.rpm=01;37:*.jar=01;37:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.flac=01;35:*.mp3=01;35:*.mpc=01;35:*.ogg=01;35:*.wav=01;35:'
 
 #==============================================================================
 # %%%%% Startup settings for various software packages %%%%%
@@ -93,15 +92,12 @@ export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 # Ghostview
 export GS_DEVICE="x11"
 
-# TAU profiler
-export TAU_OPTIONS="-optRevert -optVerbose -optPreProcess -optContinueBeforeOMP -optTauSelectFile=tauselect.txt"
-
 # Emacs
 alias emacs="emacs -nl"
 
 # KPP compiler
 export PATH="$PATH:~/KPP/kpp-2.2.3_01/bin/"
-export KPP_HOME="~/KPP/kpp-2.2.3_01"
+export KPP_HOME="$HOME/KPP/kpp-2.2.3_01"
 
 #==============================================================================
 # %%%%% Basic SLURM commands %%%%%
@@ -112,12 +108,10 @@ alias qj="squeue -u $USER"
 alias qa="sacct -j"
 alias qdel="scancel"
 alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
-alias jinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p jacob"
-alias rinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p regal"
+alias hinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
 alias sinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
 alias tinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p test"
 alias jcheck="lsload | grep -e 'jacob\|Hostname'"
-alias rcheck="lsload | grep -e 'regal\|Hostname'"
 alias myfs="sshare -u $USER -U"
 alias jacobfs="sshare -A jacob_lab -a"
 
@@ -175,13 +169,11 @@ alias llh="ls -lh"
 #==============================================================================
 # %%%%% Aliases to load modules for different compilers %%%%%
 #==============================================================================
-alias load_gf71=". ~/init/init.gc-classic.gfortran71"
-alias load_gf63=". ~/init/init.gc-classic.gfortran63"
-alias load_gf52=". ~/init/init.gc-classic.gfortran52"
-alias load_gf48=". ~/init/init.gc-classic.gfortran48"
-alias load_if17=". ~/init/init.gc-classic.ifort17"
-alias load_if15=". ~/init/init.gc-classic.ifort15"
-alias load_if11=". ~/init/init.gc-classic.ifort11"
+alias load_gf82=". ~/init/init.gc-classic.gfortran82.centos7"
+alias load_gf71=". ~/init/init.gc-classic.gfortran71.centos7"
+alias load_if17=". ~/init/init.gc-classic.ifort17.centos7"
+alias load_if15=". ~/init/init.gc-classic.ifort15.centos7"
+alias load_if11=". ~/init/init.gc-classic.ifort11.centos7"
 
 #==============================================================================
 # %%%%% Load the user's personal settings and aliases %%%%%
