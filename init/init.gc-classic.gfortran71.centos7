@@ -77,6 +77,7 @@ module load netcdf/4.3.2-fasrc05
 module load netcdf-fortran/4.4.0-fasrc03
 module load cdo
 module load nco
+module load ncview
 #--------------------------------------------
 # NOTE: There appears to be some issues
 # in TAU 2.27. Fix this later (bmy, 5/10/18)
