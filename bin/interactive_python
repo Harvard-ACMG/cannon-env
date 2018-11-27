@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: interactive_python
+#
+# !DESCRIPTION: Shell script to request an interactive session on Odyssey,
+#  geared for python development.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  interactive_python
+#
+# !REMARKS:
+#  Executes the srun command to start an interactive SLURM session.
+#  If PARTITION is omitted, then the job will start on the "huce_amd" partition.
+#  If TIME-IN-MINUTES is omitted, then the job will run for 60 minutes.
+#
+# !REVISION HISTORY: 
+#  27 Nov 2018 - M. Sulprizio- Initial version based on interactive_openmp
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+# Process the input arguments.  Use defaults if the
+# user supplies less than 3 argumetnts. (bmy, 7/10/15)
+if [[ $# == 3 ]]; then
+   mem=$1
+   time=$2
+   part=huce_amd
+elif [[ $# == 2 ]] ; then
+   mem=$1
+   time=60
+   part=huce_amd
+else
+   echo "Usage: interactive_python MEMORY [TIME-IN-MINUTES] [PARTITION]"
+   exit 1
+fi
+
+# Print information
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+echo "%%% Starting an Odyssey interactive session!"
+echo "%%%"
+echo "%%% Memory              : $mem MB"
+echo "%%% Requested time      : $time minutes"
+echo "%%% Requested partition : $part"
+echo "%%%"
+echo "%%% To open Jupyter notebook use:"
+echo "%%%  source activate gcpy"
+echo "%%%  jupyter notebook --port 8899"
+echo "%%%  ..."
+echo "%%%  source deactivate gcpy"
+echo "%%%"
+echo "%%% Locally in Git-bash:"
+echo "%%%  ssh username@rclogin#.rc.fas.harvard.edu -L 8899:localhost:8899 -f -N"
+echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+
+# Start the interactive session
+srun --pty --mem=$mem -t $time -p $part --tunnel 8899:8899 /bin/bash
+
+#EOC
