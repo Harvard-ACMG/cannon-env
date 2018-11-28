@@ -31,7 +31,11 @@ if [[ $# == 3 ]]; then
    mem=$1
    time=$2
    part=$3
-elif [[ $# == 2 ]] ; then
+elif [[ $# == 2 ]]; then
+   mem=$1
+   time=$2
+   part=huce_amd
+elif [[ $# == 1 ]] ; then
    mem=$1
    time=60
    part=huce_amd
