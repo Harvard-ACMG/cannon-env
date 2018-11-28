@@ -30,7 +30,7 @@
 if [[ $# == 3 ]]; then
    mem=$1
    time=$2
-   part=huce_amd
+   part=$3
 elif [[ $# == 2 ]] ; then
    mem=$1
    time=60

@@ -15,7 +15,9 @@
 #\\
 # !CALLING SEQUENCE:
 #  startup 1         # Opens 1 xterm window  and an emacs editor
+#  startup 1 0       # Opens 2 xterm windows only (no emacs editor)
 #  startup 2         # Opens 2 xterm windows and an emacs editor
+#  startup 2 0       # Opens 2 xterm windows only (no emacs editor)
 #  ...
 #  startup           # Opens 4 xterm windows (default) and an emacs editor
 #
@@ -37,15 +39,22 @@
 #  05 Aug 2015 - R. Yantosca - The user can now specify the # of xterms to
 #                              open via the command line (default=4)
 #  13 Jul 2018 - R. Yantosca - Now load the Odyssey emacs module
+#  26 Sep 2018 - R. Yantosca - Now add optional second argument that will
+#                              avoid starting emacs         
 #EOP
 #------------------------------------------------------------------------------
 #BOC
 
 # Number of xterm windows to open, specified by user (default = 4)
-if [ "$#" -eq 1 ]; then
-  N_TERMINALS=$1
+if [ "$#" -eq 2 ]; then
+   N_TERMINALS=$1
+   DO_EMACS=$2
+elif [ "$#" -eq 1 ]; then
+   N_TERMINALS=$1
+   DO_EMACS=1
 else
-  N_TERMINALS=4
+   N_TERMINALS=4
+   DO_EMACS=1    
 fi
 
 # Open connections to the number of specified Xterm windows
@@ -56,8 +65,10 @@ done
 # Open an EMACS editor
 # NOTE: Make sure to load the emacs module, which currently has a properly-
 # functioning build of emacs.  The default version is broken. (bmy, 7/13/18)
-module load emacs
-emacs &
+if [[ $DO_EMACS -eq 1 ]]; then
+  module load emacs
+  emacs &
+fi
 
 # Exit normally
 exit 0
