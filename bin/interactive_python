@@ -26,21 +26,30 @@
 #BOC
 
 # Process the input arguments.  Use defaults if the
-# user supplies less than 3 argumetnts. (bmy, 7/10/15)
-if [[ $# == 3 ]]; then
+# user supplies less than 4 argumetnts. (bmy, 7/10/15)
+# added port selection as optional 4th argument (cpt, 12/3/18)
+if [[ $# == 4 ]]; then
    mem=$1
    time=$2
    part=$3
+   port=$4
+elif [[ $# == 3 ]]; then
+   mem=$1
+   time=$2
+   part=$3
+   port=8899
 elif [[ $# == 2 ]]; then
    mem=$1
    time=$2
    part=huce_amd
+   port=8899
 elif [[ $# == 1 ]] ; then
    mem=$1
    time=60
    part=huce_amd
+   port=8899
 else
-   echo "Usage: interactive_python MEMORY [TIME-IN-MINUTES] [PARTITION]"
+   echo "Usage: interactive_python MEMORY [TIME-IN-MINUTES] [PARTITION] [PORT]"
    exit 1
 fi
 
@@ -54,15 +63,15 @@ echo "%%% Requested partition : $part"
 echo "%%%"
 echo "%%% To open Jupyter notebook use:"
 echo "%%%  source activate gcpy"
-echo "%%%  jupyter notebook --port 8899"
+echo "%%%  jupyter notebook --port $port"
 echo "%%%  ..."
 echo "%%%  source deactivate gcpy"
 echo "%%%"
 echo "%%% Locally in Git-bash:"
-echo "%%%  ssh username@rclogin#.rc.fas.harvard.edu -L 8899:localhost:8899 -f -N"
+echo "%%%  ssh username@rclogin#.rc.fas.harvard.edu -L $port:localhost:$port -f -N"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --mem=$mem -t $time -p $part --tunnel 8899:8899 /bin/bash
+srun --pty --mem=$mem -t $time -p $part --tunnel $port:$port /bin/bash
 
 #EOC
