@@ -66,24 +66,13 @@ module load perl
 module load IDL/8.4.1-fasrc01
 module load flex/2.6.4-fasrc01
 module load gcc/7.1.0-fasrc01
-#--------------------------------------------
-# Uncomment for mvapich2 MPI
-#module load mvapich2/2.3b-fasrc02
-#--------------------------------------------
-# Uncomment for OpenMPI (default)
 module load openmpi/2.1.0-fasrc02
-#--------------------------------------------
 module load netcdf/4.3.2-fasrc05
 module load netcdf-fortran/4.4.0-fasrc03
 module load cdo
 module load nco
 module load ncview
-#--------------------------------------------
-# NOTE: There appears to be some issues
-# in TAU 2.27. Fix this later (bmy, 5/10/18)
-#module load tau/2.27-fasrc01
-#---------------------------------------------
-module load emacs/26.1-fasrc01  # Load version with tool bar icons
+module load emacs/26.1-fasrc01
 module list
 
 # Define F90 and F77 environment variables (may be needed by some software)
@@ -98,13 +87,19 @@ export F77=$FC
 # Asking for a huge number will just give you the max availble
 export OMP_STACKSIZE=500m
  
-# Define number of CPUs for OpenMP to use
+# Define number threads for OpenMP parallelization
+# (a) If in a SLURM partition, set OMP_NUM_THREADS = SLURM_CPUS_PER_TASK
+# (b) Or, set OMP_NUM_THREADS to the optional first argument that is passed
+# (c) If neither (a) nor (b), then set OMP_NUM_THREADS to 1
 # If we are not in a SLURM session, set to 1
 if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+elif [[ "x$1" != "x" ]]; then
+  export OMP_NUM_THREADS=$1
 else
   export OMP_NUM_THREADS=1
 fi
+echo "Number of OpenMP threads: $OMP_NUM_THREADS"
 
 #==============================================================================
 # %%%%% Define relevant environment variables %%%%%

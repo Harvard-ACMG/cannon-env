@@ -68,14 +68,9 @@ module load IDL/8.4.1-fasrc01
 module load flex/2.6.4-fasrc01
 module load intel/11.1
 module load GEOS-Chem-Libraries
-#--------------------------------------------
-# NOTE: There appears to be some issues
-# loading nco with GEOS-Chem-Libraries
-#module load nco
-#--------------------------------------------
 module load cdo
 module load totalview/8.8.0.1-fasrc01
-module load emacs/26.1-fasrc01  # Load version with tool bar icons
+module load emacs/26.1-fasrc01
 module list
 
 # Manually point to GEOS-Chem-Libraries build
@@ -103,13 +98,19 @@ export F77=$FC
 # Asking for a huge number will just give you the max availble
 export OMP_STACKSIZE=500m
  
-# Define number of CPUs for OpenMP to use
+# Define number threads for OpenMP parallelization
+# (a) If in a SLURM partition, set OMP_NUM_THREADS = SLURM_CPUS_PER_TASK
+# (b) Or, set OMP_NUM_THREADS to the optional first argument that is passed
+# (c) If neither (a) nor (b), then set OMP_NUM_THREADS to 1
 # If we are not in a SLURM session, set to 1
 if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+elif [[ "x$1" != "x" ]]; then
+  export OMP_NUM_THREADS=$1
 else
   export OMP_NUM_THREADS=1
 fi
+echo "Number of OpenMP threads: $OMP_NUM_THREADS"
 
 #==============================================================================
 # %%%%% Define relevant environment variables %%%%%
