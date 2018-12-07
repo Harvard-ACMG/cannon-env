@@ -82,18 +82,19 @@ export F77=$FC
 # Max out the stack memory for OpenMP
 # Asking for a huge number will just give you the max availble
 export OMP_STACKSIZE=500m
- 
-# Define number threads for OpenMP parallelization
+
+# By default, set the number of threads for OpenMP parallelization to 1
+export OMP_NUM_THREADS=1
+
+# Redefine number threads for OpenMP parallelization
 # (a) If in a SLURM partition, set OMP_NUM_THREADS = SLURM_CPUS_PER_TASK
 # (b) Or, set OMP_NUM_THREADS to the optional first argument that is passed
-# (c) If neither (a) nor (b), then set OMP_NUM_THREADS to 1
-# If we are not in a SLURM session, set to 1
 if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
   export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-elif [[ "x$1" != "x" ]]; then
-  export OMP_NUM_THREADS=$1
-else
-  export OMP_NUM_THREADS=1
+elif [[ "$#" -eq 1 ]]; then
+  if [[ "x$1" != "xignoreeof" ]]; then
+     export OMP_NUM_THREADS=$1
+  fi
 fi
 echo "Number of OpenMP threads: $OMP_NUM_THREADS"   
 
