@@ -57,23 +57,25 @@ unset TAU_MAKEFILE
 
 #==============================================================================
 # %%%%% Load modules for Intel Fortran 17 %%%%%
+#
+# NOTE: Specify version numbers to avoid conflicting w/ EasyBuild modules
 #==============================================================================
 echo "Loading modules for compiler ifort17 ..."
 export LMOD_COLORIZE=yes
 module purge
-module load git
-module load perl
+module load git/2.17.0-fasrc01
+module load perl/5.26.1-fasrc01
 module load IDL/8.4.1-fasrc01
 module load flex/2.6.4-fasrc01
 module load intel/17.0.4-fasrc01
 module load openmpi/2.1.0-fasrc02
 module load netcdf/4.3.2-fasrc05
 module load netcdf-fortran/4.4.0-fasrc03
-module load nco
-module load cdo
-module load ncview
+module load nco/4.7.4-fasrc01
+module load cdo/1.9.4-fasrc02
+module load ncview/2.1.7-fasrc02
 module load totalview/8.8.0.1-fasrc01
-module load emacs/26.1-fasrc01  # Load version with tool bar icons
+module load emacs/26.1-fasrc01
 module list
 
 # Define F90 and F77 environment variables (may be needed by some software)
