@@ -70,13 +70,12 @@ module load IDL/8.4.1-fasrc01
 module load flex/2.6.4-fasrc01
 module load intel/11.1
 module load GEOS-Chem-Libraries
-module load cdo/1.9.4-fasrc02
 module load totalview/8.8.0.1-fasrc01
 module load emacs/26.1-fasrc01
 module list
 
 # Manually point to GEOS-Chem-Libraries build
-export NETCDF_HOME=/n/seasasfs01/opt/odyssey/GEOS-Chem-Libraries/ifort/nc4
+NETCDF_HOME=/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/opt/GEOS-Chem-Libraries/ifort/nc4
 export NETCDF_INCLUDE=${NETCDF_HOME}/include
 export NETCDF_LIB=${NETCDF_HOME}/lib
 export NETCDF_BIN=${NETCDF_HOME}/bin
