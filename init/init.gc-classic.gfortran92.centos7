@@ -3,14 +3,14 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: init.gc-classic.gfortran82.centos7
+# !MODULE: init.gc-classic.gfortran92.centos7
 #
 # !DESCRIPTION: Bash script that loads the proper modules and sets 
-#  environment variables for GNU Fortran 8.2 and CentOS7.
+#  environment variables for GNU Fortran 9.2 and CentOS7.
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/init/init.gc-classic.gfortran82.centos7
+#  source ~/init/init.gc-classic.gfortran92.centos7
 #
 # !REMARKS:
 #
@@ -51,14 +51,21 @@ unset OMP_NUM_THREADS
 unset OMP_STACKSIZE
 
 #==============================================================================
-# %%%%% Load Lmod modules %%%%%
+# %%%%% Load RC-built modules %%%%%
 #
 # NOTE: Not all packages are obtained via Spack, we need to load
-# a couple via the traditional Lmod module load command
+# some (e.g. Git) via the traditional module load command
 #==============================================================================
+
+# Initialize modules
 module purge
 export LMOD_COLORIZE=yes
-for f in git/2.17.0-fasrc01 emacs/26.1-fasrc01; do 
+
+# List each RC-built module that you wish to use 
+pkgs=(git/2.17.0-fasrc01)
+
+# Load each RC-built module
+for f in ${pkgs[@]}; do
     echo "Loading $f"
     module load $f
 done
@@ -70,22 +77,25 @@ done
 # Initialize Spack
 source /n/jacob_lab/Lab/spack/share/spack/setup-env.sh
 
-# Load the gcc/gfortran 9.2.0 compilers first
-echo "Loading gcc@9.2.0"
-spack load gcc@9.2.0
+# List each Spack package that you want to load
+pkgs=(gcc@9.2.0                \
+      emacs%gcc@9.2.0+X        \
+      cgdb%gcc@9.2.0           \
+      gdb%gcc@9.2.0            \
+      hdf5%gcc@9.2.0           \ 
+      nco%gcc@9.2.0            \
+      openmpi%gcc@9.2.0        \
+      netcdf%gcc@9.2.0         \
+      netcdf-fortran%gcc@9.2.0 \
+      ncview%gcc@9.2.0         \
+      perl%gcc@9.2.0           \
+      tau%gcc@9.2.0           )
 
-# Load packages that were built with gcc/gfortran 9.2.0
-for f in cmake nco netcdf netcdf-fortran ncview perl tau; do
-    echo "Loading $f%gcc@9.2.0"
-    spack load $f%gcc@9.2.0
+# Load each Spack package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    spack load $f
 done
-
-# Define compiler environment variables
-export FC=gfortran
-export F90=gfortran
-export F77=gfortran
-export CC=gcc
-export CXX=g++
 
 #==============================================================================
 # %%%%% Settings for OpenMP parallelization %%%%%
@@ -102,10 +112,10 @@ export OMP_NUM_THREADS=1
 # (a) If in a SLURM partition, set OMP_NUM_THREADS = SLURM_CPUS_PER_TASK
 # (b) Or, set OMP_NUM_THREADS to the optional first argument that is passed
 if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
-  export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+  export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 elif [[ "$#" -eq 1 ]]; then
   if [[ "x$1" != "xignoreeof" ]]; then
-     export OMP_NUM_THREADS=$1
+     export OMP_NUM_THREADS=${1}
   fi
 fi
 echo "Number of OpenMP threads: $OMP_NUM_THREADS"   
@@ -113,6 +123,13 @@ echo "Number of OpenMP threads: $OMP_NUM_THREADS"
 #==============================================================================
 # %%%%% Define relevant environment variables %%%%%
 #==============================================================================
+
+# Compiler environment variables
+export FC=gfortran
+export F90=gfortran
+export F77=gfortran
+export CC=gcc
+export CXX=g++
 
 # Machine architecture
 export ARCH=`uname -s`
@@ -134,3 +151,4 @@ export NETCDF_FORTRAN_LIB=${NETCDF_FORTRAN_HOME}/lib
 export GC_F_BIN=${NETCDF_FORTRAN_BIN}
 export GC_F_INCLUDE=${NETCDF_FORTRAN_INCLUDE}
 export GC_F_LIB=${NETCDF_FORTRAN_LIB}
+
