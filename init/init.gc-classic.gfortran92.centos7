@@ -1,0 +1,136 @@
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: init.gc-classic.gfortran82.centos7
+#
+# !DESCRIPTION: Bash script that loads the proper modules and sets 
+#  environment variables for GNU Fortran 8.2 and CentOS7.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  source ~/init/init.gc-classic.gfortran82.centos7
+#
+# !REMARKS:
+#
+# !REVISION HISTORY:
+#  Change directory to ~/env and type 'gitk' at the prompt to browse
+#  revision history.
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+#==============================================================================
+# %%%%% Clear existing environment variables %%%%%
+#==============================================================================
+unset PYTHON_HOME
+unset PERL_HOME
+unset IDL_HOME
+unset EMACS_HOME
+unset CC
+unset CXX
+unset FC
+unset F77
+unset F90
+unset NETCDF_BIN
+unset NETCDF_HOME
+unset NETCDF_INCLUDE
+unset NETCDF_LIB
+unset NETCDF_FORTRAN_BIN
+unset NETCDF_FORTRAN_HOME
+unset NETCDF_FORTRAN_INCLUDE
+unset NETCDF_FORTRAN_LIB
+unset GC_BIN
+unset GC_INCLUDE
+unset GC_LIB
+unset GC_F_BIN
+unset GC_F_INCLUDE
+unset GC_F_LIB
+unset OMP_NUM_THREADS
+unset OMP_STACKSIZE
+
+#==============================================================================
+# %%%%% Load Lmod modules %%%%%
+#
+# NOTE: Not all packages are obtained via Spack, we need to load
+# a couple via the traditional Lmod module load command
+#==============================================================================
+module purge
+export LMOD_COLORIZE=yes
+for f in git/2.17.0-fasrc01 emacs/26.1-fasrc01; do 
+    echo "Loading $f"
+    module load $f
+done
+
+#==============================================================================
+# %%%%% Load Spack packages %%%%%
+#==============================================================================
+
+# Initialize Spack
+source /n/jacob_lab/Lab/spack/share/spack/setup-env.sh
+
+# Load the gcc/gfortran 9.2.0 compilers first
+echo "Loading gcc@9.2.0"
+spack load gcc@9.2.0
+
+# Load packages that were built with gcc/gfortran 9.2.0
+for f in cmake nco netcdf netcdf-fortran ncview perl tau; do
+    echo "Loading $f%gcc@9.2.0"
+    spack load $f%gcc@9.2.0
+done
+
+# Define compiler environment variables
+export FC=gfortran
+export F90=gfortran
+export F77=gfortran
+export CC=gcc
+export CXX=g++
+
+#==============================================================================
+# %%%%% Settings for OpenMP parallelization %%%%%
+#==============================================================================
+
+# Max out the stack memory for OpenMP
+# Asking for a huge number will just give you the max availble
+export OMP_STACKSIZE=500m
+
+# By default, set the number of threads for OpenMP parallelization to 1
+export OMP_NUM_THREADS=1
+
+# Redefine number threads for OpenMP parallelization
+# (a) If in a SLURM partition, set OMP_NUM_THREADS = SLURM_CPUS_PER_TASK
+# (b) Or, set OMP_NUM_THREADS to the optional first argument that is passed
+if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
+  export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+elif [[ "$#" -eq 1 ]]; then
+  if [[ "x$1" != "xignoreeof" ]]; then
+     export OMP_NUM_THREADS=$1
+  fi
+fi
+echo "Number of OpenMP threads: $OMP_NUM_THREADS"   
+
+#==============================================================================
+# %%%%% Define relevant environment variables %%%%%
+#==============================================================================
+
+# Machine architecture
+export ARCH=`uname -s`
+
+# netCDF paths
+export NETCDF_HOME=`spack location -i netcdf`
+export NETCDF_BIN=${NETCDF_HOME}/bin
+export NETCDF_INCLUDE=${NETCDF_HOME}/include
+export NETCDF_LIB=${NETCDF_HOME}/lib
+export GC_BIN=${NETCDF_BIN}
+export GC_INCLUDE=${NETCDF_INCLUDE}
+export GC_LIB=${NETCDF_LIB}
+
+# netCDF-Fortran paths
+export NETCDF_FORTRAN_HOME=`spack location -i netcdf-fortran`
+export NETCDF_FORTRAN_BIN=${NETCDF_FORTRAN_HOME}/bin
+export NETCDF_FORTRAN_INCLUDE=${NETCDF_FORTRAN_HOME}/include
+export NETCDF_FORTRAN_LIB=${NETCDF_FORTRAN_HOME}/lib
+export GC_F_BIN=${NETCDF_FORTRAN_BIN}
+export GC_F_INCLUDE=${NETCDF_FORTRAN_INCLUDE}
+export GC_F_LIB=${NETCDF_FORTRAN_LIB}
