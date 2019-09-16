@@ -81,10 +81,13 @@ source /n/jacob_lab/Lab/spack/share/spack/setup-env.sh
 pkgs=(gcc@9.2.0                \
       emacs%gcc@9.2.0+X        \
       cgdb%gcc@9.2.0           \
+      cmake%gcc@9.2.0          \
+      flex%gcc@9.2.0           \
       gdb%gcc@9.2.0            \
       hdf5%gcc@9.2.0           \ 
       nco%gcc@9.2.0            \
       openmpi%gcc@9.2.0        \
+      openjdk%gcc@9.2.0        \
       netcdf%gcc@9.2.0         \
       netcdf-fortran%gcc@9.2.0 \
       ncview%gcc@9.2.0         \
