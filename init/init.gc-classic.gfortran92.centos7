@@ -138,7 +138,7 @@ export CXX=g++
 export ARCH=`uname -s`
 
 # netCDF paths
-export NETCDF_HOME=`spack location -i netcdf`
+export NETCDF_HOME=`spack location -i netcdf%gcc@9.2.0`
 export NETCDF_BIN=${NETCDF_HOME}/bin
 export NETCDF_INCLUDE=${NETCDF_HOME}/include
 export NETCDF_LIB=${NETCDF_HOME}/lib
@@ -147,7 +147,7 @@ export GC_INCLUDE=${NETCDF_INCLUDE}
 export GC_LIB=${NETCDF_LIB}
 
 # netCDF-Fortran paths
-export NETCDF_FORTRAN_HOME=`spack location -i netcdf-fortran`
+export NETCDF_FORTRAN_HOME=`spack location -i netcdf-fortran%gcc@9.2.0`
 export NETCDF_FORTRAN_BIN=${NETCDF_FORTRAN_HOME}/bin
 export NETCDF_FORTRAN_INCLUDE=${NETCDF_FORTRAN_HOME}/include
 export NETCDF_FORTRAN_LIB=${NETCDF_FORTRAN_HOME}/lib
@@ -155,3 +155,7 @@ export GC_F_BIN=${NETCDF_FORTRAN_BIN}
 export GC_F_INCLUDE=${NETCDF_FORTRAN_INCLUDE}
 export GC_F_LIB=${NETCDF_FORTRAN_LIB}
 
+# Other important paths
+export TAU_HOME=`spack location -i tau%gcc@9.2.0`
+export EMACS_HOME=`spack location -i emacs%gcc@9.2.0+X`
+export MPI_HOME=`spack location -i openmpi%gcc@9.2.0`

@@ -597,7 +597,6 @@
   )
 )
 
-
 ;;-----------------------------------------------------------------------------
 ;; Add the following for IDLWAVE (for EMACS only)
 ;;-----------------------------------------------------------------------------
@@ -675,7 +674,6 @@
 	       (local-set-key [(meta f1)]   'idlwave-routine-info)
 	       (local-set-key [(shift f1)]  'idlwave-context-help)))
 ))
-
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for FORTRAN MODE
@@ -1046,16 +1044,13 @@
 (setq perl-continued-statement-offset 2)
 
 ;;-----------------------------------------------------------------------------
-;; For NCL (NCAR Graphics) mode
+;; For CMAKE mode, get cmake-mode.el from:
+;;   https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el
+;; Add the path to your cmake-mode.el file next to expand-file-name
 ;;-----------------------------------------------------------------------------
+(setq load-path (cons (expand-file-name "~/bin") load-path))
+(require 'cmake-mode)
 
-; Associate *.ncl files with NCL
-(setq auto-mode-alist (cons '("\.ncl$" . ncl-mode) auto-mode-alist))
-
-; Load the file with NCL editor enhancements
-; Use the color settings defined above.
-(autoload 'ncl-mode "~/bin/ncl.el")  
-    
 ;;-----------------------------------------------------------------------------
 ;; For FONT-LOCK and AUTO-FILL
 ;;-----------------------------------------------------------------------------
