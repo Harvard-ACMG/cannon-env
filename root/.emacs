@@ -1062,6 +1062,10 @@
     (global-font-lock-mode 1)          ; GNU Emacs
     (setq font-lock-auto-fontify t))   ; XEmacs
 
+;-----------------------------------------------------------------------------
+; Remove trailing white space before saving
+;-----------------------------------------------------------------------------
+(add-hook ’before-save-hook ’delete-trailing-whitespace)
 
 ;;=============================================================================
 ;; FOR EMACS ONLY! 
