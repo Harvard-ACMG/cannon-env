@@ -6,18 +6,18 @@
 # !MODULE: .my_personal_settings
 #
 # !DESCRIPTION: A .bashrc-style file that you can use to contain your own
-#  personal settings for either the AS cluster or the Odyssey cluster.
+#  personal settings for either the AS cluster or FAS RC's cluster.
 #\\
 #\\
 # !CALLING SEQUENCE:
 #  source ~/.my_personal_settings
 #
 # !REMARKS:
-#  The .bashrc file contains settings that are common to all users of 
+#  The .bashrc file contains settings that are common to all users of
 #  GEOS-Chem.  But here you can add settings that would only be applicable
 #  to your own environment. A few examples and recommendations are provided.
 #
-# !REVISION HISTORY: 
+# !REVISION HISTORY:
 #  Change directory to ~/env and type 'gitk' at the prompt to browse
 #  revision history.
 #EOP
@@ -30,15 +30,15 @@
 ########################################################################
 # Here are a few recommendations and examples:
 
-# Run awake script to prevent Odyssey interactive sessions from crashing
+# Run awake script to prevent FAS RC interactive sessions from crashing
 # due to inactivity
 #~/bin/awake.sh &
 
 # GEOS-Chem python virtual environment
 # Activate with 'source activate gcpy'. Deactivate with 'source deactivate gcpy'
-# when done. Libraries may impact other libraries on Odyssey so we recommend
-# using gcpy in a dedicated terminal. See /n/jacob_lab/Lab/python/README for
-# more information.
+# when done. Libraries may impact other libraries on FAS RC's clusrer so we
+# recommend using gcpy in a dedicated terminal. For more information, see
+# /n/jacob_lab/Lab/python/README
 #export PATH=$PATH:/n/jacob_lab/Lab/python/miniconda/bin
 
 # Enable python to access the GCPy python library (download from Bitbucket)
@@ -48,7 +48,7 @@
 #pid=$$
 #case $TERM in
 # xterm*)
-#    PS1="\[\033]0;\u@\h - $pid \007\]\[\e[1;32m\]OD \w $\[\e[0m\] "
+#    PS1="\[\033]0;\u@\h - $pid \007\]\[\e[1;32m\]FASRC \w $\[\e[0m\] "
 #    ;;
 #  *)
 #    PS1="\[\e[1;32m\]\h \w $\[\e[0m\] "
@@ -59,17 +59,20 @@
 #set bell-style visible
 
 # Check on your SLURM jobs
-#alias sq="squeue --format='%.8i %.9P %.30j %.9u %.2t %.10M %.6D %.6C %R'"
+#alias sq="squeue --format='%.10i %.10P %.10j %.10u %.10g %.2t %.10M %.6D %.6C %R' --exact-partition-names"
 
-# Check on the jacob and shared partitions
-#alias jacob_status="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p jacob"
-#alias jacob_nodes="lsload | grep -e 'jacob\|Hostname'"
-#alias jacob_users="sq -p jacob --exact-partition-names"
-#alias shared_status="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
-#alias shared_nodes="lsload | grep -e 'shared\|Hostname'"
+# Check on the huce_intel and shared partitions
+#alias hinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
+#alias hjcheck="lsload | grep -e 'holyjacob\|Hostname'"
+#alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
 
 # Check your fairshare
 #alias fairshare="sshare -u {username} -U"
+#alias jacobfs="sshare -A jacob_lab -a"
+#alias jobdetails="scontrol show job" # + <jobid>
+
+# Check on lab storage on scratchlfs
+#alias scratch_quota="lfs quota -h /n/scratchlfs/jacob_lab/"
 
 # Make git commands easier with aliases
 #alias update_tags="git tag -l | xargs git tag -d && git fetch -t"

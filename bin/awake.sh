@@ -9,8 +9,7 @@
 # !IROUTINE: awake
 #
 # !DESCRIPTION: Script to print out to the screen every 10 minutes.  This
-#  is meant to avoid having the Odyssey interactive session hang becuause
-#  of user idle time.
+#  is meant to avoid having an interactive session hang because of idle time.
 #\\
 #\\
 # !CALLING SEQUENCE:
@@ -27,8 +26,8 @@
 # Maximum number of iterations
 # (every 10 mins for an 10-hour session = 60 iterations)
 COUNTER=60
- 
-# Sleep for 10 mins, then issue a command that does nothing (but which will 
+
+# Sleep for 10 mins, then issue a command that does nothing (but which will
 # provide some activity so that the interactive sessione doesn't time out).
 # Repeat until we hit the maximum number of iterations.
 while [[ $COUNTER -gt 0 ]]; do

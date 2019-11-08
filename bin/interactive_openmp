@@ -7,7 +7,7 @@
 #
 # !MODULE: interactive_openmp
 #
-# !DESCRIPTION: Shell script to request an interactive session on Odyssey,
+# !DESCRIPTION: Shell script to request an interactive session
 #  geared for OpenMP jobs (i.e. all Cores on the same node).
 #\\
 #\\
@@ -19,7 +19,7 @@
 #  If PARTITION is omitted, then the job will start on the "jacob" partition.
 #  If TIME-IN-MINUTES is omitted, then the job will run for 60 minutes.
 #
-# !REVISION HISTORY: 
+# !REVISION HISTORY:
 #  Use the gitk browser to view the Git version history.
 #EOP
 #------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ fi
 
 # Print information
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-echo "%%% Starting an Odyssey interactive session!"
+echo "%%% Starting an interactive session!"
 echo "%%%"
 echo "%%% Number of Cores     : $cores"
 echo "%%% Number of Nodes     : 1"

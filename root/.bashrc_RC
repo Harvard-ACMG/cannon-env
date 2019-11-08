@@ -3,32 +3,31 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: .bashrc_OD
+# !MODULE: .bashrc_RC
 #
 # !DESCRIPTION: File containing environment settings for the bash shell on
-#  the Odyssey cluster. Rename this file .bashrc when copying to your
-#  home directory on Odyssey.
+#  FAS RC's Cannon cluster. Rename this file .bashrc when copying to your
+#  home directory.
 #\\
 #\\
 # !CALLING SEQUENCE:
 #  source ~/.bashrc
 #
 # !REMARKS:
-#  We have removed the module load commands from this .bashrc.  Here you 
+#  We have removed the module load commands from this .bashrc.  Here you
 #  will only find some basic settings and aliases that are needed for
-#  you to run GEOS-Chem.  
+#  you to run GEOS-Chem.
 #
-#  This .bashrc will also source your startup file ~/.my_personal_settings 
+#  This .bashrc will also source your startup file ~/.my_personal_settings
 #  to load your own personal preferences for your Unix environment.
 #
 #  After the .bashrc loads, you can issue one of the following aliased
-#  commands, which will source a file that will load modules and 
+#  commands, which will source a file that will load modules and
 #  the personal settings in your ~/.my_personal_settings file.
 #
 #    load_gf82: Loads GNU Fortran 8.2.0
 #    load_gf71: Loads GNU Fortran v7.1.0
 #    load_if17: Loads Intel Fortran 17.0.4
-#    load_if15: Loads Intel Fortran 15.0.0
 #    load_if11: Loads Intel Fortran 11.1.069
 #
 #  You can copy this file to ~/.bashrc in your root directory and edit
@@ -54,8 +53,8 @@ fi
 umask 022                             # Make files world-readable by default
 set autolist                          # Turn on list completion
 set correct                           #
-set color                             # 
-set colorcat                          # 
+set color                             #
+set colorcat                          #
 set filesc                            #
 set emacs                             # Use an emacs-style editing interface
 set history                           # Turn on history of commands
@@ -71,7 +70,7 @@ export VISUAL=emacs                   # Default editor (emacs or vim)
 export GIT_EDITOR=emacs               # Default Git editor (emacs or vim)
 export MAIL=/usr/spool/mail/$USER     # Default mail program
 mail=$MAIL
-PS1="\[\e[1;32m\][\h \W]$\[\e[0m\] "  # Override the default Unix prompt 
+PS1="\[\e[1;32m\][\h \W]$\[\e[0m\] "  # Override the default Unix prompt
 
 #==============================================================================
 # %%%%% Settings for colorization  %%%%%
@@ -92,8 +91,11 @@ export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 # Ghostview
 export GS_DEVICE="x11"
 
+# Emacs
+alias emacs="emacs -nl"
+
 # KPP compiler
-export PATH="$PATH:~/KPP/kpp-2.2.3_01/bin/"
+export PATH="$PATH:$HOME/KPP/kpp-2.2.3_01/bin/"
 export KPP_HOME="$HOME/KPP/kpp-2.2.3_01"
 
 #==============================================================================
@@ -142,7 +144,7 @@ alias cp="cp -v"
 alias mv="mv -v"
 
 # Basic Git commands
-source /etc/bash_completion.d/git    # enable tab-completion 
+source /etc/bash_completion.d/git    # enable tab-completion
 alias gui="git gui &"
 alias gk="gitk &"
 alias gka="gitk --all &"
@@ -170,7 +172,6 @@ alias load_gf92=". ~/init/init.gc-classic.gfortran92.centos7"
 alias load_gf82=". ~/init/init.gc-classic.gfortran82.centos7"
 alias load_gf71=". ~/init/init.gc-classic.gfortran71.centos7"
 alias load_if17=". ~/init/init.gc-classic.ifort17.centos7"
-alias load_if15=". ~/init/init.gc-classic.ifort15.centos7"
 alias load_if11=". ~/init/init.gc-classic.ifort11.centos7"
 
 #==============================================================================

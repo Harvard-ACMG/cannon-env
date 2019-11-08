@@ -7,7 +7,7 @@
 #
 # !MODULE: interactive
 #
-# !DESCRIPTION: Shell script to request an interactive session on Odyssey.
+# !DESCRIPTION: Shell script to request an interactive session.
 #\\
 #\\
 # !CALLING SEQUENCE:
@@ -17,7 +17,7 @@
 #  Executes the srun command.  For now, all Cores are placed on one node,
 #  for traditional GEOS-Chem usage.
 #
-# !REVISION HISTORY: 
+# !REVISION HISTORY:
 #  Use the gitk browser to view the Git version history.
 #EOP
 #------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ fi
 
 # Print information
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-echo "%%% Starting an Odyssey interactive session!"
+echo "%%% Starting interactive session!"
 echo "%%% Number of Cores     : $cores"
 echo "%%% Number of Nodes     : $nodes"
 echo "%%% Memory per CPU      : $mem MB"

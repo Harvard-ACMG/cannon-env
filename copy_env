@@ -52,7 +52,7 @@ if [ -d ~/IDL ]; then
   # Copy contents of env/IDL to your IDL directory
   cp -v ~/env/IDL/* ~/IDL/
 else
-  # Create IDL directory and copy 
+  # Create IDL directory and copy
   cp -rv ~/env/IDL ~
 fi
 
@@ -63,7 +63,7 @@ if [ -d ~/init ]; then
   # Copy contents of env/init to your init directory
   cp -v ~/env/init/* ~/init/
 else
-  # Create init directory and copy 
+  # Create init directory and copy
   cp -rv ~/env/init ~
 fi
 
@@ -88,7 +88,7 @@ if [ ! -f ~/.my_personal_settings ]; then
   cp -v ~/env/root/.my_personal_settings ~
 else
   echo "~/env/root/.my_personal_settings was not copied. Update this file manually."
-  echo "If your are getting set up on Odyssey for the first time type:"
+  echo "If your are getting set up for the first time type:"
   echo "  cp -v ~env/root/.my_personal_settings ~"
   echo " "
 fi
@@ -96,7 +96,7 @@ if [ ! -f ~/.emacs ]; then
   cp -v ~/env/root/.emacs ~
 else
   echo "~/env/root/.emacs was not copied. Update this file manually."
-  echo "If your are getting set up on Odyssey for the first time type:"
+  echo "If your are getting set up for the first time type:"
   echo "  cp -v ~env/root/.emacs ~"
   echo " "
 fi
@@ -104,7 +104,7 @@ if [ ! -f ~/.Xdefaults ]; then
   cp -v ~/env/root/.Xdefaults ~
 else
   echo "~/env/root/.Xdefaults was not copied. Update this file manually."
-  echo "If your are getting set up on Odyssey for the first time type:"
+  echo "If your are getting set up for the first time type:"
   echo "  cp -v ~env/root/.Xdefaults ~"
   echo " "
 fi
@@ -125,7 +125,7 @@ if [[ $HOSTNAME == *'.as.harvard.edu' ]]; then
         echo "~/env/.ssh/config was not copied. Update this file manually."
       fi
   else
-    # Create IDL directory and copy 
+    # Create IDL directory and copy
     cp -rv ~/env/.ssh ~
 
     # Make readable-writable-executable by owner only

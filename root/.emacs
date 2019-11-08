@@ -392,13 +392,7 @@
 (global-set-key [f3]             'string-rectangle)
 (global-set-key [f4]             'delete-rectangle)
 (global-set-key [f5]             'macrotimestamp)      ; Timestamp for ProTeX
-;;-----------------------------------------------------------------------------
-;; %%% NOTE: For some reason this Emacs 24 on Odyssey has can't recognize
-;; %%% these key bindings.  Redefine these for the time being. (bmy, 6/14/18)
-;;(global-set-key [kp-add]         "\M-l")               ; Lowercase
-;;(global-set-key [kp-enter]       "\M-u")               ; Uppercase
-;;(global-set-key [kp-subtract]    'goto-line)
-;;-----------------------------------------------------------------------------
+
 ;; Use these settings for emacs/26.1-fasrc01 (bmy, 7/13/18)
 (global-set-key (kbd "<S-pause>")  "\M-l")           ; Lowercase
 (global-set-key (kbd "<pause>")    "\M-u")           ; Uppercase

@@ -14,16 +14,16 @@
 #BOP
 #
 # !MODULE: run_geos_chem
-# 
-# !DESCRIPTION: Runs a GEOS-Chem "classic" simulation on Odyssey.
+#
+# !DESCRIPTION: Runs a GEOS-Chem "classic" simulation on FAS RC's cluster.
 #\\
 #\\
 # !REMARKS:
-#  This script submits a typical 4x5 GEOS-Chem "classic" simulation 
-#  (i.e.using OpenMP serial parallelization) on Odyssey.  A 4x5 fullchem 
+#  This script submits a typical 4x5 GEOS-Chem "classic" simulation
+#  (i.e.using OpenMP serial parallelization) on FAS RC's cluster. A 4x5 fullchem
 #  simulation will take about 8 GB of RAM in total, across all CPUs.  (Your
 #  simulation may use more memory, especially if you are saving out a lot
-#  of diagnostic output.)  
+#  of diagnostic output.)
 #
 #  The #SBATCH tags at the top of this script direct SLURM to reserve system
 #  resources for your job.  Here is a list of commonly-used #SBATCH options:
@@ -31,7 +31,7 @@
 #  -c 8                   : Reserve 8 CPUs for the job.
 #  -N 1                   : Put all 8 CPUs on the same node.
 #  -t 0-12:00             : Ask for 12 hours of CPU time (format = DD-HH:MM)
-#  -p jacob               : Run job in the "jacob" queue.
+#  -p huce_intel          : Run job in the "huce_intel" partition.
 #  --constraint=intel     : Only run on nodes with Intel CPUs (any make)
 #  --constraint=haswell   : Only run on nodes with Intel Haswell CPUs
 #  --constraint=broadwell : Only run on nodes with Intel Broadwell CPUs
@@ -39,9 +39,9 @@
 #  --mail-type=ALL        : Get notifications when the job starts/ends/fails.
 #  --mail-type=END        : Get notifications when the job ends.
 #  --mail-user=___        : Email address where notifications will get sent
-#  -o stdout.%j           : Send stdout to this log file. 
+#  -o stdout.%j           : Send stdout to this log file.
 #  -e stdout.%j           : Send stderr to this log file.
-#  --no-requeue           : Force SLURM to not to resubmit this job if a node 
+#  --no-requeue           : Force SLURM to not to resubmit this job if a node
 #                           fails and then reboots.  It is better to start the
 #                           GEOS-Chem job again from the last restart file.
 #
@@ -50,12 +50,12 @@
 #  (2) Instead of -N 1       you can also use --nodes=1
 #  (3) Instead of -t 0-12:00 you can also use -t 720 or -t 12:00
 #
-#  The most commonly-used partitions (i.e. run queues) on Odyssey are:
+#  The most commonly-used partitions (i.e. run queues) on FAS RC's cluster are:
 #  (1) huce_intel     : Most GEOS-Chem "Classic" and GCHP jobs can run here.
 #  (2) huce_bigmem    : Only for GCHP jobs requiring up to 1.5 TB of memory.
-#  (3) shared         : Similar to huce_intel, but open to all of Odyssey.
+#  (3) shared         : Similar to huce_intel, but open to all of users
 #  (3) test           : For interactive sessions only.
-# 
+#
 #  Notes about stdout and stderr logs:
 #  (1) If you omit -o, SLURM will send stdout to slurm-JOBID.out
 #  (2) If you omit -e, SLURM will send stderr to slurm-JOBID.out
@@ -69,7 +69,7 @@
 #  (3) FAIL  : If the job dies with an error
 #  (4) ALL   : (1), (2), and (3) combined
 #
-# !REVISION HISTORY: 
+# !REVISION HISTORY:
 #  Use the "gitk" browser to view the Git version history!
 #EOP
 #------------------------------------------------------------------------------

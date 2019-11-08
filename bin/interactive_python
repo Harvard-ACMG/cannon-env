@@ -7,7 +7,7 @@
 #
 # !MODULE: interactive_python
 #
-# !DESCRIPTION: Shell script to request an interactive session on Odyssey,
+# !DESCRIPTION: Shell script to request an interactive session
 #  geared for python development.
 #\\
 #\\
@@ -19,7 +19,7 @@
 #  If PARTITION is omitted, then the job will start on the "huce_amd" partition.
 #  If TIME-IN-MINUTES is omitted, then the job will run for 60 minutes.
 #
-# !REVISION HISTORY: 
+# !REVISION HISTORY:
 #  27 Nov 2018 - M. Sulprizio- Initial version based on interactive_openmp
 #EOP
 #------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ fi
 
 # Print information
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-echo "%%% Starting an Odyssey interactive session!"
+echo "%%% Starting an interactive session!"
 echo "%%%"
 echo "%%% Memory              : $mem MB"
 echo "%%% Requested time      : $time minutes"
