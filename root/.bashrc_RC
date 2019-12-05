@@ -25,9 +25,13 @@
 #  commands, which will source a file that will load modules and
 #  the personal settings in your ~/.my_personal_settings file.
 #
+#    load_gf92: Loads GNU Fortran 9.2.0 (Spack-built)
 #    load_gf82: Loads GNU Fortran 8.2.0
-#    load_gf71: Loads GNU Fortran v7.1.0
+#    load_gf71: Loads GNU Fortran 7.1.0
+#    load_if18: Loads Intel Fortran 19.0.5
+#    load_if18: Loads Intel Fortran 18.0.5
 #    load_if17: Loads Intel Fortran 17.0.4
+#    load_if15: Loads Intel Fortran 15.0.0
 #    load_if11: Loads Intel Fortran 11.1.069
 #
 #  You can copy this file to ~/.bashrc in your root directory and edit
@@ -91,8 +95,11 @@ export PYTHONSTTARTUP="$HOME/python/python_startup.py"
 # Ghostview
 export GS_DEVICE="x11"
 
-# Emacs
-alias emacs="emacs -nl"
+# Emacs, skip warning messages
+alias emacs="emacs 2>/dev/null"
+
+# Evince, skip warning messages
+alias evince="evince 2>/dev/null"
 
 # KPP compiler
 export PATH="$PATH:$HOME/KPP/kpp-2.2.3_01/bin/"
@@ -171,6 +178,8 @@ alias llh="ls -lh"
 alias load_gf92=". ~/init/init.gc-classic.gfortran92.centos7"
 alias load_gf82=". ~/init/init.gc-classic.gfortran82.centos7"
 alias load_gf71=". ~/init/init.gc-classic.gfortran71.centos7"
+alias load_if19=". ~/init/init.gc-classic.ifort19.centos7"
+alias load_if18=". ~/init/init.gc-classic.ifort18.centos7"
 alias load_if17=". ~/init/init.gc-classic.ifort17.centos7"
 alias load_if11=". ~/init/init.gc-classic.ifort11.centos7"
 
