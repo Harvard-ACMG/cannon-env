@@ -74,7 +74,7 @@ cp -v ~/env/root/.bash_profile ~c
 cp -v ~/env/root/.login ~
 cp -v ~/env/root/.tmux.conf ~
 if [[ $HOSTNAME == *'.rc.fas.harvard.edu' ]]; then
-  cp -v ~/env/root/.bashrc_OD ~/.bashrc
+  cp -v ~/env/root/.bashrc_RC ~/.bashrc
 else
 if [[ $HOSTNAME == *'.as.harvard.edu' ]]; then
   cp -v ~/env/root/.bashrc_AS ~/.bashrc
