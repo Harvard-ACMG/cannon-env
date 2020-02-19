@@ -706,161 +706,6 @@
 ;; Make sure we have F90 mode loaded
 (require 'fortran)
 
-;;
-;; %%% ABBREVIATIONS %%%
-;; When inside a F77 file, type: ;? to see the already defined abbreviations.
-;;
-;; %%% General FORTRAN abbreviations (IF blocks and DO loops) %%%
-;;
-(define-abbrev fortran-mode-abbrev-table ";ife" ""  'fortran-skeleton-if-else-endif)
-(define-abbrev fortran-mode-abbrev-table ";do"  ""  'fortran-skeleton-do-enddo)
-(define-abbrev fortran-mode-abbrev-table ";do2" ""  'fortran-skeleton-do-enddo-2)
-(define-abbrev fortran-mode-abbrev-table ";do3" ""  'fortran-skeleton-do-enddo-3)
-(define-abbrev fortran-mode-abbrev-table ";do4" ""  'fortran-skeleton-do-enddo-4)
-(define-abbrev fortran-mode-abbrev-table ";ar"  ""  'fortran-skeleton-am-I-Root)
-
-(define-skeleton fortran-skeleton-if-else-endif
-  "Insert an if - else - end if region" nil
-  >  "IF (" _ ") THEN" \n
-  -3 "ELSE" \n
-  -3 "ENDIF")
-
-(define-skeleton fortran-skeleton-do-enddo
-  "Insert an do - enddo region (1 loop)" nil
-  >  "DO I = x, y" \n
-  -3 "ENDDO")
-
-(define-skeleton fortran-skeleton-do-enddo-2
-  "Insert an do - enddo region (2 loops)" nil
-  >  "DO J = x, y" \n
-  -3 "DO I = x, y" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO")
-
-(define-skeleton fortran-skeleton-do-enddo-3
-  "Insert an do - enddo region (3 loops)" nil
-  >  "DO L = x, y" \n
-  -3 "DO J = x, y" \n
-  -3 "DO I = x, y" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO")
-
-(define-skeleton fortran-skeleton-do-enddo-4
-  "Insert an do - enddo region (4 loops)" nil
-  >  "DO N = x, y" \n
-  -3 "DO L = x, y" \n
-  -3 "DO J = x, y" \n
-  -3 "DO I = x, y" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO")
-
-(define-skeleton fortran-skeleton-am-I-Root
-  "Insert an if - else - end if region" nil
-  >  "IF ( am_I_Root ) THEN" \n
-  -3 "ENDIF")
-
-;;
-;; %%% FORTRAN data type abbreviations %%%
-;;
-(define-abbrev fortran-mode-abbrev-table ";ii"   ""  'fortran-intent-in)
-(define-abbrev fortran-mode-abbrev-table ";io"   ""  'fortran-intent-out)
-(define-abbrev fortran-mode-abbrev-table ";iio"  ""  'fortran-intent-inout)
-(define-abbrev fortran-mode-abbrev-table ";i4"   ""  'fortran-type-integer4)
-(define-abbrev fortran-mode-abbrev-table ";r4"   ""  'fortran-type-real4)
-(define-abbrev fortran-mode-abbrev-table ";r8"   ""  'fortran-type-real8)
-(define-abbrev fortran-mode-abbrev-table ";ch"   ""  'fortran-type-character)
-
-(define-skeleton fortran-intent-in
-  "Insert an INTENT(IN) template" nil
-  > "INTENT(IN) ")
-
-(define-skeleton fortran-intent-out
-  "Insert an INTENT(OUT) template" nil
-  > "INTENT(OUT) ")
-
-(define-skeleton fortran-intent-inout
-  "Insert an INTENT(INOUT) template" nil
-  > "INTENT(INOUT) ")
-
-(define-skeleton fortran-type-integer4
-  "Insert an INTEGER*4 template" nil
-  > "INTEGER :: ")
-
-(define-skeleton fortran-type-real4
-  "Insert an REAL*4 template" nil
-  > "REAL*4 :: ")
-
-(define-skeleton fortran-type-real8
-  "Insert an REAL*8 template" nil
-  > "REAL*8 :: ")
-
-(define-skeleton fortran-type-character
-  "Insert a CHARACTER template" nil
-  > "CHARACTER(LEN=255) :: ")
-
-;;
-;; %%% ProTex header abbreviations %%%
-;;
-(define-abbrev fortran-mode-abbrev-table ";pi"   ""  'fortran-protex-italic)
-(define-abbrev fortran-mode-abbrev-table ";pb"   ""  'fortran-protex-bold)
-(define-abbrev fortran-mode-abbrev-table ";pu"   ""  'fortran-protex-underline)
-(define-abbrev fortran-mode-abbrev-table ";pel"  ""  'fortran-protex-enumerated-list)
-(define-abbrev fortran-mode-abbrev-table ";pil"  ""  'fortran-protex-itemized-list)
-(define-abbrev fortran-mode-abbrev-table ";pdl"  ""  'fortran-protex-description-list)
-(define-abbrev fortran-mode-abbrev-table ";plb"  ""  'fortran-protex-line-break)
-
-(define-skeleton fortran-protex-italic
-  "Italic command for ProTeX header" nil
-  > "\\emph{}")
-
-(define-skeleton fortran-protex-bold
-  "Underline command for ProTeX header" nil
-  > "\\textbf{}")
-
-(define-skeleton fortran-protex-underline
-  "Underline command for ProTeX header" nil
-  > "\\underline{}")
-
-(define-skeleton fortran-protex-enumerated-list
-  "Enumerated list for ProTeX header" nil
-  > "! \\begin\{enumerate}"\n
-  > "! \\item"\n
-  > "! \\end\{enumerate}")
-
-(define-skeleton fortran-protex-itemized-list
-  "Itemized list for ProTeX header" nil
-  > "! \\begin\{itemize}"\n
-  > "! \\item"\n
-  > "! \\end\{itemize}")
-
-(define-skeleton fortran-protex-description-list
-  "Description list for ProTeX header" nil
-  > "! \\begin\{description}"\n
-  > "! \\item[]"\n
-  > "! \\end\{description}")
-
-(define-skeleton fortran-protex-line-break
-  "Line break for ProTeX header" nil
-  > "! \\\\"\n
-  > "! \\\\")
-
-;;
-;; %%% Various comments %%%
-;;
-(define-abbrev fortran-mode-abbrev-table ";b"   ""  'fortran-comment-1)
-(define-abbrev fortran-mode-abbrev-table ";d"   ""  'fortran-comment-2)
-
-(define-skeleton fortran-comment-1
-  "Comment style 1" nil
-  > "!###")
-
-(define-skeleton fortran-comment-2
-  "Comment style 2" nil
-  > "!%%%")
-
 ;;-----------------------------------------------------------------------------
 ;; Add the following for FORTRAN 90 MODE
 ;;-----------------------------------------------------------------------------
@@ -878,112 +723,6 @@
 
 ;; Make sure we have F90 mode loaded
 (require 'f90)
-
-;;
-;; %%% ABBREVIATIONS %%%
-;; When inside a F90 file, type: `? to see the already defined abbreviations.
-;;
-;; %%% General F90 abbreviations (IF blocks and DO loops) %%%
-;;
-(define-abbrev f90-mode-abbrev-table "`ife" "" 'f90-skeleton-if-else-endif)
-(define-abbrev f90-mode-abbrev-table "`do"  ""  'f90-skeleton-do-enddo)
-(define-abbrev f90-mode-abbrev-table "`do2" ""  'f90-skeleton-do-enddo-2)
-(define-abbrev f90-mode-abbrev-table "`do3" ""  'f90-skeleton-do-enddo-3)
-(define-abbrev f90-mode-abbrev-table "`do4" ""  'f90-skeleton-do-enddo-4)
-(define-abbrev f90-mode-abbrev-table "`ar"  ""  'f90-skeleton-am-I-Root)
-
-(define-skeleton f90-skeleton-if-else-endif
-  "Insert an if - else - end if region" nil
-  >  "IF (" _ ") THEN" \n
-  -3 "ELSE" \n
-  -3 "ENDIF")
-
-(define-skeleton f90-skeleton-do-enddo
-  "Insert an do - enddo region (1 loop)" nil
-  >  "DO I = x, y" \n
-  -3 "ENDDO")
-
-(define-skeleton f90-skeleton-do-enddo-2
-  "Insert an do - enddo region (2 loops)" nil
-  >  "DO J = x, y" \n
-  -3 "DO I = x, y" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO")
-
-(define-skeleton f90-skeleton-do-enddo-3
-  "Insert an do - enddo region (3 loops)" nil
-  >  "DO L = x, y" \n
-  -3 "DO J = x, y" \n
-  -3 "DO I = x, y" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO")
-
-(define-skeleton f90-skeleton-do-enddo-4
-  "Insert an do - enddo region (4 loops)" nil
-  >  "DO N = x, y" \n
-  -3 "DO L = x, y" \n
-  -3 "DO J = x, y" \n
-  -3 "DO I = x, y" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO" \n
-  -3 "ENDDO")
-
-(define-skeleton f90-skeleton-am-I-Root
-  "Insert an if - else - end if region" nil
-  >  "IF ( am_I_Root ) THEN" \n
-  -3 "ENDIF")
-
-;;
-;; %%% ProTex header abbreviations %%%
-;;
-(define-abbrev f90-mode-abbrev-table "`pi"   ""  'f90-protex-italic)
-(define-abbrev f90-mode-abbrev-table "`pb"   ""  'f90-protex-bold)
-(define-abbrev f90-mode-abbrev-table "`pu"   ""  'f90-protex-underline)
-(define-abbrev f90-mode-abbrev-table "`pel"  ""  'f90-protex-enumerated-list)
-(define-abbrev f90-mode-abbrev-table "`pil"  ""  'f90-protex-itemized-list)
-(define-abbrev f90-mode-abbrev-table "`pdl"  ""  'f90-protex-description-list)
-(define-abbrev f90-mode-abbrev-table "`plb"  ""  'f90-protex-line-break)
-
-(define-skeleton f90-protex-italic
-  "Italic command for ProTeX header" nil
-  > "\\emph{}")
-
-(define-skeleton f90-protex-bold
-  "Underline command for ProTeX header" nil
-  > "\\textbf{}")
-
-(define-skeleton f90-protex-underline
-  "Underline command for ProTeX header" nil
-  > "\\underline{}")
-
-(define-skeleton f90-protex-enumerated-list
-  "Enumerated list for ProTeX header" nil
-  > "! \\begin{enumerate}" \n
-  > "! \\item" \n
-  > "! \\end{enumerate}")
-
-(define-skeleton f90-protex-itemized-list
-  "Enumerated list for ProTeX header" nil
-  > "! \\begin\{itemize}"\n
-  > "! \\item"\n
-  > "! \\end\{itemize}")
-
-(define-skeleton f90-protex-description-list
-  "Description list for ProTeX header" nil
-  > "! \\begin\{description}"\n
-  > "! \\item[]" \n
-  > "! \\end\{description}")
-
-(define-skeleton f90-protex-line-break
-  "Line break for ProTeX header" nil
-  > "! \\\\" \n
-  > "! \\\\")
-
-;; Don't start code on the next line after a skeleton abbrev
-(setq skeleton-end-hook nil)
-
 
 ;;-----------------------------------------------------------------------------
 ;; Add the following for SHELL SCRIPT MODE
@@ -1056,10 +795,22 @@
     (global-font-lock-mode 1)          ; GNU Emacs
     (setq font-lock-auto-fontify t))   ; XEmacs
 
+;;-----------------------------------------------------------------------------
+;; For YAML mode
+;; See https://github.com/yoshiki/yaml-mode
+;;-----------------------------------------------------------------------------
+
+(require 'yaml-mode)
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+(add-hook 'yaml-mode-hook
+    '(lambda ()
+       (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
 ;-----------------------------------------------------------------------------
 ; Remove trailing white space before saving
 ;-----------------------------------------------------------------------------
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;=============================================================================
 ;; FOR EMACS ONLY!
