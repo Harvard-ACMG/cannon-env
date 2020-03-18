@@ -105,6 +105,11 @@ alias evince="evince 2>/dev/null"
 export PATH="$PATH:$HOME/KPP/kpp-2.2.3_01/bin/"
 export KPP_HOME="$HOME/KPP/kpp-2.2.3_01"
 
+# Jacob-group Spack-built software stack
+# NOTE: If you are using your own Spack distribution,
+# point SPACK_ROOT to your root Spack folder instead!
+export SPACK_ROOT=/n/jacob_lab/Lab/spack
+
 #==============================================================================
 # %%%%% Basic SLURM commands %%%%%
 #==============================================================================
