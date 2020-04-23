@@ -74,14 +74,34 @@ module load netcdf-fortran/4.4.0-fasrc03
 module load nco/4.7.4-fasrc01
 module load cdo/1.9.4-fasrc02
 module load ncview/2.1.7-fasrc02
-module load totalview/8.8.0.1-fasrc01
-module load emacs/26.1-fasrc01
-module load cmake/3.12.1-fasrc01
-module list
 
 # Define F90 and F77 environment variables (may be needed by some software)
 export F90=$FC
 export F77=$FC
+
+#==============================================================================
+# %%%%% Load other modules via Spack %%%%%
+#==============================================================================
+
+# Initialize Spack
+echo "Initializing Spack..."
+export SPACK_ROOT=/n/jacob_lab/Lab/Apr2020/spack
+source $SPACK_ROOT/share/spack/setup-env.sh
+
+# List each Spack package that you want to load
+pkgs=(cgdb%gcc@9.2.0     \
+      emacs+X%gcc@9.2.0  \
+      cmake%gcc@9.2.0    \
+      tau%gcc@9.2.0     )
+
+# Load each Spack package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    spack load $f
+done
+
+# List both RC and Spack-built modules
+module list
 
 #==============================================================================
 # %%%%% Settings for OpenMP parallelization %%%%%
@@ -156,3 +176,4 @@ export LIB_NETCDF=$GC_LIB
 
 # %%%%% Add GC_LIB to the LD_LIBRARY_PATH %%%%%
 export LD_LIBRARY_PATH="$GC_LIB:$LD_LIBRARY_PATH"
+

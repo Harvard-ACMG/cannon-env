@@ -70,14 +70,35 @@ module load flex/2.6.4-fasrc01
 module load intel/18.0.5-fasrc01
 module load openmpi/4.0.1-fasrc01
 module load netcdf-fortran/4.5.2-fasrc01
-module load emacs/26.1-fasrc01
-module load cmake/3.12.1-fasrc01
 module load jdk/1.8.0_172-fasrc01
-module list
 
 # Define F90 and F77 environment variables (may be needed by some software)
 export F90=$FC
 export F77=$FC
+
+#==============================================================================
+# %%%%% Load other modules via Spack %%%%%
+#==============================================================================
+
+# Initialize Spack
+echo "Initializing Spack..."
+export SPACK_ROOT=/n/jacob_lab/Lab/Apr2020/spack
+source $SPACK_ROOT/share/spack/setup-env.sh
+
+# List each Spack package that you want to load
+pkgs=(cgdb%gcc@9.2.0     \
+      emacs%gcc@9.2.0+X  \
+      cmake%gcc@9.2.0    \
+      tau%gcc@9.2.0     )
+
+# Load each Spack package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    spack load $f
+done
+
+# List both RC-built and Spack-built modules
+module list
 
 #==============================================================================
 # %%%%% Settings for OpenMP parallelization %%%%%
@@ -149,11 +170,3 @@ fi
 export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
 export LIB_NETCDF=$GC_LIB
-
-#==============================================================================
-# %%%%% TAU profiler settings (via Spack) %%%%%
-#==============================================================================
-echo "Initializing Spack..."
-export SPACK_ROOT=/net/seasfs01/srv/export/jacob_lab/share_root/Lab/spack
-source $SPACK_ROOT/share/spack/setup-env.sh
-spack load tau

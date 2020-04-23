@@ -75,12 +75,34 @@ module load cdo/1.9.4-fasrc02
 module load nco/4.7.4-fasrc01
 module load ncview/2.1.7-fasrc02
 module load emacs/26.1-fasrc01
-module load cmake/3.12.1-fasrc01
-module list
 
 # Define F90 and F77 environment variables (may be needed by some software)
 export F90=$FC
 export F77=$FC
+
+#==============================================================================
+# %%%%% Load other modules via Spack %%%%%
+#==============================================================================
+
+# Initialize Spack
+echo "Initializing Spack..."
+export SPACK_ROOT=/n/jacob_lab/Lab/Apr2020/spack
+source $SPACK_ROOT/share/spack/setup-env.sh
+
+# List each Spack package that you want to load
+pkgs=(cgdb%gcc@9.2.0     \
+      emacs%gcc@9.2.0+X  \
+      cmake%gcc@9.2.0    \
+      tau%gcc@9.2.0     )
+
+# Load each Spack package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    spack load $f
+done
+
+# List both RC-built and Spack-built modules
+module list
 
 #==============================================================================
 # %%%%% Settings for OpenMP parallelization %%%%%
@@ -153,8 +175,4 @@ export BIN_NETCDF=$GC_BIN
 export INC_NETCDF=$GC_INCLUDE
 export LIB_NETCDF=$GC_LIB    
 
-# Comment out TAU-specific environment variables for now (bmy, 5/10/18)
-## TAU profiler (note: TAU only works for GNU Fortran)
-#$export TAU_OPTIONS="-optRevert -optVerbose -optPreProcess -optContinueBeforeOMP  -optPdtGnuFortranParser"
-#export TAU_MAKEFILE="$TAU_HOME/x86_64/lib/Makefile.tau-ompt-mpi-pdt-openmp"
 

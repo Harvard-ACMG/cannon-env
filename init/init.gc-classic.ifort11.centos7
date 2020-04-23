@@ -71,9 +71,6 @@ module load flex/2.6.4-fasrc01
 module load intel/11.1
 module load GEOS-Chem-Libraries
 module load totalview/8.8.0.1-fasrc01
-module load emacs/26.1-fasrc01
-module load cmake/3.12.1-fasrc01
-module list
 
 # Manually point to GEOS-Chem-Libraries build
 NETCDF_HOME=/n/holylfs/EXTERNAL_REPOS/GEOS-CHEM/opt/GEOS-Chem-Libraries/ifort/nc4
@@ -91,6 +88,30 @@ export CXX=icpc
 # Define F90 and F77 environment variables (may be needed by some software)
 export F90=$FC
 export F77=$FC
+
+#==============================================================================
+# %%%%% Load other modules via Spack %%%%%
+#==============================================================================
+
+# Initialize Spack
+echo "Initializing Spack..."
+export SPACK_ROOT=/n/jacob_lab/Lab/Apr2020/spack
+source $SPACK_ROOT/share/spack/setup-env.sh
+
+# List each Spack package that you want to load
+pkgs=(cgdb%gcc@9.2.0     \
+      emacs+X%gcc@9.2.0  \
+      cmake%gcc@9.2.0    \
+      tau%gcc@9.2.0     )
+
+# Load each Spack package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    spack load $f
+done
+
+# List both RC-built and Spack-built modules
+module list
 
 #==============================================================================
 # %%%%% Settings for OpenMP parallelization %%%%%
