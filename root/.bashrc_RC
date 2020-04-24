@@ -180,6 +180,7 @@ alias llh="ls -lh"
 #==============================================================================
 # %%%%% Aliases to load modules for different compilers %%%%%
 #==============================================================================
+alias load_gf93=". ~/init/init.gc-classic.gfortran93.centos7"
 alias load_gf92=". ~/init/init.gc-classic.gfortran92.centos7"
 alias load_gf82=". ~/init/init.gc-classic.gfortran82.centos7"
 alias load_gf71=". ~/init/init.gc-classic.gfortran71.centos7"
