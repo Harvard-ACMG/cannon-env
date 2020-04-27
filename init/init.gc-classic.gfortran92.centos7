@@ -59,8 +59,8 @@ unset OMP_STACKSIZE
 #==============================================================================
 
 # Initialize modules
-module purge
 export LMOD_COLORIZE=yes
+module purge
 
 # List each RC-built module that you wish to use 
 pkgs=(git/2.17.0-fasrc01)
@@ -76,7 +76,6 @@ done
 #==============================================================================
 
 # Initialize Spack
-echo "Initializing Spack..."
 export SPACK_ROOT=/n/jacob_lab/Lab/Apr2020/spack
 source $SPACK_ROOT/share/spack/setup-env.sh
 
@@ -104,7 +103,7 @@ for f in ${pkgs[@]}; do
 done
 
 # List both RC-built and Spack-built modules
-module list
+#module list
 
 #==============================================================================
 # %%%%% Settings for OpenMP parallelization %%%%%

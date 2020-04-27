@@ -81,13 +81,13 @@ source $SPACK_ROOT/share/spack/setup-env.sh
 
 # List each Spack package that you want to load
 # NOTE: We load gcc/gfortran 9.3.0 but still can use
-# the other packages built with gcc/gfortran 9.2.0!
+# most other packages built with gcc/gfortran 9.2.0!
 pkgs=(gcc@9.3.0                \
       emacs+X%gcc@9.2.0        \
-      cgdb%gcc@9.2.0           \
+      cgdb%gcc@9.3.0           \
       cmake%gcc@9.2.0          \
       flex%gcc@9.2.0           \
-      gdb%gcc@9.2.0            \
+      gdb%gcc@9.3.0            \
       hdf5%gcc@9.2.0           \ 
       nco%gcc@9.2.0            \
       openmpi%gcc@9.2.0        \
