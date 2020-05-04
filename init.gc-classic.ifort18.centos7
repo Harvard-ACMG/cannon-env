@@ -1,0 +1,183 @@
+#------------------------------------------------------------------------------
+#          Harvard University Atmospheric Chemistry Modeling Group            !
+#------------------------------------------------------------------------------
+#BOP
+#
+# !MODULE: init.gc-classic.ifort18.centos7
+#
+# !DESCRIPTION: Bash script that loads the proper modules and sets
+#  environment variables for Intel Fortran Compiler 18.0.5 and CentOS7.
+#\\
+#\\
+# !CALLING SEQUENCE:
+#  source ~/init/init.gc-classic.ifort18.centos7
+#
+# !REMARKS:
+#
+# !REVISION HISTORY:
+#  Change directory to ~/env and type 'gitk' at the prompt to browse
+#  revision history.
+#EOP
+#------------------------------------------------------------------------------
+#BOC
+
+#==============================================================================
+# %%%%% Clear existing environment variables %%%%%
+#==============================================================================
+unset PYTHON_HOME
+unset PERL_HOME
+unset IDL_HOME
+unset EMACS_HOME
+unset CC
+unset CXX
+unset FC
+unset F77
+unset F90
+unset NETCDF_BIN
+unset NETCDF_HOME
+unset NETCDF_INCLUDE
+unset NETCDF_LIB
+unset NETCDF_FORTRAN_BIN
+unset NETCDF_FORTRAN_HOME
+unset NETCDF_FORTRAN_INCLUDE
+unset NETCDF_FORTRAN_LIB
+unset GC_BIN
+unset GC_INCLUDE
+unset GC_LIB
+unset GC_F_BIN
+unset GC_F_INCLUDE
+unset GC_F_LIB
+unset BIN_NETCDF
+unset INC_NETCDF
+unset LIB_NETCDF
+unset OMP_NUM_THREADS
+unset OMP_STACKSIZE
+unset TAU_OPTIONS
+unset TAU_MAKEFILE
+
+#==============================================================================
+# %%%%% Load modules for Intel Fortran 18.0.5 %%%%%
+#
+# NOTE: Specify version numbers to avoid conflicting w/ EasyBuild modules
+#==============================================================================
+echo "Loading ifort 18.0.5 and related libraries..."
+export LMOD_COLORIZE=yes
+module purge
+pkgs=(git/2.17.0-fasrc01           \
+      perl/5.26.1-fasrc01          \
+      IDL/8.4.1-fasrc01            \
+      flex/2.6.4-fasrc01           \
+      intel/18.0.5-fasrc01         \
+      openmpi/4.0.1-fasrc01        \
+      netcdf-fortran/4.5.2-fasrc01 \
+      jdk/1.8.0_172-fasrc01)
+
+# Load each RC-built package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    module load $f
+done
+
+# Define F90 and F77 environment variables (may be needed by some software)
+export F90=$FC
+export F77=$FC
+
+#==============================================================================
+# %%%%% Load other modules via Spack %%%%%
+#==============================================================================
+
+# Initialize Spack
+export SPACK_ROOT=/n/jacob_lab/Lab/Apr2020/spack
+source $SPACK_ROOT/share/spack/setup-env.sh
+
+# List each Spack package that you want to load
+pkgs=(emacs%gcc@9.2.0+X  \
+      cmake%gcc@9.2.0    \
+      tau%gcc@9.2.0     )
+
+# Load each Spack package
+for f in ${pkgs[@]}; do
+    echo "Loading $f"
+    spack load $f
+done
+
+# List both RC-built and Spack-built modules
+module list
+
+#==============================================================================
+# %%%%% Settings for OpenMP parallelization %%%%%
+#==============================================================================
+
+# Max out the stack memory for OpenMP
+# Asking for a huge number will just give you the max availble
+export OMP_STACKSIZE=500m
+
+# By default, set the number of threads for OpenMP parallelization to 1
+export OMP_NUM_THREADS=1
+
+# Redefine number threads for OpenMP parallelization
+# (a) If in a SLURM partition, set OMP_NUM_THREADS = SLURM_CPUS_PER_TASK
+# (b) Or, set OMP_NUM_THREADS to the optional first argument that is passed
+if [[ -n "${SLURM_CPUS_PER_TASK+1}" ]]; then
+  export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+elif [[ "$#" -eq 1 ]]; then
+  if [[ "x$1" != "xignoreeof" ]]; then
+     export OMP_NUM_THREADS=$1
+  fi
+fi
+echo "Number of OpenMP threads: $OMP_NUM_THREADS"
+
+#==============================================================================
+# %%%%% Define relevant environment variables %%%%%
+#==============================================================================
+
+# Machine architecture
+export ARCH=`uname -s`
+
+# NETCDF_HOME
+if [[ "x$NETCDF_HOME" == x ]]; then
+  export NETCDF_HOME=`nc-config --prefix`
+  fi
+
+# NETCDF_BIN
+if [[ "x$NETCDF_BIN" == x ]]; then
+  export NETCDF_BIN="$NETCDF_HOME/bin"
+fi
+
+# GC_LIB (deprecated)
+if [[ "x$NETCDF_LIB" == x ]]; then
+  export GC_LIB="$NETCDF_HOME/lib"
+else
+  export GC_LIB="$NETCDF_LIB"
+fi
+
+# GC_INCLUDE (deprecated)
+if [[ "x$NETCDF_INCLUDE" == x ]]; then
+  export GC_INCLUDE="$NETCDF_HOME/include"
+else
+  export GC_INCLUDE="$NETCDF_INCLUDE"
+fi
+
+# GC_BIN (deprecated)
+export GC_BIN="$NETCDF_HOME/bin"
+
+# If the netCDF-Fortran library is loaded separately
+# then also define the GC_F_* environment variables (deprecated)
+if [[ "x$NETCDF_FORTRAN_HOME" != x ]]; then
+  export NETCDF_FORTRAN_BIN="$NETCDF_FORTRAN_HOME/bin"
+  export GC_F_BIN="$NETCDF_FORTRAN_HOME/bin"
+  export GC_F_INCLUDE="$NETCDF_FORTRAN_INCLUDE"
+  export GC_F_LIB="$NETCDF_FORTRAN_LIB"
+fi
+
+# Set flags for backwards compatibility w/ other code packages
+export BIN_NETCDF=$GC_BIN
+export INC_NETCDF=$GC_INCLUDE
+export LIB_NETCDF=$GC_LIB
+
+# Kludge: Reset the MANPATH variable so that we won't get the "argument list
+# too long" error, which can happen if there are too many paths specified.
+export MANPATH=$INTEL_HOME/share/man/:/n/helmod/apps/centos7/Core/git/2.17.0-fasrc01/share/man:/usr/share/man:
+
+# The cgdb debugger is installed manually due to Spack issues
+alias cgdb=/n/jacob_lab/Lab/Apr2020/cgdb-0.7.1/bin/cgdb
