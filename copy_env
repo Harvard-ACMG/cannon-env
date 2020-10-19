@@ -57,14 +57,14 @@ else
 fi
 
 #-----------------------------------------------------------
-# Copy contents of env/init
+# Copy contents of env/envs
 #-----------------------------------------------------------
-if [ -d ~/init ]; then
-  # Copy contents of env/init to your init directory
-  cp -v ~/env/init/* ~/init/
+if [ -d ~/envs ]; then
+  # Copy contents of env/envs to your envs directory
+  cp -v ~/env/envs/* ~/envs/
 else
-  # Create init directory and copy
-  cp -rv ~/env/init ~
+  # Create envs directory and copy
+  cp -rv ~/env/envs ~
 fi
 
 #-----------------------------------------------------------
