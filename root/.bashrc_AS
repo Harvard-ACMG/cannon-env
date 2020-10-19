@@ -213,7 +213,7 @@ mail=$MAIL
 #==============================================================================
 
 # %%%%% Alias to pull env directory updates %%%%%
-alias  getenv="cd ~/env; git pull origin master"
+alias  getenv="cd ~/env; git pull origin main"
 
 # %%%%% Aliases for general Unix commands %%%%
 alias  disk="du -h -s -c"
