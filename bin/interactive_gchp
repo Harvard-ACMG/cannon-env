@@ -18,11 +18,10 @@
 #  interactive_gchp NODES CORES MEM-PER-CPU [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
-#  Executes the srun command to start an interactive SLURM session.
+#  Executes the salloc command to start an interactive SLURM session.
 #
 # !REVISION HISTORY:
-#  01 Jun 2016 - E. Lundgren - Initial version (based on interactive_openmp)
-#  29 Aug 2016 - E. Lundgren - Change --mem to --mem-per-cpu
+#  Use the gitk browser to see the Git version history!
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -68,13 +67,13 @@ remainder=$(($cores%$nodes))
 
 # Start the interactive session
 if [[ $nodes == 1 ]]; then
-   srun -p $part --pty --x11=first --mem-per-cpu=$mem -N $nodes -n $cores -t $time -p $part /bin/bash
+   salloc -p $part --pty --x11=first --mem-per-cpu=$mem -N $nodes -n $cores -t $time -p $part /bin/bash
 else
    if [[ $remainder > 0 ]]; then
        echo "FAILURE: Number of Cores must be divisible by number of nodes. Try again."
    else
      cores_per_node=$(($cores/$nodes))
-     srun -p $part --pty --x11=first -m plane=$cores_per_node --mem-per-cpu=$mem -N $nodes -n $cores -t $time -p $part /bin/bash
+     salloc -p $part --pty --x11=first -m plane=$cores_per_node --mem-per-cpu=$mem -N $nodes -n $cores -t $time -p $part /bin/bash
    fi
 fi
 

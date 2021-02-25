@@ -14,7 +14,7 @@
 #  interactive CORES NODES MEMORY-PER-CPU [TIME-IN-MINUTES] [PARTITION]
 #
 # !REMARKS:
-#  Executes the srun command.  For now, all Cores are placed on one node,
+#  Executes the salloc command.  For now, all Cores are placed on one node,
 #  for traditional GEOS-Chem usage.
 #
 # !REVISION HISTORY:
@@ -69,6 +69,6 @@ echo "%%% to the same number of cores that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-srun --pty --x11=first -n $cores -N $nodes --mem-per-cpu=$mem -p $part -t $time /bin/bash
+salloc --pty --x11=first -n $cores -N $nodes --mem-per-cpu=$mem -p $part -t $time /bin/bash
 
 #EOC
