@@ -10,7 +10,7 @@ These files contain defaults that are specific to Cannon and should not be modif
   - System startup file.  Executes only at initial login.
 
 `.bash_profile`
-  - System startup file.  Its only function is to apply the settings in the `.bashrc` file.
+  - System startup file.  It applies the settings in the `.bashrc` file, and also adds your `~/bin` folder to the search path.
 
 `.bashrc`
   - System startup file.  Applies default system settings, plus some commonly-used customizations.  Also applies the settings that you have defined in your`.my_personal_settings` file.

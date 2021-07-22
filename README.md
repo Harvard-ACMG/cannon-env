@@ -26,7 +26,7 @@ This folder contains startup scripts, which will be copied to your home director
 
 ### bin
 
-This folder contains several user convenience scripts, which will be copied to your `$HOME/bin` folder.  For a complete desciption, please see [`bin/README.md`](bin/README.md)
+This folder contains several user convenience scripts, which will be copied to your `$HOME/bin` folder.  For a complete desciption, please see [`bin/README.md`](bin/README.md).
 
 ### envs
 

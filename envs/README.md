@@ -65,10 +65,11 @@ These environment files load the relevant software modules for "legacy" GEOS-Che
 ### Legacy GCHP versions (prior to 13.0.0)
 
 The most recent GCHP versions support GNU compilers 8.3.0 and later or Intel compilers 19 and later.  The following environment files load software modules that are no longer compatible with the most recent GCHP versions.  If you are using a GCHP version prior to 13.0.0, you can use one of these environment files to load the appropriate software modules.  (But we **strongly** recommend that you migrate to the most recent GCHP version!)
-
-`gchpctm.gfortran82_openmpi3_cannon.env`
-`gchpctm.ifort18_openmpi4_cannon.env`
-`gchpctm.ifort17_openmpi3_cannon.env`
-`gchp_legacy.gfortran82_openmpi_cannon.env`
-`gchp_legacy.ifort17_openmpi_cannon.env`
-`gchp_legacy.ifort18_openmpi4_cannon.env`
+```
+gchpctm.gfortran82_openmpi3_cannon.env
+gchpctm.ifort18_openmpi4_cannon.env
+gchpctm.ifort17_openmpi3_cannon.env
+gchp_legacy.gfortran82_openmpi_cannon.env
+gchp_legacy.ifort17_openmpi_cannon.env
+gchp_legacy.ifort18_openmpi4_cannon.env
+```
