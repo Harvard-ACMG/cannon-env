@@ -35,3 +35,7 @@ This directory contains scripts that the proper Cannon software modules for GEOS
 ### IDL
 
 This directory contains scripts that initialize your IDL session.  Please see [`IDL/README.md`](IDL/README.md) for more information.
+
+## Reporting bugs or technical issues
+
+Please report any bugs or technical issues you may encounter by [opening a new issue](https://github.com/Harvard-ACMG/cannon-env/issues).  We try to ensure that this repository is kept up-to-date as possible.  But there is always the possibility that Cannon software or operating system upgrades may "break" the functionality provided by these configuraton files.
