@@ -10,7 +10,7 @@ cd ~
 git clone https://github.com/Harvard-ACMG/cannon-env.git
 ```
 
-We have provided a script named `copy-env` that will copy the relevant scripts and configuration files to the proper places in your home directory.  To execute the script, type at the command-line prompt:
+We have provided a script named `copy-cannon-env` that will copy the relevant scripts and configuration files to the proper places in your home directory.  To execute the script, type at the command-line prompt:
 ```
 cd cannon-env
 ./copy-cannon-env
