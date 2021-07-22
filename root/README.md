@@ -7,23 +7,23 @@ When you run the `copy-cannon-env` script, these files will be copied to your ho
 These files contain defaults that are specific to Cannon and should not be modified.
 
 `.login`
-  - System startup file.  Executes only at initial login.
+  - System startup file (i.e. settings are applied only at login).
 
 `.bash_profile`
-  - System startup file.  It applies the settings in the `.bashrc` file, and also adds your `~/bin` folder to the search path.
+  - Shell startup file (i.e. settings are applied whenever a new bash shell instance starts).  The `.bash_profile` file applies the settings in the `.bashrc` file, and also adds your `~/bin` folder to the search path.
 
 `.bashrc`
-  - System startup file.  Applies default system settings, plus some commonly-used customizations.  Also applies the settings that you have defined in your`.my_personal_settings` file.
+  - Shell startup file (i.e. settings are applied whenever a new bash shell instance starts).  The `.bashrc` file applies default system settings, plus some commonly-used customizations.  It also applies the settings that you have defined in your`.my_personal_settings` file.
 
 ## Files that you can customize
 
 You can add your own Cannon environment customizations to these files:
 
 `.my_personal_settings`
-  - System statup file.  You can add aliases and other customizations here. It is good practice to add your own customizations here instead of to the `.bashrc` file.
+  - Shell statup file (i.e. settings are applied whenever a new bash shell instance starts). You can add aliases and other customizations here. It is good practice to add your own customizations here instead of to the `.bashrc` file.
 
 `.Xresources`
-  - X11 configuration file.  Contains settings for the "look and feel" of xterm windows and other X11 programs.  If you make any changes to this file, you can apply them by typing `xrdb ~/.Xresources`.
+  - X11 configuration file (settings are applied at login).  Contains settings for the "look and feel" of xterm windows and other X11 programs.  If you make any changes to this file, you can apply them by typing `xrdb ~/.Xresources`.
 
 `.emacs`
   - Configuration file for the Emacs editor.  You can add your own emacs customizations here.
