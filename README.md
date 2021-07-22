@@ -8,7 +8,7 @@ We recommend downloading this repository to your Cannon home directory.  Type th
 ```
 cd ~
 git clone https://github.com/Harvard-ACMG/cannon-env.git
-``` bg
+```
 
 We have provided a script named `copy-env` that will copy the relevant scripts and configuration files to the proper places in your home directory.  To execute the script, type at the command-line prompt:
 ```
