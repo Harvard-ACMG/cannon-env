@@ -22,10 +22,21 @@
 
 # Source the .bashrc file if it exists
 if [ -f ~/.bashrc ]; then
-   . ~/.bashrc
+    . ~/.bashrc
 fi
 
-# User specific environment and startup programs
-PATH=$PATH:$HOME/bin
-export PATH
+# Set path so that it includes user's private bin if it exits
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin:$PATH"
+    export PATH
+fi
+
+# Set path so that it includes user's private .local/bin if it exits
+if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+    export PATH
+fi
+
+
+
 #EOC
