@@ -5,19 +5,17 @@
 #
 # !MODULE: .login
 #
-# !DESCRIPTION: Bob Y's .login file.  Sets various one-time parameters 
-#  at login time.
+# !DESCRIPTION: Sets various one-time parameters at login time.
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/.login
+#  Type at the Unix prompt:
+#
+#     source ~/.login
 #
 # !REMARKS:
-# .cshrc is executed every time a new Unix shell is opened on a machine
+# .bashrc is executed every time a new Unix shell is opened on a machine
 # .login is ONLY executed the first time you log into a machine
-#
-# !REVISION HISTORY: 
-#  13 Aug 2009 - R. Yantosca - Added ProTeX headers
 #EOP
 #------------------------------------------------------------------------------
 #BOC

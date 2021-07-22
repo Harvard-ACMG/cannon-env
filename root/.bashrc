@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !MODULE: .bashrc_RC
+# !MODULE: .bashrc
 #
 # !DESCRIPTION: File containing environment settings for the bash shell on
 #  FAS RC's Cannon cluster. Rename this file .bashrc when copying to your
@@ -11,22 +11,22 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/.bashrc
+#  To apply the settings here, type at the Unix prompt:
+#
+#     source ~/.bashrc
 #
 # !REMARKS:
 #  We have removed the module load commands from this .bashrc.  Here you
 #  will only find some basic settings and aliases that are needed for
-#  you to run GEOS-Chem.
+#  you to run GEOS-Chem.  The module load commands should be applied
+#  separately from the .bashrc.  These can be done by sourcing the
+#  appropriate environment file.
 #
 #  This .bashrc will also source your startup file ~/.my_personal_settings
 #  to load your own personal preferences for your Unix environment.
 #
 #  You can copy this file to ~/.bashrc in your root directory and edit
 #  as you wish.
-#
-# !REVISION HISTORY:
-#  Change directory to ~/env and type 'gitk' at the prompt to browse
-#  revision history.
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -78,9 +78,6 @@ export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
 
 # Python
 export PYTHONSTTARTUP="$HOME/python/python_startup.py"
-
-# Ghostview
-export GS_DEVICE="x11"
 
 # Emacs, skip warning messages
 alias emacs="emacs 2>/dev/null"
@@ -167,11 +164,10 @@ alias llh="ls -lh"
 #==============================================================================
 # %%%%% Aliases to load modules for different compilers %%%%%
 #==============================================================================
-alias load_gf93=". ~/envs/gcc_cmake.gfortran102_cannon.env"
+alias load_gf102=". ~/envs/gcc_cmake.gfortran102_cannon.env"
 alias load_gf93=". ~/envs/gcc_cmake.gfortran93_cannon.env"
 alias load_if19=". ~/envs/gcc_cmake.ifort19_openmpi_cannon.env"
 alias load_if18=". ~/envs/gcc_cmake.ifort18_openmpi_cannon.env"
-alias load_if17=". ~/init/init.gc-classic.ifort17.centos7"
 
 #==============================================================================
 # %%%%% Load the user's personal settings and aliases %%%%%
@@ -179,5 +175,4 @@ alias load_if17=". ~/init/init.gc-classic.ifort17.centos7"
 if [[ -f ~/.my_personal_settings ]]; then
   . ~/.my_personal_settings
 fi
-
 #EOC

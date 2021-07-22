@@ -1,0 +1,38 @@
+!------------------------------------------------------------------------------
+!          Harvard University Atmospheric Chemistry Modeling Group            !
+!------------------------------------------------------------------------------
+!BOP
+!
+! !MODULE: .Xresources
+!
+! !DESCRIPTION: The .Xresources file contains defaults for xterm windows
+!  (and other X11 programs, if necessary).
+!\\
+!\\
+! !CALLING SEQUENCE:
+!  To apply these settings, type at the Unix prompt:
+!
+!     xrdb ~/.Xresources
+!
+! !REMARKS:
+!  Based on examples from:
+!    http://www2.its.strath.ac.uk/courses/x/subsection3_9_4.html
+!    http://infohost.nmt.edu/tcc/help/pubs/dotfiles/xdefaults.html
+!
+!EOP
+!------------------------------------------------------------------------------
+!BOC
+
+xterm*background:      DarkSlateGray
+xterm*foreground:      LemonChiffon
+xterm*cursorcolor:     FireBrick
+xterm*termtype:        xterm
+xterm*geometry:        90x26+0+0
+xterm*font:            10x20
+xterm*savelines:       10000
+xterm*scrollbar:       true
+xterm*titlebar:        true
+xterm*textundericon:   true
+xterm*allowiconinput:  true
+xterm*autoraise:       true
+!EOC

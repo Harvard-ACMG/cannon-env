@@ -13,12 +13,9 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  copy_env
+#  Type at the Unix prompt:
 #
-# !REMARKS:
-#
-# !REVISION HISTORY:
-#  Use the "gitk browser" to view the Git version history!
+#    ./copy_env
 #EOP
 #------------------------------------------------------------------------------
 #BOC
@@ -26,112 +23,81 @@
 #-----------------------------------------------------------
 # Copy contents of env/bash
 #-----------------------------------------------------------
-if [ -d ~/bash ]; then
+if [ -d ${HOME}/bash ]; then
   # Copy contents of env/bash to your bash directory
-  cp -v ~/env/bash/* ~/bash/
+  cp -v ./bash/* ${HOME}/bash/
 else
   # Copy entire env/bash directory to your home directory
-  cp -rv ~/env/bash ~
+  cp -rv ./bash ${HOME}
 fi
 
 #-----------------------------------------------------------
 # Copy contents of env/bin
 #-----------------------------------------------------------
-if [ -d ~/bin ]; then
+if [ -d ${HOME}/bin ]; then
   # Copy contents of env/bin to your bin directory
-  cp -v ~/env/bin/* ~/bin/
+  cp -v ./bin/* ${HOME}/bin/
 else
   # Copy entire env/bin directory to your home directory
-  cp -rv ~/env/bin ~
+  cp -rv ./bin ${HOME}
 fi
 
 #-----------------------------------------------------------
 # Copy contents of env/IDL
 #-----------------------------------------------------------
-if [ -d ~/IDL ]; then
+if [ -d ${HOME}/IDL ]; then
   # Copy contents of env/IDL to your IDL directory
-  cp -v ~/env/IDL/* ~/IDL/
+  cp -v ./IDL/* ${HOME}/IDL/
 else
   # Create IDL directory and copy
-  cp -rv ~/env/IDL ~
+  cp -rv ./IDL ${HOME}
 fi
 
 #-----------------------------------------------------------
 # Copy contents of env/envs
 #-----------------------------------------------------------
-if [ -d ~/envs ]; then
+if [ -d ${HOME}/envs ]; then
   # Copy contents of env/envs to your envs directory
-  cp -v ~/env/envs/* ~/envs/
+  cp -v ./envs/* ${HOME}/envs/
 else
   # Create envs directory and copy
-  cp -rv ~/env/envs ~
+  cp -rv ./envs ${HOME}
 fi
 
 #-----------------------------------------------------------
 # Copy contents of env/root
 #-----------------------------------------------------------
-cp -v ~/env/root/.bash_profile ~c
-cp -v ~/env/root/.login ~
-cp -v ~/env/root/.tmux.conf ~
-if [[ $HOSTNAME == *'.rc.fas.harvard.edu' ]]; then
-  cp -v ~/env/root/.bashrc_RC ~/.bashrc
-else
-if [[ $HOSTNAME == *'.as.harvard.edu' ]]; then
-  cp -v ~/env/root/.bashrc_AS ~/.bashrc
-fi
-fi
+cp -v ./root/.bash_profile ${HOME}
+cp -v ./root/.login        ${HOME}
+cp -v ./root/.tmux.conf    ${HOME}
+cp -v ./root/.bashrc       ${HOME}
 
 # Only copy the following files if they do not exist.
 # If the files already exist, you will need to manually bring in changes
 # to avoid removing your personal settings.
-if [ ! -f ~/.my_personal_settings ]; then
-  cp -v ~/env/root/.my_personal_settings ~
+if [ ! -f ${HOME}/.my_personal_settings ]; then
+  cp -v ./.my_personal_settings ${HOME}
 else
-  echo "~/env/root/.my_personal_settings was not copied. Update this file manually."
+  echo "./.my_personal_settings was not copied. Update this file manually."
   echo "If your are getting set up for the first time type:"
-  echo "  cp -v ~env/root/.my_personal_settings ~"
+  echo "  cp -v ./my_personal_settings ${HOME}"
   echo " "
 fi
-if [ ! -f ~/.emacs ]; then
-  cp -v ~/env/root/.emacs ~
+if [ ! -f ${HOME}/.emacs ]; then
+  cp -v ${HOME}/env/root/.emacs ${HOME}
 else
-  echo "~/env/root/.emacs was not copied. Update this file manually."
+  echo "./.emacs was not copied. Update this file manually."
   echo "If your are getting set up for the first time type:"
-  echo "  cp -v ~env/root/.emacs ~"
+  echo "  cp -v ./.emacs ${HOME}"
   echo " "
 fi
-if [ ! -f ~/.Xdefaults ]; then
-  cp -v ~/env/root/.Xdefaults ~
+if [ ! -f ${HOME}/.Xresources ]; then
+  cp -v ./root/.Xresources ${HOME}
 else
-  echo "~/env/root/.Xdefaults was not copied. Update this file manually."
+  echo "$root/.Xresources was not copied. Update this file manually."
   echo "If your are getting set up for the first time type:"
-  echo "  cp -v ~env/root/.Xdefaults ~"
+  echo "  cp -v ./.Xresources ${HOME}"
   echo " "
-fi
-
-#-----------------------------------------------------------
-# Copy contents of env/.ssh (AS only)
-#-----------------------------------------------------------
-if [[ $HOSTNAME == *'.as.harvard.edu' ]]; then
-  if [ -d ~/.ssh ]; then
-
-      if [ ! -f ~/.ssh/config ]; then
-	# Copy config file to your .ssh directory
-        cp -v ~/env/.ssh/config ~/.ssh/
-
-        # Make readable-writable-executable by owner only
-        chmod 700 ~/.ssh/config
-      else
-        echo "~/env/.ssh/config was not copied. Update this file manually."
-      fi
-  else
-    # Create IDL directory and copy
-    cp -rv ~/env/.ssh ~
-
-    # Make readable-writable-executable by owner only
-    chmod 700 ~/.ssh
-    chmod 700 ~/.ssh/config
-  fi
 fi
 
 # Exit normally
