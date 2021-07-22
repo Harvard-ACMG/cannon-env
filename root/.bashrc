@@ -140,7 +140,9 @@ alias cp="cp -v"
 alias mv="mv -v"
 
 # Basic Git commands
-source /etc/bash_completion.d/git    # enable tab-completion
+if [[ -f /etc/bash_completion.d/git ]]; then
+    . /etc/bash_completion.d/git
+fi
 alias gui="git gui &"
 alias gk="gitk &"
 alias gka="gitk --all &"
