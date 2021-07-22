@@ -57,15 +57,15 @@ fi
 # Copy contents of env/root
 #-----------------------------------------------------------
 cp -v ./root/.bash_profile ${HOME}
+cp -v ./root/.bashrc       ${HOME}
 cp -v ./root/.login        ${HOME}
 cp -v ./root/.tmux.conf    ${HOME}
-cp -v ./root/.bashrc       ${HOME}
 
 # Only copy the following files if they do not exist.
 # If the files already exist, you will need to manually bring in changes
 # to avoid removing your personal settings.
 if [ ! -f ${HOME}/.my_personal_settings ]; then
-  cp -v ./.my_personal_settings ${HOME}
+  cp -v ./root/.my_personal_settings ${HOME}
 else
   echo "./.my_personal_settings was not copied. Update this file manually."
   echo "If your are getting set up for the first time type:"
@@ -73,7 +73,7 @@ else
   echo " "
 fi
 if [ ! -f ${HOME}/.emacs ]; then
-  cp -v ${HOME}/env/root/.emacs ${HOME}
+  cp -v ./root/.emacs ${HOME}
 else
   echo "./.emacs was not copied. Update this file manually."
   echo "If your are getting set up for the first time type:"
