@@ -6,30 +6,19 @@
 #------------------------------------------------------------------------------
 #BOP
 #
-# !IROUTINE: copy_env
+# !IROUTINE: copy-cannon-env
 #
 # !DESCRIPTION: Script to distribute startup files from the env repository
 #  to the appropriate location in your home directory.
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  Type at the Unix prompt:
+#  Type at the command-line prompt:
 #
-#    ./copy_env
+#    ./copy-cannon-env
 #EOP
 #------------------------------------------------------------------------------
 #BOC
-
-#-----------------------------------------------------------
-# Copy contents of env/bash
-#-----------------------------------------------------------
-if [ -d ${HOME}/bash ]; then
-  # Copy contents of env/bash to your bash directory
-  cp -v ./bash/* ${HOME}/bash/
-else
-  # Copy entire env/bash directory to your home directory
-  cp -rv ./bash ${HOME}
-fi
 
 #-----------------------------------------------------------
 # Copy contents of env/bin
