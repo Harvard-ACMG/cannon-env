@@ -58,25 +58,10 @@
 # Make your neighbor happy by turning off terminal beeps
 #set bell-style visible
 
-# Check on your SLURM jobs
-#alias sq="squeue --format='%.10i %.10P %.10j %.10u %.10g %.2t %.10M %.6D %.6C %R' --exact-partition-names"
-
-# Check on the huce_intel and shared partitions
-#alias hinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
-#alias hjcheck="lsload | grep -e 'holyjacob\|Hostname'"
-#alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
-
-# Check your fairshare
-#alias fairshare="sshare -u {username} -U"
-#alias jacobfs="sshare -A jacob_lab -a"
-#alias jobdetails="scontrol show job" # + <jobid>
-
-# Check on lab storage on scratchlfs
-#alias scratch_quota="lfs quota -h /n/scratchlfs/jacob_lab/"
-
-# Make git commands easier with aliases
-#alias update_tags="git tag -l | xargs git tag -d && git fetch -t"
-
+# Make commands easier with aliases
+#alias sag="source activate gcpy"
+#alias sdg="conda deactivate"
+#
 ######################################################################
 
 #EOC

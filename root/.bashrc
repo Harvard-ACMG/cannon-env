@@ -97,25 +97,45 @@ export SPACK_ROOT=/n/jacob_lab/Lab/spack
 #==============================================================================
 # %%%%% Basic SLURM commands %%%%%
 #==============================================================================
-alias squeue="squeue --format='%.9i %.9P %.8j %.8u %.2t %.10M %.6D %.6C %R'"
-alias sq="squeue"
-alias qj="squeue -u $USER"
-alias qa="sacct -j"
-alias qdel="scancel"
+
+# List all jobs running by user (e.g. "sq -u $USER") or
+# partition (e.g. "sq -p huce_cascade")
+alias sq="squeue --format='%.10i %.10P %.10j %.10u %.10a %.2t %.10M %.6D %.6C %R'"
+alias squ="sq -u $USER"
+
+# View information about Slurm nodes and partitions
 alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
-alias hinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
-alias sinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
-alias tinfo="sinfo format='%.11P %.20N %.11T %.6D %.4c %C' -p test"
-alias jcheck="lsload | grep -e 'jacob\|Hostname'"
+
+# List number of nodes and CPUs in a given partition
+# (A=available, I=idle, O=other, T=total)
+alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
+alias tinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p test"
+alias hiinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
+alias hcinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_cascade"
+alias hbinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_bigmem"
+
+# Check my fairshare score
 alias myfs="sshare -u $USER -U"
+
+# Check Jacob group fairshare score
 alias jacobfs="sshare -A jacob_lab -a"
+
+# List details of a given job ID (e.g. "jobdetails <jobid>")
+alias jobdetails="scontrol show job"
+
+#==============================================================================
+# %%%%% Aliases for checking disk space %%%%%
+#==============================================================================
+alias disk="du -h -s -c"
+alias dirsize="du -ch . | grep total"
+alias scratch_quota="lfs quota -h /n/holyscratch01/jacob_lab/"
+alias lab_quota_jacob="df -h /n/jacob_lab"
 
 #==============================================================================
 # %%%%% Aliases for basic Unix commands %%%%%
 #==============================================================================
 
 # General Unix commands
-alias disk="du -h -s -c"
 alias g="grep -in --color=auto"
 alias gt="grep -in --text"
 alias gf="gifview -a"
@@ -129,7 +149,6 @@ alias ssh="ssh -X -A"
 alias gsh="ssh -xT"
 alias tf="tail --follow"
 alias zap="kill -9"
-alias cd="cd -P"
 alias ev="evince" # PDF viewer
 alias d="display" # image viewer
 alias c="clear"
@@ -146,12 +165,16 @@ fi
 alias gui="git gui &"
 alias gk="gitk &"
 alias gka="gitk --all &"
+alias gfp="git fetch -p"
 alias gpo="git pull origin"
 alias gl="git log"
 alias glo="git log --oneline"
 alias glp="git log --pretty=format:'%h : %s' --topo-order --graph"
-alias getenv="cd ~/env; git pull origin main"
 alias update_tags="git tag -l | xargs git tag -d && git fetch -t"
+alias gsu="git submodule update --init --recursive"
+
+# Get latest Cannon environment files
+alias getenv="cd ~/cannon-env; git pull origin"
 
 # Directory listing commands
 alias ls="ls -CF --time-style=long-iso --color=auto"
@@ -166,10 +189,11 @@ alias llh="ls -lh"
 #==============================================================================
 # %%%%% Aliases to load modules for different compilers %%%%%
 #==============================================================================
-alias load_gf102=". ~/envs/gcc_cmake.gfortran102_cannon.env"
-alias load_gf93=". ~/envs/gcc_cmake.gfortran93_cannon.env"
-alias load_if19=". ~/envs/gcc_cmake.ifort19_openmpi_cannon.env"
-alias load_if18=". ~/envs/gcc_cmake.ifort18_openmpi_cannon.env"
+alias load_gf102=". ~/envs/gcc.gfortran10.2_cannon.env"
+alias load_gf93=". ~/envs/gcc.gfortran9.3_cannon.env"
+alias load_if19=". ~/envs/gcc.ifort19_cannon.env"
+alias load_if18=". ~/envs/gcc.ifort18_cannon.env"
+alias load_if17=". ~/envs/gcc.ifort17_cannon.env"
 
 #==============================================================================
 # %%%%% Load the user's personal settings and aliases %%%%%
@@ -177,4 +201,5 @@ alias load_if18=". ~/envs/gcc_cmake.ifort18_openmpi_cannon.env"
 if [[ -f ~/.my_personal_settings ]]; then
   . ~/.my_personal_settings
 fi
+
 #EOC
