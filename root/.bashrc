@@ -128,7 +128,7 @@ alias jobdetails="scontrol show job"
 #==============================================================================
 alias disk="du -h -s -c"
 alias dirsize="du -ch . | grep total"
-alias scratch_quota="lfs quota -h /n/holyscratch01/jacob_lab/"
+alias scratch_quota="lfs quota -hg jacob_lab /n/holyscratch01/jacob_lab/"
 alias lab_quota_jacob="df -h /n/jacob_lab"
 
 #==============================================================================
