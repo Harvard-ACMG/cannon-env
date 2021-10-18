@@ -46,5 +46,9 @@ interactive_python
 cmake-mode.el
 ncl.el
 yaml-mode.el
+kpp.el
 ```
-- Adds customizations to Emacs for viewing CMake, NCL, and NCL files.
+- Emacs configuration files (written in emacs-lisp) that adds
+  customizations for viewing CMake, NCL, YAML, and KPP files.
+  This will colorize the text according the specifications in
+  the .emacs file.
