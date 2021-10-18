@@ -808,6 +808,13 @@
     '(lambda ()
        (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
+;;-----------------------------------------------------------------------------
+;; For KPP (Kinetic Pre-Processor) mode
+;; See https://github.com/KineticPreProcessor/KPP/site-lisp/kpp.el
+;;-----------------------------------------------------------------------------
+
+(require 'kpp)
+
 ;-----------------------------------------------------------------------------
 ; Remove trailing white space before saving
 ;-----------------------------------------------------------------------------
