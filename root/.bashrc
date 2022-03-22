@@ -100,8 +100,7 @@ export SPACK_ROOT=/n/jacob_lab/Lab/spack
 
 # List all jobs running by user (e.g. "sq -u $USER") or
 # partition (e.g. "sq -p huce_cascade")
-alias sq="squeue --format='%.10i %.10P %.10j %.10u %.10a %.2t %.10M %.6D %.6C %R'"
-alias squ="sq -u $USER"
+alias sq="myjobs"
 
 # View information about Slurm nodes and partitions
 alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"

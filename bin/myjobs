@@ -1,0 +1,13 @@
+#!/usr/bin/perl -w 
+
+# Displays SLURM jobs with sacct, but omits printing "batch" and "extern",
+# which are internal SLURM submission steps.
+
+# Get a list of jobs 
+my @output = qx/sacct -u \$USER/;
+
+# Print only lines not containing "batch" or "extern"
+foreach my $line ( @output ) {
+  if ( !( $line =~ m/batch/ || $line =~ m/extern/ )  ) { print "$line"; }
+}
+
