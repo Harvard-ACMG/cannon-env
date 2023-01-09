@@ -1,0 +1,3 @@
+[submodule "bin/netcdf-scripts"]
+	   path = bin/netcdf-scripts
+	   url = https://github.com/geoschem/netcdf-scripts.git
