@@ -20,9 +20,6 @@ interactive_python
      - For GCHP, use `interactive_gchp`.
      - For Python with port forwarding, use `interactive_python`.
 
-`isCoards`
-  - Perl script that checks if a netCDF file is [COARDS-compliant](http://wiki.seas.harvard.edu/geos-chem/index.php/The_COARDS_netCDF_conventions_for_earth_science_data). This is a requirement for GEOS-Chem and GCHP input data files.
-
 `job_depend.pl`
   - Convenience script that allows you to submit multiple Slurm jobs as job dependencies.  Each successive job will not start until the previous job finishes.
 
@@ -38,6 +35,9 @@ interactive_python
 
 `xt`
   - Convenience script that will open a new xterm window.  Useful for opening xterm windows on external machines.
+
+`netcdf-scripts`
+  - Submodule containing various netCDF utility scripts (e.g. `isCoards`, `nc_chunk.pl`, etc.)
 
 
 ## Configuration files

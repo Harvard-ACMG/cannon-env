@@ -7,7 +7,7 @@ This repository (`cannon-env`) contains scripts and configuration files that you
 We recommend downloading this repository to your Cannon home directory.  Type the following commands at the command-line prompt:
 ```
 cd ~
-git clone https://github.com/Harvard-ACMG/cannon-env.git
+git clone --recurse-submodules https://github.com/Harvard-ACMG/cannon-env.git
 ```
 
 We have provided a script named `copy-cannon-env` that will copy the relevant scripts and configuration files to the proper places in your home directory.  To execute the script, type at the command-line prompt:
