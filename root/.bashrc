@@ -99,7 +99,7 @@ export SPACK_ROOT=/n/jacob_lab/Lab/spack
 #==============================================================================
 
 # List all jobs running by user (e.g. "sq -u $USER") or
-# partition (e.g. "sq -p huce_cascade")
+# partition (e.g. "sq -p seas_compute")
 alias sq="myjobs"
 
 # View information about Slurm nodes and partitions
@@ -107,11 +107,10 @@ alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
 
 # List number of nodes and CPUs in a given partition
 # (A=available, I=idle, O=other, T=total)
+alias scinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_compute"
+alias sginfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_gpu"
 alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
 alias tinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p test"
-alias hiinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
-alias hcinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_cascade"
-alias hbinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_bigmem"
 
 # Check my fairshare score
 alias myfs="sshare -u $USER -U"
