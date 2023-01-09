@@ -10,7 +10,7 @@
 #\\
 #\\
 # !CALLING SEQUENCE:
-#  source ~/.my_personal_settings
+#  . ~/.my_personal_settings
 #
 # !REMARKS:
 #  The .bashrc file contains settings that are common to all users of

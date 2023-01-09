@@ -13,7 +13,7 @@
 # !CALLING SEQUENCE:
 #  To apply the settings here, type at the Unix prompt:
 #
-#     source ~/.bashrc
+#  . ~/.bashrc
 #
 # !REMARKS:
 #  We have removed the module load commands from this .bashrc.  Here you
@@ -158,9 +158,7 @@ alias cp="cp -v"
 alias mv="mv -v"
 
 # Basic Git commands
-if [[ -f /etc/bash_completion.d/git ]]; then
-    . /etc/bash_completion.d/git
-fi
+[[ -f /etc/bash_completion.d/git ]] && . /etc/bash_completion.d/git
 alias gui="git gui &"
 alias gk="gitk &"
 alias gka="gitk --all &"
@@ -196,9 +194,11 @@ alias load_if17=". ~/envs/gcc.ifort17_cannon.env"
 
 #==============================================================================
 # %%%%% Load the user's personal settings and aliases %%%%%
-#==============================================================================
-if [[ -f ~/.my_personal_settings ]]; then
-  . ~/.my_personal_settings
-fi
+#
+# NOTE: This syntax is shorthand for an if statement!
+#==============================================================================0
+[[ -f ~/.my_personal_settings ]] && . ~/.my_personal_settings
+[[ -f ~/.bash_aliases         ]] && . ~/.bash_aliases
+[[ -f ~/.bash_functions       ]] && . ~/.bash_functions
 
 #EOC
