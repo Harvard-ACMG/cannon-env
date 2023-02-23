@@ -5,10 +5,7 @@ When you run the `copy-cannon-env` script, the following utility scripts and fil
 Because `$HOME/bin` gets automatically added to your `$PATH` environment variable at login, the Bash shell will look for these files in `$HOME/bin`.  Therefore, you can run these scripts from any folder in your Cannon disk space without having to type the full path name.
 
 ## Scripts
-
-`awake.sh`
-  - Script that you can use to keep interactive sessions from hanging.
-
+K
 ```
 interactive
 interactive_gchp
@@ -23,8 +20,10 @@ interactive_python
 `job_depend.pl`
   - Convenience script that allows you to submit multiple Slurm jobs as job dependencies.  Each successive job will not start until the previous job finishes.
 
-`jobinfo`
-`jobstats`
+```
+jobinfo
+jobstats
+```
   - Scripts that you can use to check the status of jobs running on Cannon.  [Follow this link](https://github.com/Harvard-ACMG/knowledge-base/blob/main/using-slurm-on-cannon-3.md) for detailed usage instructions.
 
 `ncd`
