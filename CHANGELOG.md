@@ -11,5 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added `CHANGELOG.md` file
 - Added `LICENSE.txt` file
 
+### Changed
+- Move Spack intitialization and module path updates to top of environment file scripts
+- Add more informational messages in environment files
+- Make sure NETCDF_HOME is defined properly in environment files
+- Do not load CDO module in environment files, use "spack load" instead
+- Explicitly load netcdf-c in module files
+
 ### Removed
 - Environment files for CentOS (w/ FASRC modules) in `envs/*`
