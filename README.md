@@ -1,3 +1,9 @@
+<a href="https://acmg.seas.harvard.edu"><img src="https://acmg.seas.harvard.edu/sites/projects.iq.harvard.edu/files/acmg/files/img_acmg_logo_small.png" width="200" height="187" alt="ACMG logo"></a>
+
+[![Latest
+Release](https://img.shields.io/github/v/release/Harvard-ACMG/cannon-env?label=Latest%20Release)](https://github.com/Harvard-ACMG/cannon-env/releases) [![Release
+Date](https://img.shields.io/github/release-date/Harvard-ACMG/cannon-env)](https://github.com/Harvard-ACMG/cannon-env/releases/) [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Harvard-ACMG/cannon-env/blob/main/LICENSE.txt)
+
 # cannon-env: Configuration files for the Cannon cluster
 
 This repository (`cannon-env`) contains scripts and configuration files that you can use to customize your login environment on the FASRC Cannon cluster.
