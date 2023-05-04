@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added logo and links to the `README.md` file
 - Added `CHANGELOG.md` file
 - Added `LICENSE.txt` file
+- Added environment files that only load FASRC-built packages
 
 ### Changed
 - Move Spack intitialization and module path updates to top of environment file scripts
