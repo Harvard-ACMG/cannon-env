@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Make sure NETCDF_HOME is defined properly in environment files
 - Do not load CDO module in environment files, use "spack load" instead
 - Explicitly load netcdf-c in module files
+- Updated `envs/README.md` with a table of env files, plus subsections
 
 ### Removed
 - Environment files for CentOS (w/ FASRC modules) in `envs/*`

@@ -1,32 +1,37 @@
 # cannon-env/envs: Environment files
 
-When you run the `copy-cannon-env` script, these files will be copied to your `$HOME/envs` folder on Cannon.
+**Environment files** contain the commands to load software modules (e.g. compiler, netCDF, MPI) that you will need to run GEOS-Chem or GCHP.
 
-These are the "environment files", that is, files that contain the commands to load software modules (e.g. compiler, netCDF, MPI) that you will need to run GEOS-Chem or GCHP.
-
-For example, if you wish to load software modules for GEOS-Chem Classic based on the GNU compilers version 10.2.0, you would type at the command-line:
-```console
-$ source ~/envs/gcclassic.rocky+gnu10.env
-```
-etc. for other environment files.
+When you run the `copy-cannon-env` script, these files will be copied to your `$HOME/envs` folder on Cannon.  You can copy or link these to a more convenient location (such as your home directory).
 
 ## Environment files for current GEOS-Chem and GCHP versions
 
-These environment files load the relevant software modules for GEOS-Chem 12.6.0 and later.  These versions can be built with CMake instead of GNU Make:
+| Environment file            | Model              | For compilers             |
+| --------------------------- | ------------------ | ------------------------- |
+| `gcclassic.rocky+gnu10.env` | GEOS-Chem Classic  | gcc, g++, gfortran 10.2.0 |
+| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 10.2.0 |
+| `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
+| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
 
-### Rocky Linux 8 and GNU 10.2.0 compilers
 
-`gcclassic.rocky+gnu10.env`
-  - Loads software modules and sets environment variables for GEOS-Chem Classic
+## Using environment files
 
-`gchp.rocky+gnu10.env`
-  - Loads software modules and sets environment variables for GCHP
+Use the `source` command to apply the settings in an environment file to your login environment:
 
-### Rocky Linux 8 and GNU 12.2.0 compilers
+```console
+source <environment-file-name>
+```
 
-`gcclassic.rocky+gnu12.env`
-  - Loads software modules and sets environment variables for GEOS-Chem Classic
+NOTE: In the `bash` shell, you can also use a `.` instead of `source`, e.g.
 
-`gchp.rocky+gnu12.env`
-  - Loads software modules and sets environment variables for GCHP
+```console
+. <environment-file-name>
+```
 
+For example, if you wish to load software modules for GEOS-Chem Classic based on the GNU compilers version 10.2.0, use this command:
+
+```console
+$ source ~/envs/gcclassic.rocky+gnu10.env
+```
+
+etc.
