@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added `CHANGELOG.md` file
 - Added `LICENSE.txt` file
 - Added environment files that only load FASRC-built packages
+- Added `ROCKY_ROOT` to env files (points to RockyLinux library root folder)
 
 ### Changed
 - Move Spack intitialization and module path updates to top of environment file scripts
@@ -19,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Do not load CDO module in environment files, use "spack load" instead
 - Explicitly load netcdf-c in module files
 - Updated `envs/README.md` with a table of env files, plus subsections
+- Now load FASRC-built IDL module in GCClassic environment files
 
 ### Removed
 - Environment files for CentOS (w/ FASRC modules) in `envs/*`
