@@ -1,4 +1,6 @@
-# cannon-env/envs: Environment files
+<a href="https://acmg.seas.harvard.edu"><img src="https://acmg.seas.harvard.edu/sites/projects.iq.harvard.edu/files/acmg/files/img_acmg_logo_small.png" width="200" height="187" alt="ACMG logo"></a>
+
+# cannon-env/envs: Environment files for Cannon
 
 **Environment files** contain the commands to load software modules (e.g. compiler, netCDF, MPI) that you will need to run GEOS-Chem or GCHP.
 
