@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Explicitly load netcdf-c in module files
 - Updated `envs/README.md` with a table of env files, plus subsections
 - Now load FASRC-built IDL module in GCClassic environment files
+- Renamed `*.nospack.env` environment files to `*.minimal.env`
 
 ### Removed
 - Environment files for CentOS (w/ FASRC modules) in `envs/*`
