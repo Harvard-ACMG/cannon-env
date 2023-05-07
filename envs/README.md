@@ -21,9 +21,9 @@ These environment files will load FASRC-built packages, as well as locally-built
 | `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
 | `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
 
-### With FASRC-built packages only
+### With minimal packages needed for GEOS-Chem
 
-ese environment files contain settings to load only the FASRC-built packages that are absolutely essential to running GEOS-Chem Classic and GCHP.  You can use these in simulation run scripts for the Cannon queues, or to initialize clean Spack software builds.
+These environment files contain settings to load only the FASRC-built packages that are absolutely essential to running GEOS-Chem Classic and GCHP.  You can use these in simulation run scripts for the Cannon queues, or to initialize clean Spack software builds.
 
 
 | Environment file                    | Model              | For compilers             |
