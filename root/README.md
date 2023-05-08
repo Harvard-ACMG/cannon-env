@@ -1,3 +1,5 @@
+<a href="https://acmg.seas.harvard.edu"><img src="https://acmg.seas.harvard.edu/sites/projects.iq.harvard.edu/files/acmg/files/img_acmg_logo_small.png" width="200" height="187" alt="ACMG logo"></a>
+
 # cannon-env/root: System and shell startup files
 
 When you run the `copy-cannon-env` script, these files will be copied to your home directory, which is referred to as `~` or `$HOME`.
