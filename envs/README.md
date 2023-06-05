@@ -1,58 +1,56 @@
-# cannon-env/envs: Environment files
+<a href="https://acmg.seas.harvard.edu"><img src="https://acmg.seas.harvard.edu/sites/projects.iq.harvard.edu/files/acmg/files/img_acmg_logo_small.png" width="200" height="187" alt="ACMG logo"></a>
 
-When you run the `copy-cannon-env` script, these files will be copied to your `$HOME/envs` folder on Cannon.
+# cannon-env/envs: Environment files for Cannon
 
-These are the "environment files", that is, files that contain the commands to load software modules (e.g. compiler, netCDF, MPI) that you will need to run GEOS-Chem or GCHP.
+**Environment files** contain the commands to load software modules (e.g. compiler, netCDF, MPI) that you will need to run GEOS-Chem or GCHP.
 
-For example, if you wish to load software modules for GEOS-Chem Classic based on the GNU compilers version 10.2.0, you would type at the command-line:
-```
-source ~/envs/gcc.gfortran10.2_cannon.env
-```
-etc. for other environment files.
+When you run the `copy-cannon-env` script, these files will be copied to your `$HOME/envs` folder on Cannon.  You can copy or link these to a more convenient location (such as your home directory).
 
 ## Environment files for current GEOS-Chem and GCHP versions
 
-### GEOS-Chem Classic versions 12.6.0 and later
 
-These environment files load the relevant software modules for GEOS-Chem 12.6.0 and later.  These versions can be built with CMake instead of GNU Make:
+### With FASRC-built and Spack-built packages
 
-`gcc.gfortran10.2_cannon.env`
-  - Loads software modules based on GNU compilers version 10.2.0
+These environment files will load FASRC-built packages, as well as locally-built Spack packages. These define the complete software environment that you will need to run GEOS-Chem Classic, and GCHP, as well as to perform post-processing on netCDF files, etc.
 
-`gcc.gfortran9.3_cannon.env`
-  - Loads software modules based on GNU compilers version 9.3.0
 
-`gcc.gfortran8.3_cannon.env`
-  - Loads software modules based on GNU compilers version 8.2.0
+| Environment file            | Model              | For compilers             |
+| --------------------------- | ------------------ | ------------------------- |
+| `gcclassic.rocky+gnu10.env` | GEOS-Chem Classic  | gcc, g++, gfortran 10.2.0 |
+| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 10.2.0 |
+| `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
+| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
 
-`gcc.gfortran8.2_openmpi_cannon.env`
-  - Loads software modules based on GNU compilers version 10.2.0
+### With minimal packages needed for GEOS-Chem
 
-`gcc.ifort19_openmpi_cannon.env`
-  - Loads software modules based on Intel compilers version 19.0.5
+These environment files contain settings to load only the FASRC-built packages that are absolutely essential to running GEOS-Chem Classic and GCHP.  You can use these in simulation run scripts for the Cannon queues, or to initialize clean Spack software builds.
 
-`gcc.ifort18_openmpi_cannon.env`
-  - Loads software modules based on Intel compilers version 18.0.5
 
-`gcc.ifort17_openmpi_cannon.env`
-  - Loads software modules based on Intel compilers version 17.0.4
+| Environment file                    | Model              | For compilers             |
+| ----------------------------------- | ------------------ | ------------------------- |
+| `gcclassic.rocky+gnu10.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 10.2.0 |
+| `gchp.rocky+gnu10.minimal.env`      | GCHP               | gcc, g++, gfortran 10.2.0 |
+| `gcclassic.rocky+gnu12.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
+| `gchp.rocky+gnu10.minimal.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
 
-### GCHP versions 13.0.0 and later
+## Using environment files
 
-These enviroment files will load the proper software modules for the most recent GCHP versions:
+Use the `source` command to apply the settings in an environment file to your login environment:
 
-`gchp.gfortran10.2_openmpi4_cannon.env`
-  - Loads software modules for GCHP based on GNU compilers 10.2.0 and OpenMPI 4
+```console
+source <environment-file-name>
+```
 
-`gchp.gfortran9.3_openmpi4_cannon.env`
-  - Loads software modules for GCHP based on GNU compilers 9.3.0 and OpenMPI 4
+NOTE: In the `bash` shell, you can also use a `.` instead of `source`, e.g.
 
-`gchp.gfortran8.3_openmpi4_cannon.env`
-  - Loads software modules for GCHP based on GNU compilers 8.3.0 and OpenMPI 4
+```console
+. <environment-file-name>
+```
 
-`gchp.ifort19_openmpi4_cannon.env`
-  - Loads software modules for GCHP based on Intel compilers 19 and OpenMPI 4
+For example, if you wish to load software modules for GEOS-Chem Classic based on the GNU compilers version 10.2.0, use this command:
 
-## Environment files for legacy GEOS-Chem and GCHP versions
+```console
+$ source ~/envs/gcclassic.rocky+gnu10.env
+```
 
-Environment files for older versions of GEOS-Chem and GCHP may be found in the Git history. These versions are no longer supported and we recommend updating to the latest version of GEOS-Chem and/or GCHP. Please contact the GCST with any questions.
+etc for the other environment files listed above.
