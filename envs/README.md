@@ -6,51 +6,20 @@
 
 When you run the `copy-cannon-env` script, these files will be copied to your `$HOME/envs` folder on Cannon.  You can copy or link these to a more convenient location (such as your home directory).
 
-## Environment files for current GEOS-Chem and GCHP versions
+## gnu10
 
+This folder contains environment files to load modules compiled with
+the GNU Compiler Collection 10.2.0.  Please see the `README.md` in
+this folder for more information.
 
-### With FASRC-built and Spack-built packages
+## gnu12
 
-These environment files will load FASRC-built packages, as well as locally-built Spack packages. These define the complete software environment that you will need to run GEOS-Chem Classic, and GCHP, as well as to perform post-processing on netCDF files, etc.
+This folder contains environment files to load modules compiled with
+the GNU Compiler Collection 12.2.0.  Please see the `README.md` in
+this folder for more information.
 
+## intel23
 
-| Environment file            | Model              | For compilers             |
-| --------------------------- | ------------------ | ------------------------- |
-| `gcclassic.rocky+gnu10.env` | GEOS-Chem Classic  | gcc, g++, gfortran 10.2.0 |
-| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 10.2.0 |
-| `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
-| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
-
-### With minimal packages needed for GEOS-Chem
-
-These environment files contain settings to load only the FASRC-built packages that are absolutely essential to running GEOS-Chem Classic and GCHP.  You can use these in simulation run scripts for the Cannon queues, or to initialize clean Spack software builds.
-
-
-| Environment file                    | Model              | For compilers             |
-| ----------------------------------- | ------------------ | ------------------------- |
-| `gcclassic.rocky+gnu10.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 10.2.0 |
-| `gchp.rocky+gnu10.minimal.env`      | GCHP               | gcc, g++, gfortran 10.2.0 |
-| `gcclassic.rocky+gnu12.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
-| `gchp.rocky+gnu10.minimal.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
-
-## Using environment files
-
-Use the `source` command to apply the settings in an environment file to your login environment:
-
-```console
-source <environment-file-name>
-```
-
-NOTE: In the `bash` shell, you can also use a `.` instead of `source`, e.g.
-
-```console
-. <environment-file-name>
-```
-
-For example, if you wish to load software modules for GEOS-Chem Classic based on the GNU compilers version 10.2.0, use this command:
-
-```console
-$ source ~/envs/gcclassic.rocky+gnu10.env
-```
-
-etc for the other environment files listed above.
+This folder contains environment files to load modules compiled with
+the Intel-OneAPI-Compiler 23.0.0.  Please see the `README.md` in
+this folder for more information.

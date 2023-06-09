@@ -1,8 +1,18 @@
 # Changelog
 
-This file documents all notable changes to the cannon-env repository since version 1.0.0.
+This file documents all notable changes to the cannon-env repository since version 1.0.0. 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+### Added
+- Environment files for Intel compilers in `envs/intel23`
+- `README.md` files in `envs/gnu10`, `envs/gnu12`, `envs/intel23`
+
+### Changed
+- The `envs` folder has been subdivided into `gnu10`, `gnu12`, and  `intel23` subdirectories
+- Moved content from `envs/README.md` to `README.md` in subdirectories
+
 
 ## [1.0.0]
 ### Added
@@ -10,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added logo and links to the `README.md` file
 - Added `CHANGELOG.md` file
 - Added `LICENSE.txt` file
-- Added environment files that only load FASRC-built packages
+- Added environment fnles that only load FASRC-built packages
 - Added `ROCKY_ROOT` to env files (points to RockyLinux library root folder)
 
 ### Changed
