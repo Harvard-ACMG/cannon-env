@@ -18,11 +18,10 @@ To be added soon
 These environment files contain settings to load only the FASRC-built packages that are absolutely essential to running GEOS-Chem Classic and GCHP.  You can use these in simulation run scripts for the Cannon queues, or to initialize clean Spack software builds.
 
 
-| Environment file                    | Model              | For compilers             |
-| ----------------------------------- | ------------------ | ------------------------- |
-| `gcclassic.rocky+intel23.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 10.2.0 |
-
-GCHP will be added soon.
+| Environment file                      | Model              | For compilers     |
+| ------------------------------------- | ------------------ | ----------------- |
+| `gcclassic.rocky+intel23.minimal.env` | GEOS-Chem Classic  | icx, ifort 23.0.0 |
+| `gchp.rocky+intel23.minimal.env`      | GCHP               | icx, ifort 23.0.0 |
 
 ## Using environment files
 

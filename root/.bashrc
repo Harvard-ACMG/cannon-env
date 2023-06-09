@@ -143,7 +143,6 @@ alias ev="evince" # PDF viewer
 alias d="display" # image viewer
 alias c="clear"
 alias h="history"
-alias diff="colordiff"
 alias rm="rm -Iv"
 alias cp="cp -v"
 alias mv="mv -v"
