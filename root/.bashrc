@@ -39,7 +39,7 @@ if [[ -f /etc/bashrc ]]; then
 fi
 
 #==============================================================================
-# %%%%% Unix environment settings %%%%%
+# %%%%% Linux environment settings %%%%%
 #==============================================================================
 umask 022                             # Make files world-readable by default
 set autolist                          # Turn on list completion
@@ -85,15 +85,6 @@ alias emacs="emacs 2>/dev/null"
 # Evince, skip warning messages
 alias evince="evince 2>/dev/null"
 
-# KPP compiler
-export PATH="$PATH:$HOME/KPP/kpp-2.2.3_01/bin/"
-export KPP_HOME="$HOME/KPP/kpp-2.2.3_01"
-
-# Jacob-group Spack-built software stack
-# NOTE: If you are using your own Spack distribution,
-# point SPACK_ROOT to your root Spack folder instead!
-export SPACK_ROOT=/n/jacob_lab/Lab/spack
-
 #==============================================================================
 # %%%%% Basic SLURM commands %%%%%
 #==============================================================================
@@ -107,6 +98,7 @@ alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
 
 # List number of nodes and CPUs in a given partition
 # (A=available, I=idle, O=other, T=total)
+alias hiinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
 alias scinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_compute"
 alias sginfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_gpu"
 alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
@@ -181,15 +173,6 @@ alias lltm="ls -lt | less"
 alias la="ls -a"
 alias lla="ls -la"
 alias llh="ls -lh"
-
-#==============================================================================
-# %%%%% Aliases to load modules for different compilers %%%%%
-#==============================================================================
-alias load_gf102=". ~/envs/gcc.gfortran10.2_cannon.env"
-alias load_gf93=". ~/envs/gcc.gfortran9.3_cannon.env"
-alias load_if19=". ~/envs/gcc.ifort19_cannon.env"
-alias load_if18=". ~/envs/gcc.ifort18_cannon.env"
-alias load_if17=". ~/envs/gcc.ifort17_cannon.env"
 
 #==============================================================================
 # %%%%% Load the user's personal settings and aliases %%%%%
