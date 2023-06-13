@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - The `envs` folder has been subdivided into `gnu10`, `gnu12`, and  `intel23` subdirectories
 - Moved content from `envs/README.md` to `README.md` in subdirectories
 - GCHP environment files now point to ESMF 8.4.2 installation
+- Unload all packages loaded with `spack load` in environment files
+- Send the output of `unalias diff` to `/dev/null` to squelch error messages
 
 ## [1.0.0]
 ### Added
