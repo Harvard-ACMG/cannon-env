@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Environment files for Intel compilers in `envs/intel23`
 - `README.md` files in `envs/gnu10`, `envs/gnu12`, `envs/intel23`
+- Now Spack-built modules for `jq` and `parallel`
 
 ### Changed
 - The `envs` folder has been subdivided into `gnu10`, `gnu12`, and  `intel23` subdirectories
