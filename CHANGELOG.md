@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - GCHP environment files now point to ESMF 8.4.2 installation
 - Unload all packages loaded with `spack load` in environment files
 - Send the output of `unalias diff` to `/dev/null` to squelch error messages
+- Added extra xterm settings and font selections in `root/.Xresources`
 
 ## [1.0.0]
 ### Added
