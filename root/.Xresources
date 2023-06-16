@@ -47,12 +47,12 @@ XTerm.*.utf8:              true
 !XTerm.*.faceSize:          14
 !----------------------------------------------------------------------------
 ! Use DejaVu Sans Mono 12pt (if installed)
-!XTerm.*.faceName:          DejaVu Sans Mono:embolden=true
-!Xterm.*.faceSize:          12
+XTerm.*.faceName:          DejaVu Sans Mono:embolden=true
+Xterm.*.faceSize:          12
 !----------------------------------------------------------------------------
 ! Use LucidaTypewriter 12pt (if installed)
-XTerm.*.faceName:          LucidaTypewriter:embolden=true
-XTerm.*.faceSize:          12
+!XTerm.*.faceName:          LucidaTypewriter:embolden=true
+!XTerm.*.faceSize:          12
 !----------------------------------------------------------------------------
 ! Use Source Code Pro Medium 12 pt (if installed)
 !Xterm.*.faceName:          Source Code Pro Medium:embolden=true:size=12

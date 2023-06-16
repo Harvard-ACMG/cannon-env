@@ -9,7 +9,8 @@
 # !IROUTINE: copy-cannon-env
 #
 # !DESCRIPTION: Script to distribute startup files from the env repository
-#  to the appropriate location in your home directory.
+#  to the appropriate locations in your home directory.  Original files
+#  will be moved to timestamped backup folders.
 #\\
 #\\
 # !CALLING SEQUENCE:
@@ -20,74 +21,140 @@
 #------------------------------------------------------------------------------
 #BOC
 
-#-----------------------------------------------------------
-# Copy contents of env/bin
-#-----------------------------------------------------------
-if [ -d ${HOME}/bin ]; then
-  # Copy contents of env/bin to your bin directory
-  cp -v ./bin/* ${HOME}/bin/
-else
-  # Copy entire env/bin directory to your home directory
-  cp -rv ./bin ${HOME}
-fi
+function backup_dir_name() {
 
-#-----------------------------------------------------------
-# Copy contents of env/IDL
-#-----------------------------------------------------------
-if [ -d ${HOME}/IDL ]; then
-  # Copy contents of env/IDL to your IDL directory
-  cp -v ./IDL/* ${HOME}/IDL/
-else
-  # Create IDL directory and copy
-  cp -rv ./IDL ${HOME}
-fi
+    #========================================================================
+    # Returns the name of the backup folder.
+    #
+    # 1st argument: Date & time string
+    # 2nd argument: Target directory
+    #========================================================================
+    if [[ $# -eq 2 ]]; then
+	printf "${2}/.backup.${1}"   # With target dir prefaced
+    else
+	printf ".backup.${1}"        # Without target dir prefaced
+    fi
+    return 0
+}
 
-#-----------------------------------------------------------
-# Copy contents of env/envs
-#-----------------------------------------------------------
-if [ -d ${HOME}/envs ]; then
-  # Copy contents of env/envs to your envs directory
-  cp -v ./envs/* ${HOME}/envs/
-else
-  # Create envs directory and copy
-  cp -rv ./envs ${HOME}
-fi
+function backup_and_copy() {
 
-#-----------------------------------------------------------
-# Copy contents of env/root
-#-----------------------------------------------------------
-cp -v ./root/.bash_profile ${HOME}
-cp -v ./root/.bashrc       ${HOME}
-cp -v ./root/.login        ${HOME}
-cp -v ./root/.tmux.conf    ${HOME}
+    #========================================================================
+    # Copies a file from one directory to anoth
+    # A backup is made before the file is copied.
+    #
+    # 1st argument: Date & time string
+    # 2nd argument: Source directory
+    # 3rd argument: Target directory
+    #========================================================================
 
-# Only copy the following files if they do not exist.
-# If the files already exist, you will need to manually bring in changes
-# to avoid removing your personal settings.
-if [ ! -f ${HOME}/.my_personal_settings ]; then
-  cp -v ./root/.my_personal_settings ${HOME}
-else
-  echo "./.my_personal_settings was not copied. Update this file manually."
-  echo "If your are getting set up for the first time type:"
-  echo "  cp -v ./my_personal_settings ${HOME}"
-  echo " "
-fi
-if [ ! -f ${HOME}/.emacs ]; then
-  cp -v ./root/.emacs ${HOME}
-else
-  echo "./.emacs was not copied. Update this file manually."
-  echo "If your are getting set up for the first time type:"
-  echo "  cp -v ./.emacs ${HOME}"
-  echo " "
-fi
-if [ ! -f ${HOME}/.Xresources ]; then
-  cp -v ./root/.Xresources ${HOME}
-else
-  echo "$root/.Xresources was not copied. Update this file manually."
-  echo "If your are getting set up for the first time type:"
-  echo "  cp -v ./.Xresources ${HOME}"
-  echo " "
-fi
+    # Variables
+    srcDir="${2}"                                 # Source dir
+    trgDir="${3}"                                 # Target dir
+    bckDir=$(backup_dir_name "${1}" "${trgDir}")  # Backup dir
 
-# Exit normally
+    # Create the target directory if it doesn't exitst
+    echo ""
+    echo "%%% In ${srcDir} %%%"
+    echo "Copying config files to ${trgDir}..."
+    if [[ ! -d "${trgDir}" ]]; then
+	echo "Creating ${trgDir} folder..."
+	mkdir -p "${trgDir}"
+	backupDone=0
+    else
+	# Create backup folder (only if the target dir already exists)
+	echo "Creating backup directory $(basename ${bckDir})..."
+	mkdir -p "${bckDir}"
+	backupDone=1
+    fi
+
+    # Loop over files in the source directory
+    for f in ${srcDir}/*; do
+
+	# Strip the source directory from the file name
+	file="${f/${srcDir}}"
+	file="${file/\/}"
+
+	# Create a backup of each file in the backup folder
+	if [[ -f "${trgDir}/${file}" && ! -d "${trgDir}/${file}" ]]; then
+	    echo "Backing up ${file}..."
+	    mv -f "${trgDir}/${file}" "${bckDir}/${file}"
+	fi
+
+	# Copy the files from the source dir to the target dir
+        echo "Copying ${file} to ${trgDir}..."
+	cp -fR "${srcDir}/${file}" "${trgDir}/${file}"
+    done
+
+    # Return whether or not a backup folder was created via $?
+    return ${backupDone}
+}
+
+
+function main() {
+
+    #========================================================================
+    # Main program
+    #========================================================================
+
+    # Variables
+    root="${HOME}"                        # Root dir (edit for debugging)
+    dtStr="$(date -Iseconds)"             # Date & time string
+    dtStr="${dtStr::-6}"                  #  w/ time zone offset removed
+    dtStr="${dtStr/\:/\-}"                #  w/ ":" replaced by ":"
+    dtStr="${dtStr/\:/\-}"                #  w/ ":" replaced by ":" again
+    bkDir=$(backup_dir_name "${dtStr}")   # Backup folder template
+    folders=("root"               \
+	     "bin"                \
+	     "bin/netcdf-scripts" \
+	     "IDL"                \
+	     "envs"               \
+	     "envs/gnu10"         \
+	     "envs/gnu12"         \
+	     "envs/intel23"      )        # Folders w/ config files
+
+    # Tell bash to pick up hidden files in for loops
+    shopt -s dotglob
+
+    # Back up and copy files in each folder of cannon-env
+    # to the correspondiong folders in the user's root directory.
+    # Aslo keep track of the number of backups done.
+    let "backups=0"
+    for folder in ${folders[@]}; do
+	if [[ "x${folder}" == "xroot" ]]; then
+	    backup_and_copy "${dtStr}" "${folder}" "${root}"
+	else
+	    backup_and_copy "${dtStr}" "${folder}" "${root}/${folder}"
+	fi
+	let "backups+=$?"
+    done
+
+    # Echo message upon completion.
+    # Skip backup info unless at least one backup has been done.
+    echo ""
+    echo "#################################################################"
+    echo "Configuration files have been copied to the proper locations."
+    if [[ ${backups} -gt 0 ]]; then
+	echo ""
+	echo "Backups of original files have been created in these folders:"
+	for folder in ${folders[@]}; do
+	    if [[ "x${folder}" == "xroot" ]]; then
+		echo "${root}/${bkDir}"
+	    else
+		echo "${root}/${folder}/${bkDir}"
+	    fi
+	done
+        echo ""
+        echo "You may copy over any prior settings that you wish to preserve"
+        echo "from the backed-up files to the new configuration files."
+        echo "If you wish, you may also delete the backup folders later on."
+    fi
+    echo "#################################################################"
+
+    # Restore settings and return
+    shopt -u dotglob
+    return 0
+}
+
+main $@
 exit 0

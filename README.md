@@ -24,7 +24,9 @@ cd cannon-env
 
 ## Contents
 
-When you run `./copy-cannon-env`, several configuration files and scripts will be copied to your home directory as well as several subfolders (which will be created if they do not exist).   
+When you run `./copy-cannon-env`, several configuration files and scripts will be copied to your home directory as well as several subfolders (which will be created if they do not exist).
+
+Any existing configuration files will be backed up to timestamped folders (`.backup/YYYY-MM-DDThh-mm-ss`).  This will allow you to copy over any previous customizations from the backup configuration files to the new configuration files.
 
 ### root
 

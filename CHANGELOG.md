@@ -17,6 +17,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Unload all packages loaded with `spack load` in environment files
 - Send the output of `unalias diff` to `/dev/null` to squelch error messages
 - Added extra xterm settings and font selections in `root/.Xresources`
+- Rewrote `copy_cannon_env` to back up configuration files
+- Updated `root/.Xresources` with additional options and font selections
+- `.bash_profile`, `.bashrc`, etc. files are now chmod 644
 
 ## [1.0.0]
 ### Added
