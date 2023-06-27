@@ -8,6 +8,7 @@ my @output = qx/sacct -u \$USER/;
 
 # Print only lines not containing "batch" or "extern"
 foreach my $line ( @output ) {
-  if ( !( $line =~ m/batch/ || $line =~ m/extern/ )  ) { print "$line"; }
+  if ( !( $line =~ m/batch/  || $line =~ m/extern/ || $line =~ m/\./ ) ) {
+    print "$line";
+  }
 }
-
