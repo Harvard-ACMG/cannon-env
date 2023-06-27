@@ -1,12 +1,17 @@
 #!/usr/bin/perl -w 
 
-# Displays SLURM jobs with sacct, but omits printing "batch" and "extern",
-# which are internal SLURM submission steps.
+# Displays SLURM jobs with sacct, but excludes lines containing
+# "batch", "extern" and job ID's ending with ".1", ".2", etc.
+#
+# "batch" and "extern" are internal SLURM submission steps.
+# The ".1", ".2", etc. refer to individual cores.
+# We do not need these extra fields just to check a jobs' status.
 
 # Get a list of jobs 
 my @output = qx/sacct -u \$USER/;
 
-# Print only lines not containing "batch" or "extern"
+# Exclude lines that contain "batch" or "extern",
+# and job ID's ending in ".1", ".2", etc.
 foreach my $line ( @output ) {
   if ( !( $line =~ m/batch/  || $line =~ m/extern/ || $line =~ m/\./ ) ) {
     print "$line";

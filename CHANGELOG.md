@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Rewrote `copy_cannon_env` to back up configuration files
 - Updated `root/.Xresources` with additional options and font selections
 - `.bash_profile`, `.bashrc`, etc. files are now chmod 644
+- Updated `bin/myjobs` to exclude job ID's ending in `.1`, `.2`, etc.
 
 ## [1.0.0]
 ### Added
