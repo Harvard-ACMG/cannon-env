@@ -22,6 +22,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - `.bash_profile`, `.bashrc`, etc. files are now chmod 644
 - Updated `bin/myjobs` to exclude job ID's ending in `.1`, `.2`, etc.
 
+### Removed
+- Removed the `ROCKY_ROOT` variable from environment files
+
 ## [1.0.0]
 ### Added
 - Environment files for RockyLinux (w/ FASRC + Spack modules) in `envs/*`
