@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated `root/.Xresources` with additional options and font selections
 - `.bash_profile`, `.bashrc`, etc. files are now chmod 644
 - Updated `bin/myjobs` to exclude job ID's ending in `.1`, `.2`, etc.
+- The `bin/interactive` script uses `--mem` instead of `--mem-per-cpu`
 
 ### Removed
 - Removed the `ROCKY_ROOT` variable from environment files

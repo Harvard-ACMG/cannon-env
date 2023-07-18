@@ -51,7 +51,7 @@ elif [[ $# == 2 ]] ; then
    time=60
    part=test
 else
-   echo "Usage: interactive CORES NODES MEM-PER-CPU [TIME-IN-MINUTES]"
+   echo "Usage: interactive CORES NODES MEM [TIME]"
    exit 1
 fi
 
@@ -60,8 +60,8 @@ echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 echo "%%% Starting interactive session!"
 echo "%%% Number of Cores     : $cores"
 echo "%%% Number of Nodes     : $nodes"
-echo "%%% Memory per CPU      : $mem MB"
-echo "%%% Requested time      : $time minutes"
+echo "%%% Memory for the job  : $mem MB"
+echo "%%% Requested time      : $time"
 echo "%%% Requested partition : $part"
 echo "%%%"
 echo "%%% Reminder: Make sure \$OMP_NUM_THREADS in your shell is set"
@@ -69,6 +69,6 @@ echo "%%% to the same number of cores that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-salloc --x11=all -n $cores -N $nodes --mem-per-cpu=$mem -p $part -t $time && ssh -CY $SLURM_JOB_NODELIST
+salloc --x11=all -n $cores -N $nodes --mem=$mem -p $part -t $time && ssh -CY $SLURM_JOB_NODELIST
 
 #EOC
