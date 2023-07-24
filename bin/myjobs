@@ -10,10 +10,10 @@
 # Get a list of jobs 
 my @output = qx/sacct -u \$USER/;
 
-# Exclude lines that contain "batch" or "extern",
-# and job ID's ending in ".1", ".2", etc.
+# Only print the first line of output for a given SLURM jobId
+# (i.e. if the 1st 9 characters are "12345678" but not "12345678.")
 foreach my $line ( @output ) {
-  if ( !( $line =~ m/batch/  || $line =~ m/extern/ || $line =~ m/\./ ) ) {
+  if ( ! ( substr($line, 0, 9) =~ m/\./ ) ) {
     print "$line";
   }
 }
