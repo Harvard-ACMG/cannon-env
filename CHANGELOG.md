@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Environment files for Intel compilers in `envs/intel23`
 - `README.md` files in `envs/gnu10`, `envs/gnu12`, `envs/intel23`
-- Now Spack-built modules for `jq` and `parallel`
+- Now load Spack-built modules for `jq` and `parallel`
 
 ### Changed
 - The `envs` folder has been subdivided into `gnu10`, `gnu12`, and  `intel23` subdirectories
@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated `bin/myjobs` to exclude job ID's ending in `.1`, `.2`, etc.
 - The `bin/interactive` script uses `--mem` instead of `--mem-per-cpu`
 - Updated env files for the new library path `/n/jacob_lab/Lab/RockyLinux/`
+- Updated `README.md ` files accordingly
 
 ### Removed
 - Removed the `ROCKY_ROOT` variable from environment files

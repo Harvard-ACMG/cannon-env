@@ -6,16 +6,16 @@
 
 These environment files will load FASRC-built packages, as well as locally-built Spack packages. These define the complete software environment that you will need to run GEOS-Chem Classic, and GCHP, as well as to perform post-processing on netCDF files, etc.
 
+NOTE: Some software packages that do not use MPI and netCDF have been built with the GNU Compiler Collection 8.5.0, which comes pre-installed with Rocky Linux 8.7. This allows us to keep a single copy of these packages, instead of having to build separate copies for GNU 10.2.0 and 12.2.0.
 
-| Environment file            | Model              | For compilers             |
-| --------------------------- | ------------------ | ------------------------- |
-| `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
-| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
+| Environment file            | Model              | For compilers                     |
+| --------------------------- | ------------------ | --------------------------------- |
+| `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 & 8.5.0 |
+| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 & 8.5.0 |
 
 ### With minimal packages needed for GEOS-Chem
 
 These environment files contain settings to load only the FASRC-built packages that are absolutely essential to running GEOS-Chem Classic and GCHP.  You can use these in simulation run scripts for the Cannon queues, or to initialize clean Spack software builds.
-
 
 | Environment file                    | Model              | For compilers             |
 | ----------------------------------- | ------------------ | ------------------------- |
