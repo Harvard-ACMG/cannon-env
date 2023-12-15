@@ -69,6 +69,6 @@ echo "%%% to the same number of cores that you requested!"
 echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Start the interactive session
-salloc --x11=all -n $cores -N $nodes --mem=$mem -p $part -t $time && ssh -CY $SLURM_JOB_NODELIST
+salloc --x11=all -n $cores -N $nodes --mem=$mem -p $part -t $time
 
 #EOC

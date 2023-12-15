@@ -4,6 +4,10 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] 
+### Fixed
+- Removed the `&& ssh -CY $SLURM_JOB_NODELIST`, as this was causing some X11 forwarding issues after the update to SLURM 23.02.7
+
 ## [2.0.0]
 ### Added
 - Environment files for Intel compilers in `envs/intel23`
