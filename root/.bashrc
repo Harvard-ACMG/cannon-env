@@ -98,7 +98,9 @@ alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
 
 # List number of nodes and CPUs in a given partition
 # (A=available, I=idle, O=other, T=total)
+alias sainfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p sapphire"
 alias hiinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
+alias hcinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_cascade"
 alias scinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_compute"
 alias sginfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_gpu"
 alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
