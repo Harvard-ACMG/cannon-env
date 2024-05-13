@@ -178,10 +178,18 @@ alias llh="ls -lh"
 #==============================================================================
 # %%%%% Load the user's personal settings and aliases %%%%%
 #
-# NOTE: This syntax is shorthand for an if statement!
-#==============================================================================0
-[[ -f ~/.my_personal_settings ]] && . ~/.my_personal_settings
-[[ -f ~/.bash_aliases         ]] && . ~/.bash_aliases
-[[ -f ~/.bash_functions       ]] && . ~/.bash_functions
+# Use if statements to ensure that errors are not persistent, see:
+# https://unix.stackexchange.com/questions/447206/how-to-prevent-one-command-from-triggering-err-trap
+#==============================================================================
+if [[ -f ~/.my_personal_settings ]]; then
+    . ~/.my_personal_settings
+fi
 
+if [[ -f ~/.bash_aliases ]]; then
+    . ~/.bash_aliases
+fi
+
+if [[ -f ~/.bash_functions ]]; then
+    . ~/.bash_functions
+fi
 #EOC
