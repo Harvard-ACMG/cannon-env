@@ -4,15 +4,19 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [2.0.4]
+## [2.0.5]
+### Fixed
+- Now use if statements instead of `[[ -f ~/.bash_aliases ]]` etc. are present in the root folder.  These cause an error code to persist as described in #3. 
+
+## [2.0.4]
 ### Added
 - Module load commands for the Spack-built `rclone` package
 
-# [2.0.3]
+## [2.0.3]
 ### Added
 - Alias `sainfo` to get info about jobs on the sapphire partition
 
-# [2.0.2]
+## [2.0.2]
 ### Fixed
 - Updated VT100 keybindings in `.root/.Xresources` to allow CTRL-INSERT (cut) and SHIFT-INSERT (paste)
 
