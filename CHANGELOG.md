@@ -4,6 +4,10 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.6]
+### Changed
+- Comment out `ulimit -c unlimited` in environment files, as this is now disallowed on Cannon
+
 ## [2.0.5]
 ### Fixed
 - Now use if statements instead of `[[ -f ~/.bash_aliases ]]` etc. are present in the root folder.  These cause an error code to persist as described in #3. 
