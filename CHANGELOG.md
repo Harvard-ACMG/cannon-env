@@ -4,31 +4,35 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.6]
+## [2.0.7] - 2024-12-04
+### Changed
+- Add module load commands for TAU profiler to gnu12 environment files
+
+## [2.0.6] - 2024-10-29
 ### Changed
 - Comment out `ulimit -c unlimited` in environment files, as this is now disallowed on Cannon
 
-## [2.0.5]
+## [2.0.5] - 2024-05-13
 ### Fixed
 - Now use if statements instead of `[[ -f ~/.bash_aliases ]]` etc. are present in the root folder.  These cause an error code to persist as described in #3. 
 
-## [2.0.4]
+## [2.0.4] - 2024-03-25
 ### Added
 - Module load commands for the Spack-built `rclone` package
 
-## [2.0.3]
+## [2.0.3] - 2024-01-30
 ### Added
 - Alias `sainfo` to get info about jobs on the sapphire partition
 
-## [2.0.2]
+## [2.0.2] - 2024-01-04
 ### Fixed
 - Updated VT100 keybindings in `.root/.Xresources` to allow CTRL-INSERT (cut) and SHIFT-INSERT (paste)
 
-## [2.0.1] 
+## [2.0.1] - 2023-12-15
 ### Fixed
 - Removed the `&& ssh -CY $SLURM_JOB_NODELIST`, as this was causing some X11 forwarding issues after the update to SLURM 23.02.7
 
-## [2.0.0]
+## [2.0.0] - 2023-09-23
 ### Added
 - Environment files for Intel compilers in `envs/intel23`
 - `README.md` files in `envs/gnu10`, `envs/gnu12`, `envs/intel23`
@@ -52,7 +56,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Removed
 - Removed the `ROCKY_ROOT` variable from environment files
 
-## [1.0.0]
+## [1.0.0] - 2023-06-05
 ### Added
 - Environment files for RockyLinux (w/ FASRC + Spack modules) in `envs/*`
 - Added logo and links to the `README.md` file
