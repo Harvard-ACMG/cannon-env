@@ -4,25 +4,30 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.8] - 2025-03-24
+### Added
+- Added module load commands for `gperftools` to gnu12 environment files
+- U
+
 ## [2.0.7] - 2024-12-04
 ### Changed
-- Add module load commands for TAU profiler to gnu12 environment files
+- Added module load commands for TAU profiler to gnu12 environment files
 
 ## [2.0.6] - 2024-10-29
 ### Changed
-- Comment out `ulimit -c unlimited` in environment files, as this is now disallowed on Cannon
+- Commented out `ulimit -c unlimited` in environment files, as this is now disallowed on Cannon
 
 ## [2.0.5] - 2024-05-13
 ### Fixed
-- Now use if statements instead of `[[ -f ~/.bash_aliases ]]` etc. are present in the root folder.  These cause an error code to persist as described in #3. 
+- Fixed Now use if statements instead of `[[ -f ~/.bash_aliases ]]` etc. are present in the root folder.  These cause an error code to persist as described in #3. 
 
 ## [2.0.4] - 2024-03-25
 ### Added
-- Module load commands for the Spack-built `rclone` package
+- Added module load commands for the Spack-built `rclone` package
 
 ## [2.0.3] - 2024-01-30
 ### Added
-- Alias `sainfo` to get info about jobs on the sapphire partition
+- Added Alias `sainfo` to get info about jobs on the sapphire partition
 
 ## [2.0.2] - 2024-01-04
 ### Fixed
@@ -34,22 +39,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [2.0.0] - 2023-09-23
 ### Added
-- Environment files for Intel compilers in `envs/intel23`
-- `README.md` files in `envs/gnu10`, `envs/gnu12`, `envs/intel23`
-- Now load Spack-built modules for `jq` and `parallel`
+- Added environment files for Intel compilers in `envs/intel23`
+- Added `README.md` files in `envs/gnu10`, `envs/gnu12`, `envs/intel23`
+- Added module load commands for Spack-built modules `jq` and `parallel`
 
 ### Changed
-- The `envs` folder has been subdivided into `gnu10`, `gnu12`, and  `intel23` subdirectories
+- Subdivided `envs` folder has been subdivided into `gnu10`, `gnu12`, and  `intel23` subdirectories
 - Moved content from `envs/README.md` to `README.md` in subdirectories
-- GCHP environment files now point to ESMF 8.4.2 installation
-- Unload all packages loaded with `spack load` in environment files
-- Send the output of `unalias diff` to `/dev/null` to squelch error messages
+- Updated GCHP environment files to point to ESMF 8.4.2 installation
+- Unloaded all packages loaded with `spack load` in environment files
+- Sent the output of `unalias diff` to `/dev/null` to squelch error messages
 - Added extra xterm settings and font selections in `root/.Xresources`
 - Rewrote `copy_cannon_env` to back up configuration files
 - Updated `root/.Xresources` with additional options and font selections
-- `.bash_profile`, `.bashrc`, etc. files are now chmod 644
+- Changed permissions of `.bash_profile`, `.bashrc`, etc. to 644
 - Updated `bin/myjobs` to exclude job ID's ending in `.1`, `.2`, etc.
-- The `bin/interactive` script uses `--mem` instead of `--mem-per-cpu`
+- Changed The `bin/interactive` script uses `--mem` instead of `--mem-per-cpu`
 - Updated env files for the new library path `/n/jacob_lab/Lab/RockyLinux/`
 - Updated `README.md ` files accordingly
 
@@ -66,14 +71,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added `ROCKY_ROOT` to env files (points to RockyLinux library root folder)
 
 ### Changed
-- Move Spack intitialization and module path updates to top of environment file scripts
-- Add more informational messages in environment files
-- Make sure NETCDF_HOME is defined properly in environment files
-- Do not load CDO module in environment files, use "spack load" instead
+- Moved Spack intitialization and module path updates to top of environment file scripts
+- Added more informational messages in environment files
+- Defined `NETCDF_HOME` properly in environment files
+- Changed `module load cdo` to `spack load cdo` in environment files
 - Explicitly load netcdf-c in module files
 - Updated `envs/README.md` with a table of env files, plus subsections
-- Now load FASRC-built IDL module in GCClassic environment files
+- Updated environment files to load FASRC-built IDL module
 - Renamed `*.nospack.env` environment files to `*.minimal.env`
 
 ### Removed
-- Environment files for CentOS (w/ FASRC modules) in `envs/*`
+- Removed environment files for CentOS (w/ FASRC modules) in `envs/*`
