@@ -4,10 +4,16 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.9] - 2025-04-01
+### Added
+- Added code to `root/.bash_profile.sh` to add the paths to `bashdatacatalog`, `gprofng` and `vtune` executables to the `$PATH` variable
+
+### Removed
+- Removed module load commands for `gperftools` from gnu12 environment files
+
 ## [2.0.8] - 2025-03-24
 ### Added
 - Added module load commands for `gperftools` to gnu12 environment files
-- U
 
 ## [2.0.7] - 2024-12-04
 ### Changed

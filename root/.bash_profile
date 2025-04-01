@@ -38,4 +38,28 @@ if [[ -d "${HOME}/.local/bin" ]]; then
     PATH="${HOME}/.local/bin:${PATH}"
     export PATH
 fi
+
+# Also add the bashdatacatalog to $PATH if it exists
+if [[ -d "${HOME}/.bashdatacatalog/bin" ]]; then
+    PATH="${PATH}:${HOME}/.bashdatacatalog/bin"
+    export PATH
+fi
+
+# Path to locally-installed software
+LOCAL="/net/holy-nfsisilon/ifs/rc_labs/jacob_lab/Lab/RockyLinux/local"
+
+# Also add gprofng to $PATH if it exists
+if [[ -d "${LOCAL}/gprofng/bin" ]]; then
+    PATH="${PATH}:${LOCAL}//gprofng/bin"
+    export PATH
+fi
+
+# Also add Intel Vtune to $PATH if it exists
+if [[ -d "${LOCAL}/vtune/vtune/2025.1/bin64" ]]; then
+    PATH="${PATH}:${LOCAL}/vtune/vtune/2025.1/bin64"
+    export PATH
+fi
+
+# Free local variables
+unset LOCAL
 #EOC
