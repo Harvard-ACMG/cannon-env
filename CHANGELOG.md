@@ -4,6 +4,11 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [2.0.10] - 2025-04-16
+### Added
+- Removed `ulimit -c unlimited` from `root/.bashrc`, this is no longer permitted on Cannon
+
 ## [2.0.9] - 2025-04-01
 ### Added
 - Added code to `root/.bash_profile.sh` to add the paths to `bashdatacatalog`, `gprofng` and `vtune` executables to the `$PATH` variable

@@ -54,7 +54,6 @@ ulimit -t unlimited                   # Max out cputime
 ulimit -f unlimited                   # Max out filesize
 ulimit -d unlimited                   # Max out datasize
 ulimit -s unlimited                   # Max out stacksize
-ulimit -c unlimited                   # Max out coredumpsize
 export TERM=xterm                     # Default terminal
 export EDITOR=emacs                   # Default editor (emacs or vim)
 export VISUAL=emacs                   # Default editor (emacs or vim)
