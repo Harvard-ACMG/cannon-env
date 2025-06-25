@@ -4,9 +4,13 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.12] - 2025-06-25
+### Added
+- Updated ESMF from 8.4.2 to 8.6.1 in `envs/gnu12/gchp.rocky+gnu12*env` environment files
+
 ## [2.0.11] - 2025-06-17
 ### Added
--Added GNU GCC 14.2.0 minimal environment file for GCClassic
+- Added GNU GCC 14.2.0 minimal environment file for GCClassic
 
 ## [2.0.10] - 2025-04-16
 ### Added
