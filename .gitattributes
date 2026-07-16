@@ -1,0 +1,25 @@
+# Auto detect text files and normalize line endings to LF on checkin
+* text=auto eol=lf
+
+# Shell scripts and environment files must keep LF endings (sourced on Linux)
+*.sh text eol=lf
+*.env text eol=lf
+copy-cannon-env text eol=lf
+.bashrc text eol=lf
+.bash_profile text eol=lf
+.login text eol=lf
+.my_personal_settings text eol=lf
+
+# Perl scripts
+*.pl text eol=lf
+
+# Emacs-lisp and other config files
+*.el text eol=lf
+*.pro text eol=lf
+
+# Documentation
+*.md text eol=lf
+LICENSE.txt text eol=lf
+
+# Git submodule pointer, not a real path
+bin/netcdf-scripts linguist-vendored
