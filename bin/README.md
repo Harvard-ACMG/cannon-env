@@ -7,17 +7,14 @@ When you run the `copy-cannon-env` script, the following utility scripts and fil
 Because `$HOME/bin` gets automatically added to your `$PATH` environment variable at login, the Bash shell will look for these files in `$HOME/bin`.  Therefore, you can run these scripts from any folder in your Cannon disk space without having to type the full path name.
 
 ## Scripts
-K
-```
-interactive
-interactive_gchp
-interactive_openmp
-interactive_python
-```
-  - Convenience scripts that will start interactive sessions on Cannon,
-     - For GEOS-Chem Classic, use `interactive_openmp`.
-     - For GCHP, use `interactive_gchp`.
-     - For Python with port forwarding, use `interactive_python`.
+
+`interactive`
+  - Convenience script that starts an interactive Slurm session on Cannon via `salloc`.
+    Calling sequence:
+    ```
+    interactive CORES NODES MEMORY-PER-CPU [TIME-IN-MINUTES] [PARTITION]
+    ```
+    If not specified, `TIME-IN-MINUTES` defaults to 60 and `PARTITION` defaults to `test`.
 
 `job_depend.pl`
   - Convenience script that allows you to submit multiple Slurm jobs as job dependencies.  Each successive job will not start until the previous job finishes.

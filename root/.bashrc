@@ -42,14 +42,9 @@ fi
 # %%%%% Linux environment settings %%%%%
 #==============================================================================
 umask 022                             # Make files world-readable by default
-set autolist                          # Turn on list completion
-set correct                           #
-set color                             #
-set colorcat                          #
-set filesc                            #
-set emacs                             # Use an emacs-style editing interface
-set history                           # Turn on history of commands
-set ignoreeof                         # Prevent EOF from terminating the shell
+set -o emacs                          # Use an emacs-style editing interface
+set -o history                        # Turn on history of commands
+set -o ignoreeof                      # Prevent EOF from terminating the shell
 ulimit -t unlimited                   # Max out cputime
 ulimit -f unlimited                   # Max out filesize
 ulimit -d unlimited                   # Max out datasize
@@ -59,8 +54,13 @@ export EDITOR=emacs                   # Default editor (emacs or vim)
 export VISUAL=emacs                   # Default editor (emacs or vim)
 export GIT_EDITOR=emacs               # Default Git editor (emacs or vim)
 export MAIL=/usr/spool/mail/$USER     # Default mail program
-mail=$MAIL
+export LINK_TIMEOUT=3                 # ??? (purpose undocumented; carried over from former root/.login)
 PS1="\[\e[1;32m\][\h \W]$\[\e[0m\] "  # Override the default Unix prompt
+
+# Echo date at shell startup (carried over from former root/.login)
+if [[ $- = *i* ]]; then
+    date
+fi
 
 #==============================================================================
 # %%%%% Settings for colorization  %%%%%
@@ -76,7 +76,7 @@ export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
 
 # Python
-export PYTHONSTTARTUP="$HOME/python/python_startup.py"
+export PYTHONSTARTUP="$HOME/python/python_startup.py"
 
 # Emacs, skip warning messages
 alias emacs="emacs 2>/dev/null"
@@ -98,10 +98,9 @@ alias si="sinfo format='%.11P %.20N %.11T %.6D %.4c %C'"
 # List number of nodes and CPUs in a given partition
 # (A=available, I=idle, O=other, T=total)
 alias sainfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p sapphire"
-alias hiinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_intel"
+alias hiceinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_ice"
 alias hcinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p huce_cascade"
 alias scinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_compute"
-alias sginfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p seas_gpu"
 alias shinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p shared"
 alias tinfo="sinfo --format='%.11P %.20N %.11T %.6D %.4c %C' -p test"
 
@@ -136,7 +135,7 @@ alias proc="ps -ef | grep $USER | sort"
 alias pu="rm *~"
 alias pua="rm .*~"
 alias sb=". ~/.bash_profile"
-alias ssh="ssh -X -A"
+alias ssh="ssh -Y -A"
 alias gsh="ssh -xT"
 alias tf="tail --follow"
 alias zap="kill -9"

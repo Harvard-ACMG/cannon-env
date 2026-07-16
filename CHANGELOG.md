@@ -4,6 +4,19 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.13] - 2026-07-16
+### Changed
+- Replaced retired `huce_intel` Slurm partition with `huce_ice` in `root/.bashrc` (alias renamed `hiinfo` -> `hiceinfo`); dropped the `seas_gpu` partition alias
+- Replaced broken tcsh `set` idioms (`set autolist`, `set correct`, etc.) in `root/.bashrc` with their bash equivalents (`set -o emacs`, `set -o history`, `set -o ignoreeof`) or removed them where no bash equivalent exists
+- Changed `root/.bashrc`'s `ssh` alias from `ssh -X -A` to `ssh -Y -A` (trusted X11 forwarding)
+- Deleted `root/.login` (dead weight for bash users; nothing in this repo sources it, and bash doesn't auto-source it); ported its `LINK_TIMEOUT` setting and login-time `date` echo into `root/.bashrc`
+
+### Fixed
+- Fixed `PYTHONSTTARTUP` typo (should be `PYTHONSTARTUP`) in `root/.bashrc`
+- Fixed incorrect compiler version (said 10.4.0, should say 14.2.0) in the header comment of `envs/gnu14/gcclassic.rocky+gnu14.minimal.env`
+- Fixed double slash in `gprofng` path in `root/.bash_profile`
+- Updated `bin/README.md` to describe the actual single `interactive` script instead of three scripts (`interactive_gchp`, `interactive_openmp`, `interactive_python`) that don't exist in this repo
+
 ## [2.0.12] - 2025-06-25
 ### Added
 - Updated ESMF from 8.4.2 to 8.6.1 in `envs/gnu12/gchp.rocky+gnu12*env` environment files

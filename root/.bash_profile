@@ -50,7 +50,7 @@ LOCAL="/net/holy-nfsisilon/ifs/rc_labs/jacob_lab/Lab/RockyLinux/local"
 
 # Also add gprofng to $PATH if it exists
 if [[ -d "${LOCAL}/gprofng/bin" ]]; then
-    PATH="${PATH}:${LOCAL}//gprofng/bin"
+    PATH="${PATH}:${LOCAL}/gprofng/bin"
     export PATH
 fi
 

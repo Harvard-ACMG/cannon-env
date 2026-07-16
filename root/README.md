@@ -8,9 +8,6 @@ When you run the `copy-cannon-env` script, these files will be copied to your ho
 
 These files contain defaults that are specific to Cannon and should not be modified.
 
-`.login`
-  - System startup file (i.e. settings are applied only at login).
-
 `.bash_profile`
   - Shell startup file (i.e. settings are applied whenever a new bash shell instance starts).  The `.bash_profile` file applies the settings in the `.bashrc` file, and also adds your `~/bin` folder to the search path.
 
