@@ -4,6 +4,10 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - TBD
+### Removed
+- Removed `envs/gnu10` folder
+
 ## [2.0.13] - 2026-07-16
 ### Changed
 - Replaced retired `huce_intel` Slurm partition with `huce_ice` in `root/.bashrc` (alias renamed `hiinfo` -> `hiceinfo`); dropped the `seas_gpu` partition alias
