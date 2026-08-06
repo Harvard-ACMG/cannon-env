@@ -1,4 +1,4 @@
-<a href="https://acmg.seas.harvard.edu"><img src="https://acmg.seas.harvard.edu/sites/projects.iq.harvard.edu/files/acmg/files/img_acmg_logo_small.png" width="200" height="187" alt="ACMG logo"></a>
+<a href="https://acmg.seas.harvard.edu"><img src="../../_static/ACMG_logo.jpg" width="200" height="187" alt="ACMG logo"></a>
 
 # cannon-env/root: System and shell startup files
 

@@ -1,15 +1,6 @@
 <a href="https://acmg.seas.harvard.edu"><img src="../../_static/ACMG_logo.md" width="200" height="187" alt="ACMG logo"></a>
 
-# cannon-env/envs: Environment files for Cannon with GNU 12.2.0 Compilers
-
-### With FASRC-built and Spack-built packages
-
-These environment files will load FASRC-built packages, as well as locally-built Spack packages. These define the complete software environment that you will need to run GEOS-Chem Classic, and GCHP, as well as to perform post-processing on netCDF files, etc.
-
-| Environment file            | Model              | For compilers                     |
-| --------------------------- | ------------------ | --------------------------------- |
-| `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 & 8.5.0 |
-| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 & 8.5.0 |
+# cannon-env/envs: Environment files for Cannon with GNU 14.2.0 Compilers
 
 ### With minimal packages needed for GEOS-Chem
 
@@ -17,8 +8,8 @@ These environment files contain settings to load only the FASRC-built packages t
 
 | Environment file                    | Model              | For compilers             |
 | ----------------------------------- | ------------------ | ------------------------- |
-| `gcclassic.rocky+gnu12.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
-| `gchp.rocky+gnu12.minimal.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
+| `gcclassic.rocky+gnu14.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
+| `gchp.rocky+gnu14.minimal.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
 
 ## Using environment files
 
@@ -37,7 +28,7 @@ NOTE: In the `bash` shell, you can also use a `.` instead of `source`, e.g.
 For example:
 
 ```console
-$ source ~/envs/gcclassic.rocky+gnu12.env
+$ source ~/envs/gcclassic.rocky+gnu14.env
 ```
 
 etc for the other environment files listed above.
