@@ -1,4 +1,4 @@
-<a href="https://acmg.seas.harvard.edu"><img src="../../_static/ACMG_logo.md" width="200" height="187" alt="ACMG logo"></a>
+<a href="https://acmg.seas.harvard.edu"><img src="../../_static/ACMG_logo.jpg" width="200" height="187" alt="ACMG logo"></a>
 
 # cannon-env/envs: Environment files for Cannon with GNU 14.2.0 Compilers
 
@@ -8,8 +8,8 @@ These environment files contain settings to load only the FASRC-built packages t
 
 | Environment file                    | Model              | For compilers             |
 | ----------------------------------- | ------------------ | ------------------------- |
-| `gcclassic.rocky+gnu14.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 |
-| `gchp.rocky+gnu14.minimal.env`      | GCHP               | gcc, g++, gfortran 12.2.0 |
+| `gcclassic.rocky+gnu14.minimal.env` | GEOS-Chem Classic  | gcc, g++, gfortran 14.2.0 |
+| `gchp.rocky+gnu14.minimal.env`      | GCHP               | gcc, g++, gfortran 14.2.0 |
 
 ## Using environment files
 

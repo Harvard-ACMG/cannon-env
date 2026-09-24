@@ -83,7 +83,9 @@ function backup_and_copy() {
 
 	# Copy the files from the source dir to the target dir
         echo "Copying ${file} to ${trgDir}..."
-	cp -fR "${srcDir}/${file}" "${trgDir}/${file}"
+	# (copy into the target dir, so that an existing subfolder
+	# is merged into rather than duplicated inside itself)
+	cp -fR "${srcDir}/${file}" "${trgDir}/"
     done
 
     # Return whether or not a backup folder was created via $?
@@ -109,8 +111,8 @@ function main() {
 	     "bin/netcdf-scripts" \
 	     "IDL"                \
 	     "envs"               \
-	     "envs/gnu10"         \
 	     "envs/gnu12"         \
+	     "envs/gnu14"         \
 	     "envs/intel23"      )        # Folders w/ config files
 
     # Tell bash to pick up hidden files in for loops

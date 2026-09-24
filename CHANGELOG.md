@@ -4,6 +4,22 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - TBD
+### Changed
+- Changed the `.gitattributes` file to mark `*.jpg` and `*.png` as binary, and removed the rule for the deleted `root/.login`
+- Updated `CLAUDE.md` to match the current repository (env folders, `ulimit` settings, the `copy-cannon-env` folder list and README conventions)
+
+### Fixed
+- Fixed `copy-cannon-env` to copy `envs/gnu14` instead of the deleted `envs/gnu10` folder, which caused a `cp: cannot stat 'envs/gnu10/*'` error on every run
+- Fixed `copy-cannon-env` so that re-running it merges into existing subfolders instead of copying each one inside itself (e.g. `~/envs/gnu12/gnu12`, `~/bin/netcdf-scripts/netcdf-scripts`)
+- Fixed broken ACMG logo links in `bin/README.md`, `envs/README.md`, `envs/gnu12/README.md`, `envs/gnu14/README.md`, and `root/README.md`
+- Fixed `envs/gnu12/README.md` to list `gchp.rocky+gnu12.env` instead of `gchp.rocky+gnu10.env`
+- Fixed `envs/gnu14/README.md` to list GNU compilers 14.2.0 instead of 12.2.0
+- Fixed the file name in the header comment of `envs/gnu14/gchp.rocky+gnu14.minimal.env`
+
+### Removed
+- Removed the remaining `ulimit -u` settings from the `envs/gnu14` and `envs/intel23` env files
+
 ## [2.1.1] - 2026-08-10
 ### Changed
 - Restored flex to the set of "minimum" modules, by popular demand
@@ -22,7 +38,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Removed `envs/gnu10` folder
 - Removed `flex` and `KPP_FLEX_LIB_DIR` from `*.minimal.env` env files
 - Removed `ulimit -u` and `ulimit -c` from env files; these operations are not permitted on Cannon
--
 
 ## [2.0.13] - 2026-07-16
 ### Changed
