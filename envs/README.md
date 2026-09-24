@@ -1,4 +1,4 @@
-<a href="https://acmg.seas.harvard.edu"><img src="../_static/ACMG_logo.md" width="200" height="187" alt="ACMG logo"></a>
+<a href="https://acmg.seas.harvard.edu"><img src="../_static/ACMG_logo.jpg" width="200" height="187" alt="ACMG logo"></a>
 
 # cannon-env/envs: Environment files for Cannon
 

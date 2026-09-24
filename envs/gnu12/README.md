@@ -1,4 +1,4 @@
-<a href="https://acmg.seas.harvard.edu"><img src="../../_static/ACMG_logo.md" width="200" height="187" alt="ACMG logo"></a>
+<a href="https://acmg.seas.harvard.edu"><img src="../../_static/ACMG_logo.jpg" width="200" height="187" alt="ACMG logo"></a>
 
 # cannon-env/envs: Environment files for Cannon with GNU 12.2.0 Compilers
 
@@ -9,7 +9,7 @@ These environment files will load FASRC-built packages, as well as locally-built
 | Environment file            | Model              | For compilers                     |
 | --------------------------- | ------------------ | --------------------------------- |
 | `gcclassic.rocky+gnu12.env` | GEOS-Chem Classic  | gcc, g++, gfortran 12.2.0 & 8.5.0 |
-| `gchp.rocky+gnu10.env`      | GCHP               | gcc, g++, gfortran 12.2.0 & 8.5.0 |
+| `gchp.rocky+gnu12.env`      | GCHP               | gcc, g++, gfortran 12.2.0 & 8.5.0 |
 
 ### With minimal packages needed for GEOS-Chem
 
