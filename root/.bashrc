@@ -58,9 +58,9 @@ export LINK_TIMEOUT=3                 # ??? (purpose undocumented; carried over 
 PS1="\[\e[1;32m\][\h \W]$\[\e[0m\] "  # Override the default Unix prompt
 
 # Echo date at shell startup (carried over from former root/.login)
-if [[ $- = *i* ]]; then
-    date
-fi
+#if [[ $- = *i* ]]; then
+#    date
+#fi
 
 #==============================================================================
 # %%%%% Settings for colorization  %%%%%
@@ -74,9 +74,6 @@ export LS_COLORS='no=00:fi=00:di=01;33:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 
 # IDL
 export IDL_STARTUP="$HOME/IDL/idl_startup.pro"
-
-# Python
-export PYTHONSTARTUP="$HOME/python/python_startup.py"
 
 # Emacs, skip warning messages
 alias emacs="emacs 2>/dev/null"
@@ -191,3 +188,17 @@ if [[ -f ~/.bash_functions ]]; then
     . ~/.bash_functions
 fi
 #EOC
+
+# Load conda shell functions without spawning Python (fast on NFS).
+# This replaces the "conda init" block, which ran "conda shell.bash hook"
+# (~2 s) at every shell startup.  Re-running "conda init" will restore it.
+if [[ -f "${HOME}/miniforge3/etc/profile.d/conda.sh" ]]; then
+    . "${HOME}/miniforge3/etc/profile.d/conda.sh"
+else
+    export PATH="${HOME}/miniforge3/bin:${PATH}"
+fi
+
+# Also add the ~/.local/bin folder to the path if it exists
+if [[ -d ${HOME}/.local/bin ]]; then
+    export PATH="${HOME}/.local/bin:$PATH"
+fi

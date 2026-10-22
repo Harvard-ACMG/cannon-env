@@ -4,6 +4,19 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3] - 2026-10-22
+### Added
+- Added `${HOME}/local/bin` to the `PATH` variable in `~/.bash_profile`
+
+### Changed
+- Updated `root/.bash_profile` to add the path to conda and `./local/bin` to `$PATH`
+- Changed `root/.bash_profile` to only run `xrdb ~/.Xresources` if X forwarding is active (this removes a slowdown)
+- Commented out the printing of the date at login in `/root/.bashrc`
+- Load conda shell without spawning Python (replaces the `conda init` block) in `root/.bashrc`
+
+### Removed
+- Removed `PYTHONSTARTUP` environment variable in `root/.bashrc`
+
 ## [2.1.2] - 2026-09-24
 ### Changed
 - Changed the `.gitattributes` file to mark `*.jpg` and `*.png` as binary, and removed the rule for the deleted `root/.login`

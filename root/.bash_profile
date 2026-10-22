@@ -23,17 +23,33 @@ if [[ -f ~/.bashrc ]]; then
 fi
 
 # Set path so that it includes user's private bin if it exists.
-# If the user has the netcdf-scripts in $HOME/bin, add that to PATH too.
+# If the user has the netcdf-scripts and/or utility-scripts in $HOME/bin,
+# add that to PATH too.
 if [[ -d "${HOME}/bin" ]]; then
+    prefix="${HOME}/bin"
+
     if [[ -d "${HOME}/bin/netcdf-scripts" ]]; then
-	PATH="${HOME}/bin:${HOME}/bin/netcdf-scripts:${PATH}"
-    else
-	PATH="${HOME}/bin:${PATH}"
+        prefix+=":${HOME}/bin/netcdf-scripts:"
     fi
+
+    PATH="${prefix}:${PATH}"
     export PATH
 fi
 
-# Set path so that it includes user's private .local/bin if it exists
+# Add conda to PATH
+if [[ -d "${HOME}/bin" ]]; then
+    prefix="${HOME}/miniforge3/bin"
+    PATH="${prefix}:${PATH}"
+    export PATH
+fi
+
+# Add user's private .local to $PATH if it exists (needed for Claude)
+if [[ -d "${HOME}/.local" ]]; then
+    PATH="${HOME}/.local:${PATH}"
+    export PATH
+fi
+
+# Add user's private .local/bin to $PATH if it exists
 if [[ -d "${HOME}/.local/bin" ]]; then
     PATH="${HOME}/.local/bin:${PATH}"
     export PATH
@@ -62,4 +78,9 @@ fi
 
 # Free local variables
 unset LOCAL
+
+# Load the Xresources file settings (only if X forwarding is active)
+if [[ -n "${DISPLAY}" && -f ~/.Xresources ]]; then
+    ( xrdb ~/.Xresources >/dev/null 2>&1 & )
+fi
 #EOC
