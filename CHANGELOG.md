@@ -4,6 +4,10 @@ This file documents all notable changes to the cannon-env repository since versi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.4] - 2026-11-02
+### Changed
+- Use `module load jdk/25.0.5.0.3-fasrc01` instead of `jdk/26-fasrc01` (which was de-listed) in GNU 12 env files.
+
 ## [2.1.3] - 2026-10-22
 ### Added
 - Added `${HOME}/local/bin` to the `PATH` variable in `~/.bash_profile`
